@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link href="bower_components/bootstrap/dist/css/font-awesome.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title><%=title%></title>
+</head>
+<body>
+<div id="login-form" class="row">
+    <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Please sign up
+                    <small>It's free!</small>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div name="lastForm">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="text" id="input-first-name" name="first_name" class="form-control input-sm"
+                                       placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="text" id="input-last-name" name="last_name" class="form-control input-sm"
+                                       placeholder="Last Name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" id="input-email" name="email" class="form-control input-sm"
+                               placeholder="E-mail Address">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="password" id="input-password" name="password" class="form-control input-sm"
+                                       placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="password" id="input-confirm-password" name="password_confirmation"
+                                       class="form-control input-sm"
+                                       placeholder="Confirm Password">
+                            </div>
+                        </div>
+                    </div>
+                    <button id="in-sub" class="btn btn-primary">
+                        <i class="fa fa-sign-in"></i> SignIn
+                    </button>
+                    <button id="up-sub" class="btn btn-primary">
+                        <i class="fa fa-sign-in"></i> SignUp
+                    </button>
+                </div>
+                <!--last form-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script type="text/template" class="users-list-template">
+    <td><span class="name"><%= name %></span></td>
+    <td><span class="birth"><%= birth %></span></td>
+    <td><span class="location"><%= location %></span></td>
+    <td>
+        <button class="btn btn-warning edit-user">Edit</button>
+        <button class="btn btn-danger delete-user">Delete</button>
+        <button class="btn btn-success update-user" style="display:none">Update</button>
+        <button class="btn btn-danger cancel" style="display:none">Cancel</button>
+    </td>
+</script>-->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/backbone/backbone.js"></script>
+<script src="js/mongoscripts.js"></script>
+</body>
+</html>

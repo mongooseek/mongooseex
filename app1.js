@@ -9,19 +9,21 @@ var morgan = require('morgan');
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(session({
-    secret: "anystringoftext",
+    secret: 'Aninterestingstring',
     saveUninitialized: true,
     resave: true
 }));
 
 
 app.use('/', function (req, res) {
-    res.send('Our first express program');
-    console.log('cookie');
+    res.send('Our First Express program!');
+    console.log("cookies------------------------->");
     console.log(req.cookies);
     console.log('================');
-    console.log('session');
+    console.log(req.session);
 });
 
 app.listen(port);
-console.log('Port ' + port);
+console.log('Server running on port: ' + port);
+
+console.dir(express);

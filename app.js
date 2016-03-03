@@ -61,17 +61,19 @@ app.use(session({
 }));
 
 
-/*app.use('/', function (req, res) {
- res.send('Our first express program');
- console.log('cookie');
- console.log(req.cookies);
- console.log('================');
- console.log('session');
- });*/
+app.use('/', function (req, res, next) {
+    /*res.send('Our first express program');*/
+    console.log('cookie');
+    console.dir(req.cookies);
+    console.log('================');
+    console.log('session ' + req.sessionID);
+    next();
+});
 
 //app.use(express.favicon());
 
 app.get('/', function (req, res) {
+    //console.log('req session ' + req.session);
     res.render('index');
 });
 
@@ -87,7 +89,6 @@ app.post('/', function (req, res) {
 
 app.get('/:login', function (req, res) {
     User.findOne({userLogin: req.params.login}, function (err, doc) {
-        console.log('err ' + err);
         console.log('name ' + doc.name);
         res.render('user', {userObject: doc});
     });

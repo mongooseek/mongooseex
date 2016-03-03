@@ -37,7 +37,7 @@ app.use(session({
     key: "myTestPython",
     secret: '1q2w3e4r5tdhgkdfhgejflkejgkdlgh8j0jge4547hh',
     resave: false,
-    //saveUninitialized: false,
+    saveUninitialized: false,
     store: new MemoryStore(sessionConfig)
 }));
 app.use(bodyParser.json());
@@ -107,8 +107,7 @@ app.post('/api/users', function (req, res, next) {
 app.get('/api/users/:id', function (req, res, next) {
     var err;
 
-    db.if(!req.session || !req.session.loggedIn)
-    {
+    if (!req.session || !req.session.loggedIn) {
         err = new Error('Forbidden');
         err.status = 403;
 
@@ -116,7 +115,9 @@ app.get('/api/users/:id', function (req, res, next) {
     }
     next();
 }, function (req, res) {
-    User.find({_id: req.params.id}, function (err, doc) {
+    console.log('id from request1000', req.params.id);
+    var id = (req.params.id == 0) ? req.session.uId : req.params.id;
+    User.findOne({_id: id}, function (err, doc) {
         res.send(doc);
     });
 });

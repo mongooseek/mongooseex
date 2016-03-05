@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var findOrCreate = require('mongoose-findorcreate');
+var http = require('http').Server(app);
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var MemoryStore = require('connect-mongo')(session);
@@ -34,8 +35,8 @@ app.use(express.static(__dirname + '/public'));
 app.use(cookieParser("myTestPython"));
 app.use(session({
     name: 'crm',
-    key: "myTestPython",
-    secret: '1q2w3e4r5tdhgkdfhgejflkejgkdlgh8j0jge4547hh',
+    key: "newWorldNewK",
+    secret: '19asdf90zxcv20trewq202519asdf90zxcv20trewq',
     resave: false,
     saveUninitialized: false,
     store: new MemoryStore(sessionConfig)
@@ -43,8 +44,14 @@ app.use(session({
 app.use(bodyParser.json());
 
 app.post("/login", function (req, res) {
-    User.findOne({email: req.body.email, pass: req.body.pass}, {pass: 0}, function (err, doc) {
-        console.log("Received a GET request for _id: " + doc._id);
+    if (req.session.uId || req.session.loggedIn) User.findOne({_id: req.session.uId}, {pass: 0}, function (err, doc) {
+        console.log("Received a GET request for loginned _id: " + doc._id);
+        req.session.uId = doc._id;
+        req.session.loggedIn = true;
+        res.send(doc);
+    });
+    else User.findOne({email: req.body.email, pass: req.body.pass}, {pass: 0}, function (err, doc) {
+        console.log("Received a GET request for notloginned _id: " + doc._id);
         req.session.uId = doc._id;
         req.session.loggedIn = true;
         res.send(doc);
@@ -108,7 +115,7 @@ app.get('/api/users/:id', function (req, res, next) {
     }
     next();
 }, function (req, res) {
-    var userId = ((req.params.id === ':id') ? (req.session.uId) : req.params.id);
+    var userId = ((!req.params.id) ? (req.session.uId) : req.params.id);
     User.findOne({_id: userId}, function (err, doc) {
         res.send(doc);
     });
@@ -141,5 +148,10 @@ app.use(function (err, req, res, next) {
 
 var port = 3000;
 
-app.listen(port);
-console.log('server on ' + port);
+app.listen(port, function () {
+    console.log('listen on port', port);
+});
+/*
+ http.listen((port || 3000), function () {
+ console.log('listening on:', port);
+ });*/

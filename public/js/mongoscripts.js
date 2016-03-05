@@ -2,7 +2,6 @@
 var UserModel = Backbone.Model.extend({
     idAttribute: '_id',
     defaults: {
-        //login: '',
         //pass: '',
         //name: '',
         //surname: '',
@@ -14,11 +13,30 @@ var UserModel = Backbone.Model.extend({
     },
     initialize: function () {
         this.on("change:_id", function () {
-            this.urlRoot = '/api/users'
+            //this.urlRoot = '/api/users'
         })
+        this.on('reset', function () {
+            this.urlRoot = '/api/users';
+            this.fetch();
+        });
+        this.fetch({reset: true});
+    },
+    resetLogin: function () {
+        if (!this.isNew()) {
+            return this.fetch();
+        }
+        console.log(this.isNew());
+        return null;
+    },
+    preLoginFetch: function () {
+        if (!this.isNew()) {
+            console.log();
+            return this.fetch();
+        }
+        return null;
     }
 });
-var userModel;
+var userModel = new UserModel();
 
 var BaseCollection = Backbone.Collection.extend({
     content: null,
@@ -31,7 +49,7 @@ var BaseCollection = Backbone.Collection.extend({
 });
 
 var UsersCollection = Backbone.Collection.extend({
-    content: 'users'
+    //content: 'users'
 });
 
 var UserView = Backbone.View.extend({
@@ -43,14 +61,8 @@ var UserView = Backbone.View.extend({
     },
 
     render: function () {
-        console.log('userModel1000', userModel);
         var user = userModel.toJSON();
-        console.log('user2000', user);
-        console.log('this', this);
-        console.log('this.el', this.el);
-        console.dir(this.$el);
         this.$el.append('<div>' + user.firstName + ' ' + user.lastName + '</div>');
-        console.dir(this)
         return this;
     }
 });
@@ -59,10 +71,7 @@ $(document).ready(function () {
     $('#in-sub').on('click', function () {
         var email = $('#input-email').val();
         var pass = $('#input-password').val();
-        userModel = new UserModel({
-            email: email,
-            pass: pass
-        });
+        userModel.set({email: email, pass: pass});
         userModel.urlRoot = '/login';
         userModel.save(null, {
             //wait: true,

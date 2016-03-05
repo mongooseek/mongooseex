@@ -1,5 +1,4 @@
 //Backbone.Model.prototype.idAttribute = '_id';
-
 var UserModel = Backbone.Model.extend({
     idAttribute: '_id',
     defaults: {
@@ -35,6 +34,27 @@ var UsersCollection = Backbone.Collection.extend({
     content: 'users'
 });
 
+var UserView = Backbone.View.extend({
+    el: '#user-page',
+    initialize: function () {
+        console.log('Hello world from console!');
+        this.render();
+
+    },
+
+    render: function () {
+        console.log('userModel1000', userModel);
+        var user = userModel.toJSON();
+        console.log('user2000', user);
+        console.log('this', this);
+        console.log('this.el', this.el);
+        console.dir(this.$el);
+        this.$el.append('<div>' + user.firstName + ' ' + user.lastName + '</div>');
+        console.dir(this)
+        return this;
+    }
+});
+
 $(document).ready(function () {
     $('#in-sub').on('click', function () {
         var email = $('#input-email').val();
@@ -55,6 +75,8 @@ $(document).ready(function () {
                  $('#input-confirm-password').val('');*/
                 userModel.unset('pass', {silent: true});
                 $('#login-form').hide();
+                var userView = new UserView({model: userModel});
+                $('#user-block').show();
             },
             error: function (err) {
                 console.log('Failed to get user!');

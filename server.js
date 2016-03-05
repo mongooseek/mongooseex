@@ -43,9 +43,6 @@ app.use(session({
 app.use(bodyParser.json());
 
 app.post("/login", function (req, res) {
-    console.log('session', req.session);
-    console.log('session view', req.session.view);
-    console.log((req.session.store));
     User.findOne({email: req.body.email, pass: req.body.pass}, {pass: 0}, function (err, doc) {
         console.log("Received a GET request for _id: " + doc._id);
         req.session.uId = doc._id;
@@ -57,7 +54,6 @@ app.post("/login", function (req, res) {
 // DB ROUTES
 app.get('/api/users', function (req, res, next) {
     var err;
-
     if (!req.session || !req.session.loggedIn) {
         err = new Error('Forbidden');
         err.status = 403;
@@ -78,12 +74,10 @@ app.get('/api/users', function (req, res, next) {
 
 app.post('/api/users', function (req, res, next) {
     var err;
-
     db.if(!req.session || !req.session.loggedIn)
     {
         err = new Error('Forbidden');
         err.status = 403;
-
         return next(err);
     }
     next();
@@ -106,7 +100,6 @@ app.post('/api/users', function (req, res, next) {
 
 app.get('/api/users/:id', function (req, res, next) {
     var err;
-
     if (!req.session || !req.session.loggedIn) {
         err = new Error('Forbidden');
         err.status = 403;
@@ -115,9 +108,8 @@ app.get('/api/users/:id', function (req, res, next) {
     }
     next();
 }, function (req, res) {
-    console.log('id from request1000', req.params.id);
-    var id = (req.params.id == 0) ? req.session.uId : req.params.id;
-    User.findOne({_id: id}, function (err, doc) {
+    var userId = ((req.params.id === ':id') ? (req.session.uId) : req.params.id);
+    User.findOne({_id: userId}, function (err, doc) {
         res.send(doc);
     });
 });
@@ -138,7 +130,6 @@ app.put('/api/users/:id', function (req, res) {
 
 app.use(function (err, req, res, next) {
     var status = err.status || 500;
-
     if (process.env.NODE_ENV === 'production') {
         res.status(status).send({error: err.message});
         console.error(err.message + '\n' + err.stack);

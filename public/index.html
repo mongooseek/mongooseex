@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-    <link href="bower_components/bootstrap/dist/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="js/libs/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="js/libs/jquery/dist/jquery.js"></script>
+    <script src="js/libs/underscore/underscore.js"></script>
+    <script src="js/libs/backbone/backbone.js"></script>
     <meta charset="UTF-8">
     <title><%=title%></title>
 </head>
@@ -64,21 +67,18 @@
         </div>
     </div>
 </div>
+<div id="user-block" class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
 
-<!--<script type="text/template" class="users-list-template">
-    <td><span class="name"><%= name %></span></td>
-    <td><span class="birth"><%= birth %></span></td>
-    <td><span class="location"><%= location %></span></td>
-    <td>
-        <button class="btn btn-warning edit-user">Edit</button>
-        <button class="btn btn-danger delete-user">Delete</button>
-        <button class="btn btn-success update-user" style="display:none">Update</button>
-        <button class="btn btn-danger cancel" style="display:none">Cancel</button>
-    </td>
-</script>-->
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/underscore/underscore.js"></script>
-<script src="bower_components/backbone/backbone.js"></script>
+        </div>
+    </div>
+    <div class="row">
+        <div id="user-page" class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+
+        </div>
+    </div>
+</div>
 <script src="js/mongoscripts.js"></script>
 </body>
 </html>

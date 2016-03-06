@@ -29,7 +29,7 @@ var UserModel = Backbone.Model.extend({
         return response;
     }
 });
-var userModel = new UserModel();
+var userModel;
 
 var UserView = Backbone.View.extend({
     el: '#user-page',
@@ -55,9 +55,8 @@ var UserView = Backbone.View.extend({
 
 var PostModel = Backbone.Model.extend({});
 var postModel;
-
-var PostsView = Backbone.View.extend({
-    el: "#post",
+var PostView = Backbone.View.extend({
+    el: "#add-posts",
     initialize: function () {
         postModel = new PostModel();
         var self = this;
@@ -67,7 +66,7 @@ var PostsView = Backbone.View.extend({
         postModel.urlRoot = "/api/posts";
         postModel.save(null, {
                 success: function (response) {
-                    self.$el.append('<div>' + postModel.get('content') + '</div>')
+                    self.$el.prepend('<div>' + postModel.get('content') + '</div>')
                 },
                 error: function (err) {
 
@@ -76,20 +75,46 @@ var PostsView = Backbone.View.extend({
         );
     }
 });
+var PostsCollection = Backbone.Collection.extend({});
+var postsCollection;
+var PostsView = Backbone.View.extend({
+    el: "#add-posts",
+    initialize: function () {
+        var self = this;
+        postsCollection = new PostsCollection();
+        postsCollection.url = "/api/posts";
+        console.log("I am before posts fecth!!!");
+        postsCollection.fetch({
+            success: function (response) {
+                //self.$el.append('<div>' + postModel.get('content') + '</div>')
+                console.log('I am inside posts fecth!!!');
+                //var allPosts = response.toJSON();
+                postsCollection.each(function (post) {
+                    self.$el.append('<div>' + post.get('content') + '</div>');
+                });
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+});
 
 $(document).ready(function () {
     $("#make-post").on('click', function () {
-        var postsView = new PostsView();
+        var postView = new PostView();
     });
     $('#in-sub').on('click', function () {
         var email = $('#input-email').val();
         var pass = $('#input-password').val();
         //userModel = new UserModel();
-        userModel.set({email: email, pass: pass});
+        userModel = new UserModel({email: email, pass: pass});
         userModel.urlRoot = '/login';
         userModel.save(null, {
             //wait: true,
             success: function (response) {
+                console.log('Response', response);
                 console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
                 /*$('#input-first-name').val('');
                  $('#input-last-name').val('');
@@ -104,6 +129,7 @@ $(document).ready(function () {
                 $('#login-form').hide();
                 var userView = new UserView({model: userModel});
                 $('#user-block').show();
+                var postsView = new PostsView();
             },
             error: function (err) {
                 console.log('Failed to get user!');

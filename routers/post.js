@@ -10,8 +10,13 @@ router.use(function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    console.log(req.myName);
-    res.status(200).send('GET posts');
+    Post.find({}, {pass: 0, __v: 0}, function (err, posts) {
+        if (err) {
+            return next(err);
+        }
+
+        res.status(200).send(posts);
+    });
 });
 
 router.get('/:id', function (req, res, next) {

@@ -71,7 +71,7 @@ module.exports = function () {
     };
 
     this.login = function (req, res, next) {
-        if (req.session.uId || req.session.loggedIn) User.findOne({_id: req.session.uId}, {
+        if (req.session.uId || req.session.loggedIn) User.find({_id: req.session.uId}, {
             pass: 0,
             __v: 0
         }, function (err, doc) {
@@ -80,12 +80,13 @@ module.exports = function () {
         });
         else {
             var body = req.body;
+            //var user = new User(body);
             var shaSum = crypto.createHash('sha256');
 
             shaSum.update(body.pass);
             body.pass = shaSum.digest('hex');
-
-            User.findOne(body, function (err, user) {
+            console.log(body);
+            User.find(body, function (err, user) {
                 if (err) {
                     return next(err);
                 }
@@ -100,7 +101,7 @@ module.exports = function () {
                 req.session.uId = user._id;
                 req.session.loggedIn = true;
 
-                delete user._doc.pass;
+                delete user.pass;
 
                 res.status(200).send(user);
             });

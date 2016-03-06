@@ -1,6 +1,7 @@
-//Backbone.Model.prototype.idAttribute = '_id';
+Backbone.Model.prototype.idAttribute = '_id';
+
 var UserModel = Backbone.Model.extend({
-    idAttribute: '_id',
+    //idAttribute: '_id',
     defaults: {
         fullName: '',
         dateOfBirth: '',
@@ -34,6 +35,7 @@ var UserView = Backbone.View.extend({
     el: '#user-page',
     initialize: function () {
         console.log('View initialized');
+
         this.render();
 
     },
@@ -51,7 +53,34 @@ var UserView = Backbone.View.extend({
     }
 });
 
+var PostModel = Backbone.Model.extend({});
+var postModel;
+
+var PostsView = Backbone.View.extend({
+    el: "#post",
+    initialize: function () {
+        postModel = new PostModel();
+        var self = this;
+        var post = $("#posts").val();
+        console.log("Posts view initialized!!!!!");
+        postModel.set({title: "New post", owner: userModel.get("_id"), content: post});
+        postModel.urlRoot = "/api/posts";
+        postModel.save(null, {
+                success: function (response) {
+                    self.$el.append('<div>' + postModel.get('content') + '</div>')
+                },
+                error: function (err) {
+
+                }
+            }
+        );
+    }
+});
+
 $(document).ready(function () {
+    $("#make-post").on('click', function () {
+        var postsView = new PostsView();
+    });
     $('#in-sub').on('click', function () {
         var email = $('#input-email').val();
         var pass = $('#input-password').val();

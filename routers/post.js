@@ -1,6 +1,7 @@
 var express = require('express');
-
+var mongoose = require('mongoose');
 var router = express.Router();
+var Post = mongoose.model('post');
 
 router.use(function (req, res, next) {
     console.log('Post router');
@@ -20,7 +21,14 @@ router.get('/:id', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    console.log(req.myName);
-    res.status(200).send('POST posts');
+    var body = req.body;
+    var post = new Post(body);
+    post.save(function (err, user) {
+        if (err) {
+            return next(err);
+        }
+        delete user.pass;
+        res.status(201).send(post);
+    });
 });
 module.exports = router;

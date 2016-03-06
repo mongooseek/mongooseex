@@ -50,7 +50,9 @@ function onConnection() {
 
     require('./models/index');
 
+    PostHandler = require('./handlers/user');
     postRouter = require('./routers/post');
+    postHandler = new PostHandler();
     UserHandler = require('./handlers/user');
     userRouter = require('./routers/user');
     userHandler = new UserHandler();

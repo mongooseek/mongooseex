@@ -1,7 +1,6 @@
 Backbone.Model.prototype.idAttribute = '_id';
 
 var UserModel = Backbone.Model.extend({
-    //idAttribute: '_id',
     defaults: {
         fullName: '',
         dateOfBirth: '',
@@ -12,16 +11,9 @@ var UserModel = Backbone.Model.extend({
     },
     initialize: function () {
         console.log('Model initialized');
-        //this.on('set _id', this.set({age: this.parse(this.get('dateOfBirth'))}));
-    },
-    loginOnReloadPage: function () {
-        this.urlRoot = '/login';
-        //this.set('_id', ':id');
-        console.log('I am in loginOnReloadPage function');
-        return this.save();
     },
     parse: function (response) {
-        if (!response.dateOfBirth) {
+        if (!response.dateOfBirths) {
             response.dateOfBirth = new Date();
             response.age = (new Date() - new Date(response.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365);
             if (response.age < 1) response.age = ':)';
@@ -87,9 +79,6 @@ var PostsView = Backbone.View.extend({
         console.log("I am before posts fecth!!!");
         postsCollection.fetch({
             success: function (response) {
-                //self.$el.append('<div>' + postModel.get('content') + '</div>')
-                console.log('I am inside posts fecth!!!');
-                //var allPosts = response.toJSON();
                 postsCollection.each(function (post) {
                     self.$el.prepend('<div>' + post.get('content') + '</div>');
                 });
@@ -183,6 +172,4 @@ var BaseCollection = Backbone.Collection.extend({
     }
 });
 
-var UsersCollection = Backbone.Collection.extend({
-    //content: 'users'
-});
+var UsersCollection = Backbone.Collection.extend({});

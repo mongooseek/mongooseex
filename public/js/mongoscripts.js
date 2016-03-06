@@ -2,67 +2,51 @@
 var UserModel = Backbone.Model.extend({
     idAttribute: '_id',
     defaults: {
-        //pass: '',
-        //name: '',
-        //surname: '',
-        //dateOfBirth: '',
-        //location: '',
-        role: 'user',
-        //authorized: '',
-        //confirmed: ''
+        fullName: '',
+        dateOfBirth: '',
+        age: '',
+        location: '',
+        email: '',
+        role: 'user'
     },
     initialize: function () {
-        this.on("change:_id", function () {
-            //this.urlRoot = '/api/users'
-        })
-        this.on('reset', function () {
-            this.urlRoot = '/api/users';
-            this.fetch();
-        });
-        this.fetch({reset: true});
+        console.log('Model initialized');
+        //this.on('set _id', this.set({age: this.parse(this.get('dateOfBirth'))}));
     },
-    resetLogin: function () {
-        if (!this.isNew()) {
-            return this.fetch();
-        }
-        console.log(this.isNew());
-        return null;
+    loginOnReloadPage: function () {
+        this.urlRoot = '/login';
+        //this.set('_id', ':id');
+        console.log('I am in loginOnReloadPage function');
+        return this.save();
     },
-    preLoginFetch: function () {
-        if (!this.isNew()) {
-            console.log();
-            return this.fetch();
+    parse: function (response) {
+        if (response.dateOfBirth) {
+            response.age = (new Date() - new Date(response.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365);
+            if (response.age < 1) response.age = '';
         }
-        return null;
+        if (response.firstName && response.lastName) response.fullName = response.firstName + ' ' + response.lastName;
+        return response;
     }
 });
 var userModel = new UserModel();
 
-var BaseCollection = Backbone.Collection.extend({
-    content: null,
-    contentType: function () {
-        return '/' + this.content + '/'
-    },
-    url: function () {
-
-    }
-});
-
-var UsersCollection = Backbone.Collection.extend({
-    //content: 'users'
-});
-
 var UserView = Backbone.View.extend({
     el: '#user-page',
     initialize: function () {
-        console.log('Hello world from console!');
+        console.log('View initialized');
         this.render();
 
     },
 
     render: function () {
+        var self = this;
+        console.log(this.$el);
         var user = userModel.toJSON();
-        this.$el.append('<div>' + user.firstName + ' ' + user.lastName + '</div>');
+        _.forEach(_.filter(userModel.keys(), function (key) {
+            return ['fullName', 'dateOfBirth', 'age', 'email', 'location'].indexOf(key) !== -1;
+        }), function (cleanKey) {
+            self.$el.append('<div>' + cleanKey + ': ' + userModel.get(cleanKey) + '</div>');
+        });
         return this;
     }
 });
@@ -71,6 +55,7 @@ $(document).ready(function () {
     $('#in-sub').on('click', function () {
         var email = $('#input-email').val();
         var pass = $('#input-password').val();
+        //userModel = new UserModel();
         userModel.set({email: email, pass: pass});
         userModel.urlRoot = '/login';
         userModel.save(null, {
@@ -82,7 +67,11 @@ $(document).ready(function () {
                  $('#input-email').val('');
                  $('#input-password').val('');
                  $('#input-confirm-password').val('');*/
+                //userModel.unset('pass', {silent: true});
+                userModel.urlRoot = '/users/api';
+                console.log(this.urlRoot);
                 userModel.unset('pass', {silent: true});
+                console.dir(userModel.keys());
                 $('#login-form').hide();
                 var userView = new UserView({model: userModel});
                 $('#user-block').show();
@@ -115,8 +104,11 @@ $(document).ready(function () {
             //wait: true,
             success: function (response) {
                 console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
-                userModel.unset('pass', {silent: true});
+                userModel.unset(['pass', '__v'], {silent: true});
+                console.dir(userModel.keys());
                 $('#login-form').hide();
+                var userView = new UserView({model: userModel});
+                $('#user-block').show();
             },
             error: function (err) {
                 console.log('Failed to get user!');
@@ -125,3 +117,16 @@ $(document).ready(function () {
     });
 });
 
+var BaseCollection = Backbone.Collection.extend({
+    content: null,
+    contentType: function () {
+        return '/' + this.content + '/'
+    },
+    url: function () {
+
+    }
+});
+
+var UsersCollection = Backbone.Collection.extend({
+    //content: 'users'
+});

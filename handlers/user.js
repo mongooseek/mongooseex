@@ -56,7 +56,7 @@ module.exports = function () {
 
             res.status(200).send(user);
         });
-    }
+    };
 
     this.remove = function (req, res, next) {
         var id = req.params.id;
@@ -71,22 +71,25 @@ module.exports = function () {
     };
 
     this.login = function (req, res, next) {
-        if (req.session.uId || req.session.loggedIn) User.find({_id: req.session.uId}, {
-            pass: 0,
-            __v: 0
-        }, function (err, doc) {
-            console.log("Received a GET request for loginned _id: " + doc._id);
-            res.send(doc);
-        });
+        if (req.session.uId && req.session.loggedIn) {
+            console.log(req.session.uId, req.session.loggedIn);
+            User.findOne({_id: req.session.uId}, {
+                pass: 0,
+                __v: 0
+            }, function (err, doc) {
+                console.log("Received a GET request for loginned _id: " + doc._id);
+                res.send(doc);
+            })
+        }
         else {
             var body = req.body;
             //var user = new User(body);
             var shaSum = crypto.createHash('sha256');
-
             shaSum.update(body.pass);
             body.pass = shaSum.digest('hex');
             console.log(body);
-            User.find(body, function (err, user) {
+            User.findOne({pass: body.pass, email: req.body.email}, function (err, user) {
+                console.log('body', body);
                 if (err) {
                     return next(err);
                 }

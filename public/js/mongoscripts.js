@@ -21,9 +21,10 @@ var UserModel = Backbone.Model.extend({
         return this.save();
     },
     parse: function (response) {
-        if (response.dateOfBirth) {
+        if (!response.dateOfBirth) {
+            response.dateOfBirth = new Date();
             response.age = (new Date() - new Date(response.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365);
-            if (response.age < 1) response.age = '';
+            if (response.age < 1) response.age = ':)';
         }
         if (response.firstName && response.lastName) response.fullName = response.firstName + ' ' + response.lastName;
         return response;
@@ -90,7 +91,7 @@ var PostsView = Backbone.View.extend({
                 console.log('I am inside posts fecth!!!');
                 //var allPosts = response.toJSON();
                 postsCollection.each(function (post) {
-                    self.$el.append('<div>' + post.get('content') + '</div>');
+                    self.$el.prepend('<div>' + post.get('content') + '</div>');
                 });
 
             },

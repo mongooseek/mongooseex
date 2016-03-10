@@ -7,12 +7,13 @@ define([
     console.log("I am inside post view");
     var PostView = Backbone.View.extend({
         model: new PostModel(),
-        el: "#make-post",
+        //el: "#make-post",
+        el: "#content",
         initialize: function () {
             console.log('New instance of PotsView initialized');
         },
         events: {
-            'click': 'post'
+            'click #make-post': 'post'
         },
         post: function () {
             console.log('Post button clicked!!');
@@ -24,7 +25,7 @@ define([
             console.log(pModel.urlRoot);
             pModel.save(null, {
                     success: function (response) {
-                        self.$el.prepend('<div>' + pModel.get('content') + '</div>')
+                        $('#make-post').prepend('<div>' + pModel.get('content') + '</div>')
                     },
                     error: function (err) {
 

@@ -1,7 +1,9 @@
 define([
-    'Backbone',
-], function (Backbone) {
+    'collections/baseCollection',
+], function (BaseCollection) {
 
-    var PostsCollection = Backbone.Collection.extend({});
+    var PostsCollection = BaseCollection.extend({
+        content: "api\/posts"
+    });
     return PostsCollection;
 });

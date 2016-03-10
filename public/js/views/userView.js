@@ -4,7 +4,6 @@ define([
     'jQuery',
     'models/userModel',
     'text!templates/user.html',
-    'text!templates/photoPreviewScript.html'
 ], function (Backbone, _, $, UserModel, userTemplate) {
     console.log("I am inside user view");
     var UserView = Backbone.View.extend({
@@ -21,9 +20,17 @@ define([
         },
         savePhoto: function () {
             console.log("Clicked save photo button.");
-            console.log(typeof $('#preview').attr('src').length);
-            $('i#default-photo').detach();
-            $('div.user-photo').append('<img src=' + $('#preview').attr('src') + ' ' + 'width=25%>');
+            var photoSrc = $('#preview').attr('src');
+            if (photoSrc) {
+                $('div.user-photo>img').remove();
+                $('i#default-photo').hide();
+                $('div.user-photo').append('<img>');
+                $('div.user-photo>img').attr({src: $('#preview').attr('src'), width: '200'});
+                $('#preview').removeAttr('src');
+            } else {
+                $('div.user-photo>img').remove();
+                $('i#default-photo').show();
+            }
         },
         logup: function () {
             console.log('Signup button clicked!!');

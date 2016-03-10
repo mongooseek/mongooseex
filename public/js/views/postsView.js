@@ -1,19 +1,28 @@
 define([
     'Backbone',
-    'collections/postsCollection'
-], function (Backbone, PostsCollection) {
+    'collections/postsCollection',
+    'text!templates/posts.html'
+], function (Backbone, PostsCollection, postsTemplate) {
 
     var PostsView = Backbone.View.extend({
-        el: "#add-posts",
+        //el: "#add-posts",
+        el: "#content",
+        tmpl: _.template(postsTemplate),
         initialize: function () {
+            console.log("Post view was initialized");
+        },
+        events: {
+            'click #posts-buton': 'render'
+        },
+        render: function () {
             var self = this;
             postsCollection = new PostsCollection();
-            postsCollection.url = "/api/posts";
             console.log("I am before posts fecth!!!");
             postsCollection.fetch({
                 success: function (response) {
+                    self.$el.append(self.tmpl);
                     postsCollection.each(function (post) {
-                        self.$el.prepend('<div>' + post.get('content') + '</div>');
+                        $('#add-posts').prepend('<div>' + post.get('content') + '</div>');
                     });
 
                 },

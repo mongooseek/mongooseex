@@ -1,7 +1,7 @@
-define(['Backbone', 'Underscore', 'jQuery'], function (Backbone, _, $) {
-    console.log('I am inside photo model!');
-    var PhotoModel = Backbone.Model.extend({
-        idAttribute: '_id'
-    });
+define([
+    'models/baseModel'
+], function (BaseModel) {
+    console.log('I am inside PHOTO MODEL!');
+    var PhotoModel = BaseModel.extend({});
     return PhotoModel;
 });

@@ -83,17 +83,22 @@ function onConnection() {
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', /*authStackMidlware, */userRouter);
 
-    /*app.get('/photo', function (req, res) {
-     var options = {
-     root: __dirname + '/public',
-     dotfiles: 'deny',
-     headers: {
-     'x-timestamp': Date.now(),
-     'x-sent': true
-     }
-     };
-     res.sendFile('/uploads/1.txt', options);
-     });*/
+    app.get('/photo', function (req, res) {
+        var options = {
+            root: __dirname + '/public',
+            dotfiles: 'deny',
+            headers: {
+                'x-timestamp': Date.now(),
+                'x-sent': true
+            }
+        };
+        res.set({
+            //'Content-Type': 'image/jpeg',
+            //'Content-Length': '123',
+            //'ETag': '12345'
+        });
+        res.sendFile('/uploads/1.jpg', options);
+    });
 
     app.post('/photo', upload.single('avatar'), function (req, res) {
 

@@ -1,11 +1,9 @@
-define(['Backbone', 'Underscore', 'jQuery'], function (Backbone, _, $) {
+define([
+    'models/baseModel'
+], function (BaseModel) {
 
-    console.log("I am inside user model");
-
-    //Backbone.Model.prototype.idAttribute = '_id';
-
-    var UserModel = Backbone.Model.extend({
-        idAttribute: '_id',
+    console.log("I am inside USER MODEL");
+    var UserModel = BaseModel.extend({
         defaults: {
             fullName: '',
             dateOfBirth: '',

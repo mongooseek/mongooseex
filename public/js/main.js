@@ -6,13 +6,11 @@ require.config({
         jQuery: 'libs/jquery/dist/jquery',
         //Bootstrap: 'libs/bootstrap/dist/css/bootstrap',
         Backbone: 'libs/backbone/backbone',
-        //text: 'libs/text/text',
-        //Mongoscripts: 'mongoscripts',
-        //collections: 'collections',
+        text: 'libs/text/text',
         views: 'views',
         models: 'models',
-        collections: 'collections'
-        //templates: '../templates'
+        collections: 'collections',
+        templates: '../templates'
     },
     shim: {
         Underscore: {
@@ -21,7 +19,6 @@ require.config({
         jQuery: {
             exports: '$'
         },
-        //'Bootstrap': ['jQuery'],
         'Backbone': ['Underscore', 'jQuery'],
         'app': ['Backbone']
     }

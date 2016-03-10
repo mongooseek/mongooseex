@@ -2,47 +2,37 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'models/userModel',
-], function (Backbone, _, $, UserModel) {
-    console.log("I am inside user view");
-    var UserView = Backbone.View.extend({
-        //model: new UserModel(),
+    'models/photoModel',
+], function (Backbone, _, $, PhotoModel) {
+    console.log("I am inside photo view");
+    var PhotoView = Backbone.View.extend({
+        model: new PhotoModel(),
         el: '#in-sub',
         initialize: function () {
-            console.log('View initialized');
-        },
-        events: {
-            'click': 'login'
-        },
-        login: function () {
-            console.log('Login button clicked!!');
+            console.log('Photo view initialized');
             var self = this;
-            var uModel = this.model;
-            var email = $('#input-email').val();
-            var pass = $('#input-password').val();
-            uModel.set({email: email, pass: pass});
-            uModel.urlRoot = '/login';
-            uModel.save(null, {
+            var phModel = this.model;
+            //phModel.set({email: email, pass: pass});
+            phModel.urlRoot = '/photo';
+            phModel.fetch({
                 success: function (response) {
                     console.log('Response', response);
-                    console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
+                    console.log('Successfully GOT photo');
                     /*$('#input-first-name').val('');
                      $('#input-last-name').val('');
                      $('#input-email').val('');
                      $('#input-password').val('');
                      $('#input-confirm-password').val('');*/
-                    uModel.urlRoot = '/users/api';
-                    uModel.unset('pass', {silent: true});
-                    $('#login-form').hide();
-                    $('#user-block').show();
-                    self.render();
-                    console.log('I am after render!!!!!!');
-                    APP.logined = true;
                 },
                 error: function (err) {
-                    console.log('Failed to get user!');
+                    console.log('Failed to get photo!');
                 }
             });
+        },
+        events: {
+            //'click': 'login'
+        },
+        login: function () {
         },
         render: function () {
             console.log('I am inside userView render function!!!');
@@ -58,5 +48,5 @@ define([
             return this;
         }
     });
-    return UserView;
+    return PhotoView;
 });

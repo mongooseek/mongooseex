@@ -1,13 +1,17 @@
+var APP = APP || {};
+
 require.config({
     paths: {
-        Backbone: 'libs/backbone/backbone',
         Underscore: 'libs/underscore/underscore',
         jQuery: 'libs/jquery/dist/jquery',
+        //Bootstrap: 'libs/bootstrap/dist/css/bootstrap',
+        Backbone: 'libs/backbone/backbone',
         //text: 'libs/text/text',
-        Mongoscripts: 'mongoscripts',
+        //Mongoscripts: 'mongoscripts',
         //collections: 'collections',
         views: 'views',
         models: 'models',
+        collections: 'collections'
         //templates: '../templates'
     },
     shim: {
@@ -17,11 +21,9 @@ require.config({
         jQuery: {
             exports: '$'
         },
-        /*Mongoscripts: {
-         exports: 'mons'
-         },*/
-        Backbone: ['Underscore', 'jQuery'],
-        app: ['Backbone']
+        //'Bootstrap': ['jQuery'],
+        'Backbone': ['Underscore', 'jQuery'],
+        'app': ['Backbone']
     }
 });
 

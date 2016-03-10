@@ -9,15 +9,21 @@ define([
     console.log("I am inside user view");
     var UserView = Backbone.View.extend({
         model: new UserModel(),
-        //tagName: 'div',
-        el: '#myButtons',
+        el: '#content',
         //tmpl: _.template(userTemplate),
         initialize: function () {
             console.log('View initialized');
         },
         events: {
             'click #in-sub': 'login',
-            'click #up-sub': 'logup'
+            'click #up-sub': 'logup',
+            'click #su': 'savePhoto',
+        },
+        savePhoto: function () {
+            console.log("Clicked save photo button.");
+            console.log(typeof $('#preview').attr('src').length);
+            $('i#default-photo').detach();
+            $('div.user-photo').append('<img src=' + $('#preview').attr('src') + ' ' + 'width=25%>');
         },
         logup: function () {
             console.log('Signup button clicked!!');
@@ -38,7 +44,6 @@ define([
                     uModel.unset('pass', {silent: true});
                     $('#login-form').hide();
                     $('#photoPreviewForm').show();
-                    self.$el = '#user-block';
                     self.render();
                 },
                 error: function (err) {
@@ -52,7 +57,7 @@ define([
             var uModel = this.model;
             console.log('uModel', uModel);
             console.log('self', self);
-            $('body').prepend(_.template(userTemplate));
+            self.$el.append(_.template(userTemplate));
             _.forEach(_.filter(uModel.keys(), function (key) {
                 return ['fullName', 'dateOfBirth', 'age', 'email', 'location'].indexOf(key) !== -1;
             }), function (cleanKey) {

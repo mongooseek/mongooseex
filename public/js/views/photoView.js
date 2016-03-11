@@ -7,32 +7,29 @@ define([
     console.log("I am inside photo view");
     var PhotoView = Backbone.View.extend({
         model: new PhotoModel(),
-        el: '#su',
+        el: "#content",
         initialize: function () {
             console.log('Photo view initialized');
+
+        },
+        events: {
+            "click #edit-button": "create"
+        },
+        create: function () {
             var self = this;
             var phModel = this.model;
             //phModel.set({email: email, pass: pass});
             phModel.urlRoot = '/photo';
-            /*phModel.fetch({
-             success: function (response) {
-             console.log('Response', response);
-             console.log('Successfully GOT photo');
-             /!*$('#input-first-name').val('');
-             $('#input-last-name').val('');
-             $('#input-email').val('');
-             $('#input-password').val('');
-             $('#input-confirm-password').val('');*!/
-             },
-             error: function (err) {
-             console.log('Failed to get photo!');
-             }
-             });*/
-        },
-        events: {
-            'click': 'login'
-        },
-        login: function () {
+            phModel.set('photo', $('#preview').attr('src'));
+            phModel.save(null, {
+                success: function (response) {
+                    console.log('Response', response);
+                    console.log('Successfully GOT photo');
+                },
+                error: function (err) {
+                    console.log('Failed to get photo but you are good!');
+                }
+            });
         },
         render: function () {
             console.log('I am inside userView render function!!!');

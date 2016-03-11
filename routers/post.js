@@ -10,7 +10,7 @@ router.use(function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    Post.find({}, {pass: 0, __v: 0}, function (err, posts) {
+    Post.find({}, {__v: 0}, function (err, posts) {
         if (err) {
             return next(err);
         }

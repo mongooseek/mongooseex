@@ -12,7 +12,7 @@ define([
             console.log("Post view was initialized");
         },
         events: {
-            'click #posts-buton': 'render'
+            'click #posts-button': 'render'
         },
         render: function () {
             var self = this;

@@ -59,7 +59,7 @@ function onConnection() {
     UserHandler = require('./handlers/user');
     userRouter = require('./routers/user');
     userHandler = new UserHandler();
-    app.use('/public', express.static(__dirname + '/public'));
+
     app.use(express.static(__dirname + '/public'));
     var upload = multer({dest: './uploads/', inMemory: false});
     app.use(cookieParser("myTestPython"));
@@ -72,7 +72,7 @@ function onConnection() {
         store: new MemoryStore(sessionConfig)
     }));
 
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({limit: '1mb'}));
 
     /*app.get('/', function (req, res, next) {
      res.sendFile(path.join(__dirname, 'index.html'));
@@ -97,11 +97,20 @@ function onConnection() {
             //'Content-Length': '123',
             //'ETag': '12345'
         });
-        res.sendFile('/uploads/1.jpg', options);
+        res.sendFile('/uploads/1.txt', options);
     });
 
-    app.post('/photo', upload.single('avatar'), function (req, res) {
+    app.post('/photo', function (req, res) {
+        var Photo = mongoose.model('photo');
+        var photo = new Photo(req.body);
+        photo.save(function (err, photo) {
+            if (err) {
+                return next(err);
+            }
 
+            //delete user.pass;
+            res.status(201).send(photo);
+        })
     });
 
     app.use(function (err, req, res, next) {

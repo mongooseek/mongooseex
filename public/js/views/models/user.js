@@ -10,8 +10,8 @@ define([
         el: '#content',
         //tmpl: _.template(userTemplate),
         initialize: function () {
-            console.log('View 123 initialized');
-            this.render();
+            console.log('User VIEW and User MODEL initialized!!!');
+            //this.render();
         },
         events: {
             'click #in-sub': 'login',
@@ -47,7 +47,8 @@ define([
                 success: function (response) {
                     console.log('Response', response);
                     console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
-                    userModel.urlRoot = '/users/api';
+                    APP.userId = userModel.get('_id');
+                    userModel.urlRoot = '/users/api'
                     userModel.unset('pass', {silent: true});
                     $('#login-form').hide();
                     $('#photoPreviewForm').show();

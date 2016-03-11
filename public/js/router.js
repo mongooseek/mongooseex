@@ -15,23 +15,23 @@ define([
             '*any': 'goToDashboard'
         },
         initialize: function () {
-            var userId;
-            var self = this;
             var userModel = new UserModel();
-            var userView;
             userModel.urlRoot = '/login';
             userModel.save(null, {
                 success: function (response) {
-                    console.log('Response', response);
-                    userModel.urlRoot = '/api/users/';
-                    self.userModel = userModel;
-                    self.renderSingleView(UserView);
+                    console.log('BIG SUCCESS');
                 },
                 error: function (err) {
-                    self.renderSingleView(UserView);
-                    self.login();
+                    console.log('SUCCESS BUT NOT BIG');
                 }
             });
+            var userId = APP.userId;
+            if (APP.userId) {
+                console.log('USER LOGINED---------------------------->');
+            } else {
+                console.log('we haven\'t user id');
+                //this.goToDashboard();
+            }
         },
         login: function () {
             console.log('LOGIN FUNCTION TRIGERED');
@@ -70,27 +70,8 @@ define([
         },
         goToDashboard: function () {
             console.log(this.userId);
-            /*console.log('Signin button clicked!!');
-             var uModel = new UserModel();
-             var email = $('#input-email').val();
-             var pass = $('#input-password').val();
-             uModel.set({email: email, pass: pass});
-             uModel.urlRoot = '/login';
-             uModel.save(null, {
-             success: function (response) {
-             console.log('Response', response);
-             console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
-             uModel.urlRoot = '/users/api';
-             uModel.unset('pass', {silent: true});
-             $('#login-form').hide();
-             $('#photoPreviewForm').show();
-             //self.render();
-             console.log(uModel);
-             },
-             error: function (err) {
-             console.log('Failed to get user!');
-             }
-             });*/
+            var userModel = new UserModel();
+            var userView = new UserView({model: userModel});
         }
     });
     return Router;

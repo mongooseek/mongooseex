@@ -2,7 +2,7 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'models/postModel',
+    'models/post',
 ], function (Backbone, _, $, PostModel) {
     console.log("I am inside post view");
     var PostView = Backbone.View.extend({

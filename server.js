@@ -1,15 +1,14 @@
 var express = require('express');
-var fs = require('fs');
-var url = require('url');
+//var fs = require('fs');
+//var url = require('url');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var findOrCreate = require('mongoose-findorcreate');
 var http = require('http').Server(app);
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-var MemoryStore = require('connect-mongo')(session);
+MemoryStore = require('connect-mongo')(session);
 var app = express();
-var multer = require('multer');
+//var multer = require('multer');
 var DB_HOST;
 var DB_NAME;
 var DB_PORT;
@@ -61,7 +60,6 @@ function onConnection() {
     userHandler = new UserHandler();
 
     app.use(express.static(__dirname + '/public'));
-    var upload = multer({dest: './uploads/', inMemory: false});
     app.use(cookieParser("myTestPython"));
     app.use(session({
         name: 'crm',
@@ -74,9 +72,9 @@ function onConnection() {
 
     app.use(bodyParser.json({limit: '1mb'}));
 
-    /*app.get('/', function (req, res, next) {
-     res.sendFile(path.join(__dirname, 'index.html'));
-     });*/
+    app.get('/', function (req, res, next) {
+        res.sendFile(path.join(__dirname, 'index.html'));
+    });
 
     app.post('/login', userHandler.login);
 
@@ -107,15 +105,12 @@ function onConnection() {
             if (err) {
                 return next(err);
             }
-
-            //delete user.pass;
             res.status(201).send(photo);
         })
     });
 
     app.use(function (err, req, res, next) {
         var status = err.status || 500;
-
         if (process.env.NODE_ENV === 'production') {
             res.status(status).send({error: err.message});
             console.error(err.message + '\n' + err.stack);

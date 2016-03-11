@@ -14,7 +14,7 @@ router.get('/', function (req, res, next) {
         if (err) {
             return next(err);
         }
-
+        console.log("SESSION ID IS---", req.session.uId);
         res.status(200).send(posts);
     });
 });

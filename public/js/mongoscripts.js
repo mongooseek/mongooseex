@@ -2,9 +2,9 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'models/userModel',
-    'models/postModel',
-    'views/userView'
+    'models/user',
+    'models/post',
+    'views/models/user'
 ], function (Backbone, _, $, UserModel, UserView) {
 
     console.log('I am inside root!!!');

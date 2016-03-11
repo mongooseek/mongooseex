@@ -1,9 +1,12 @@
 define([
-    'models/baseModel'
+    'models/base'
 ], function (BaseModel) {
 
     console.log("I am inside USER MODEL");
     var UserModel = BaseModel.extend({
+        urlRoot: function () {
+            return '/users/';
+        },
         defaults: {
             fullName: '',
             dateOfBirth: '',

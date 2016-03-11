@@ -2,7 +2,7 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'models/photoModel',
+    'models/photo',
 ], function (Backbone, _, $, PhotoModel) {
     console.log("I am inside photo view");
     var PhotoView = Backbone.View.extend({

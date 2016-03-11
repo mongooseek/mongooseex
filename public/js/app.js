@@ -1,24 +1,21 @@
 define([
     //'router',
-    'models/photoModel',
-    'views/photoView',
+    'models/photo',
+    'views/models/photo',
     //'models/userModel',
-    'views/userView',
+    'views/models/user',
     //'models/postModel',
-    'views/postView',
+    'views/models/post',
     //'collections/postsCollection',
-    'views/postsView',
-], function (PhotoModel, PhotoView, UserView, PostView, PostsView) {
-
-    //var APP = {};
-    //var router = new Router();
-    var userView = new UserView();
-    var postView = new PostView();
-    var photoView = new PhotoView();
-    var postsView = new PostsView();
+    'views/collections/post',
+    'router'
+], function (PhotoModel, PhotoView, UserView, PostView, PostsView, Router) {
 
     function init() {
         console.log('App init!');
+        var router = new Router();
+        Backbone.history.start({silent: true});
+
     }
 
     return {

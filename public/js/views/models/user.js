@@ -16,7 +16,8 @@ define([
         events: {
             'click #in-sub': 'login',
             'click #up-sub': 'logup',
-            'click #save-photo': 'savePhoto'
+            'click #save-photo': 'savePhoto',
+            'click #delete-photo': 'deletePhoto'
         },
         logup: function () {
             console.log('Signup button clicked!!');
@@ -46,42 +47,39 @@ define([
                 }
             });
         },
+        deletePhoto: function () {
+            console.log("Clicked delete photo button.");
+            var photoSrc = 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png';
+            var userModel = this.model;
+            userModel.set('photo', photoSrc);
+            userModel.urlRoot = '/api/users';
+            userModel.save({
+                success: function (response) {
+                    console.log("PHOTO WAS UPDATED");
+                    console.log(userModel.get('photo'));
+                    //$('#preview').attr('src', '');
+                },
+                error: function (err) {
+                    console.log('PHOTO WASN\'T UPDATED');
+                }
+            });
+            $('#preview').attr('src', userModel.get('photo'));
+        },
         savePhoto: function () {
             console.log("Clicked save photo button.");
             var photoSrc = $('#preview').attr('src');
             var userModel = this.model;
-            userModel.set({photo: photoSrc});
+            userModel.set('photo', photoSrc);
             userModel.urlRoot = '/api/users';
-            userModel.fetch(null, {});
-            if (!photoSrc) {
-                console.log('photoSrc', photoSrc);
-                $('div.user-photo>img').remove();
-                $('i#default-photo').hide();
-                $('div.user-photo').append('<img>');
-                $('div.user-photo>img').attr({src: $('#preview').attr('src'), width: '200'});
-                $('#preview').removeAttr('src');
-            } else {
-                this.model.fetch({
-                    success: function (response) {
-                        console.log('User was fetched');
-                    },
-                    error: function (err) {
-                        console.log('User wasn\'nt fetched');
-                    }
-                });
-                /*$('div.user-photo>img').remove();
-                 $('i#default-photo').show();*/
-            }
-            /*if (photoSrc) {
-             $('div.user-photo>img').remove();
-             $('i#default-photo').hide();
-             $('div.user-photo').append('<img>');
-             $('div.user-photo>img').attr({src: $('#preview').attr('src'), width: '200'});
-             $('#preview').removeAttr('src');
-             } else {
-             $('div.user-photo>img').remove();
-             $('i#default-photo').show();
-             }*/
+            userModel.save({
+                success: function (response) {
+                    console.log(response);
+                    console.log(userModel.get('photo'));
+                },
+                error: function (err) {
+                    console.log('Failed to fetch!');
+                }
+            });
         },
         login: function () {
             console.log('Signin button clicked!!');

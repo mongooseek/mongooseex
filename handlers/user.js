@@ -19,6 +19,8 @@ module.exports = function () {
             }
 
             delete user.pass;
+            req.session.uId = user._id;
+            req.session.loggedIn = true;
             res.status(201).send(user);
         });
     };

@@ -21,6 +21,9 @@ define([
             console.log(this.collection);
             console.log(this.$el);
             $('#under-user-buttons').append('<div>' + 'Hello world' + '</div>');
+            _.forEach(self.collection, function(post){
+                console.log(post);
+            });
         }
     });
 

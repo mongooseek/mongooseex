@@ -13,7 +13,8 @@ define([
             age: '',
             location: '',
             email: '',
-            role: 'user'
+            role: 'user',
+            photo: 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png'
         },
         initialize: function () {
             console.log('Model initialized');

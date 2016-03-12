@@ -47,39 +47,21 @@ define([
                 }
             });
         },
-        deletePhoto: function () {
-            console.log("Clicked delete photo button.");
-            var photoSrc = 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png';
-            var userModel = this.model;
-            userModel.set('photo', photoSrc);
-            userModel.urlRoot = '/api/users';
-            userModel.save({
-                success: function (response) {
-                    console.log("PHOTO WAS UPDATED");
-                    console.log(userModel.get('photo'));
-                    //$('#preview').attr('src', '');
-                },
-                error: function (err) {
-                    console.log('PHOTO WASN\'T UPDATED');
-                }
-            });
-            $('#preview').attr('src', userModel.get('photo'));
-        },
         savePhoto: function () {
             console.log("Clicked save photo button.");
-            var photoSrc = $('#preview').attr('src');
-            var userModel = this.model;
-            userModel.set('photo', photoSrc);
-            userModel.urlRoot = '/api/users';
-            userModel.save({
-                success: function (response) {
-                    console.log(response);
-                    console.log(userModel.get('photo'));
-                },
-                error: function (err) {
-                    console.log('Failed to fetch!');
-                }
-            });
+            var photo = $('#preview').attr('src');
+            this.savePhotoFunc(photo);
+        },
+        deletePhoto: function () {
+            console.log("Clicked delete photo button.");
+            var photo = this.model.defaults.photo;
+            this.savePhotoFunc(photo);
+        },
+        savePhotoFunc: function (photo) {
+            this.model.set('photo', photo);
+            this.model.urlRoot = '/api/users';
+            this.model.save();
+            $('#preview').attr('src', this.model.get('photo'));
         },
         login: function () {
             console.log('Signin button clicked!!');
@@ -98,6 +80,7 @@ define([
                     userModel.unset('pass', {silent: true});
                     $('#login-form').hide();
                     $('#photoPreviewForm').show();
+                    console.log(self.model);
                     self.render();
                 },
                 error: function (err) {

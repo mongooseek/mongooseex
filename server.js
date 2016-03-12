@@ -77,9 +77,10 @@ function onConnection() {
     });
 
     app.post('/login', userHandler.login);
+    app.post('/logup', userHandler.createUser);
 
     app.use('/api/posts', authStackMidlware, postRouter);
-    app.use('/api/users', /*authStackMidlware, */userRouter);
+    app.use('/api/users', authStackMidlware, userRouter);
 
     app.get('/photo', function (req, res) {
         var options = {

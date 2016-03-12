@@ -10,7 +10,8 @@ var ModelSchema = new Schema({
     role: String,
     friends: Array,
     authorized: Boolean,
-    confirmed: Boolean
+    confirmed: Boolean,
+    photo: {type: String, default: 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png'}
 });
 var Model = mongoose.model('user', ModelSchema);
 

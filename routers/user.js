@@ -5,8 +5,6 @@ var handler = new Handler();
 
 router.get('/', handler.getAll);
 router.get('/:id', handler.getById);
-router.post('/', handler.createUser);
-
 router.put('/:id', handler.update);
 router.delete('/:id', handler.remove);
 

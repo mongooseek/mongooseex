@@ -19,19 +19,15 @@ define([
             userModel.urlRoot = '/login';
             userModel.save(null, {
                 success: function (response) {
+                    APP.userId = userModel.get('_id');
+                    var userView = new UserView({model: userModel});
                     console.log('BIG SUCCESS');
                 },
                 error: function (err) {
+                    var userView = new UserView({model: userModel});
                     console.log('SUCCESS BUT NOT BIG');
                 }
             });
-            var userId = APP.userId;
-            if (APP.userId) {
-                console.log('USER LOGINED---------------------------->');
-            } else {
-                console.log('we haven\'t user id');
-                //this.goToDashboard();
-            }
         },
         login: function () {
             console.log('LOGIN FUNCTION TRIGERED');
@@ -56,12 +52,6 @@ define([
                 collection.fetch({reset: true});
             });
         },
-        renderSingleView: function (View) {
-            if (this.view) {
-                this.view.undelegateEvents();
-            }
-            this.view = new View({model: this.userModel});
-        },
         renderView: function (View) {
             if (this.view) {
                 this.view.undelegateEvents();
@@ -69,9 +59,6 @@ define([
             this.view = new View({collection: this.collection});
         },
         goToDashboard: function () {
-            console.log(this.userId);
-            var userModel = new UserModel();
-            var userView = new UserView({model: userModel});
         }
     });
     return Router;

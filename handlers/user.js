@@ -5,6 +5,7 @@ module.exports = function () {
     var crypto = require('crypto');
 
     this.createUser = function (req, res, next) {
+        console.log('I am creatin user!');
         var body = req.body;
         var user = new User(body);
         var shaSum = crypto.createHash('sha256');
@@ -83,12 +84,12 @@ module.exports = function () {
         }
         else {
             var body = req.body;
-            //var user = new User(body);
+            var user = new User(body);
             var shaSum = crypto.createHash('sha256');
             shaSum.update(body.pass);
             body.pass = shaSum.digest('hex');
             console.log(body);
-            User.findOne({pass: body.pass, email: req.body.email}, function (err, user) {
+            User.findOne({pass: body.pass, email: body.email}, function (err, user) {
                 console.log('body', body);
                 if (err) {
                     return next(err);

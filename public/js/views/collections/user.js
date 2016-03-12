@@ -15,7 +15,7 @@ define([
             this.render();
         },
         events: {
-            'click #make-post': 'post'
+            //'click #make-post': 'post'
         },
         render: function () {
             console.log('Clicked USERS BUTTON');

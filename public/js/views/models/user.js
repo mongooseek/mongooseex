@@ -8,7 +8,7 @@ define([
     console.log("I am inside user view");
     var UserView = Backbone.View.extend({
         el: '#content',
-        //tmpl: _.template(userTemplate),
+        tmpl: _.template(userTemplate),
         initialize: function () {
             console.log('User VIEW and User MODEL initialized!!!');
             this.render();
@@ -39,7 +39,6 @@ define([
                     userModel.urlRoot = '/api/users';
                     userModel.unset('pass', {silent: true});
                     $('#login-form').hide();
-                    $('#photoPreviewForm').show();
                     self.render();
                 },
                 error: function (err) {
@@ -73,14 +72,11 @@ define([
             userModel.urlRoot = '/login';
             userModel.save(null, {
                 success: function (response) {
-                    console.log('Response', response);
                     console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
                     APP.userId = userModel.get('_id');
                     userModel.urlRoot = '/api/users';
                     userModel.unset('pass', {silent: true});
                     $('#login-form').hide();
-                    $('#photoPreviewForm').show();
-                    console.log(self.model);
                     self.render();
                 },
                 error: function (err) {
@@ -97,7 +93,7 @@ define([
                 var uModel = this.model;
                 console.log('uModel', uModel);
                 console.log('self', self);
-                self.$el.append(_.template(userTemplate));
+                this.$el.append(self.tmpl);
                 _.forEach(_.filter(uModel.keys(), function (key) {
                     return ['fullName', 'dateOfBirth', 'age', 'email', 'location'].indexOf(key) !== -1;
                 }), function (cleanKey) {

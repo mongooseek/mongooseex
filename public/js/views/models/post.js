@@ -2,13 +2,12 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'models/post',
-], function (Backbone, _, $, PostModel) {
+    'text!templates/models/post.html'
+], function (Backbone, _, $, postTemplate) {
     console.log("I am inside post view");
     var PostView = Backbone.View.extend({
-        //model: new PostModel(),
-        //el: "#make-post",
-        el: "#content",
+        el: "#posts-area",
+        tmpl: _.template(postTemplate),
         initialize: function () {
             console.log('New instance of PotsView initialized');
             console.log('Model', this.model);
@@ -18,9 +17,21 @@ define([
             //'click #make-post': 'post'
         },
         render: function () {
-            $('#posts-area').prepend(this.model.get('content'));
+            var self = this;
+            var postModel = this.model;
+            if (postModel.get('_id')) {
+                self.$el.prepend(self.tmpl({content: postModel.get('content')}));
+            } else {
+                postModel.save(null, {
+                    success: function (response) {
+                        self.$el.prepend(self.tmpl({content: postModel.get('content')}));
+                    },
+                    error: function (err) {
+                        console.log('Failed to save post');
+                    }
+                });
+            }
         },
-
         post: function () {
             console.log('Post button clicked!!');
             var self = this;

@@ -36,7 +36,7 @@ define([
             console.log('The content is', content);
             var self = this;
             var collectionUrl;
-            var collectionUrl;
+            var viewUrl;
             if (!content) {
                 return self.goToDashboard();
             }

@@ -1,45 +1,41 @@
 define([
     'Backbone',
     'jQuery',
-    'collections/post',
-    'models/post',
-    'views/models/post',
-    'text!templates/collections/post.html'
-], function (Backbone, $, PostsCollection, PostModel, PostView, postsTemplate) {
+    'collections/user',
+    'models/user',
+    'views/models/user',
+    'text!templates/collections/user.html'
+], function (Backbone, $, UsersCollection, UserModel, UserView, usersTemplate) {
 
-    var PostsView = Backbone.View.extend({
+    var UsersView = Backbone.View.extend({
         el: "#for-templates",
-        tmpl: _.template(postsTemplate),
+        tmpl: _.template(usersTemplate),
         initialize: function () {
-            console.log("POST VIEW was INITIALIZED");
+            console.log("USER VIEW was INITIALIZED");
             this.render();
         },
         events: {
             'click #make-post': 'post'
         },
         render: function () {
-            console.log('Clicked POSTS BUTTON');
+            console.log('Clicked USERS BUTTON');
             var self = this;
             var temporaryTemplate = $('#temporary-template');
             if (temporaryTemplate) {
                 temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl);
-            var posts = this.collection;
-            posts.forEach(function (postModel) {
-                var view = new PostView({model: postModel});
-            });
         },
         post: function () {
             var content = $('#posts-field').val();
             if (content) {
                 var postModel = new PostModel();
-                postModel.set({content: content, owner: APP.userId});
+                postModel.set({content: content});
                 console.log('USER ID FOR POST', APP.userId);
                 var postView = new PostView({model: postModel, owner: APP.userId});
             }
         }
     });
 
-    return PostsView;
+    return UsersView;
 });

@@ -5,6 +5,9 @@ define([
     var PostModel = BaseModel.extend({
         urlRoot: function () {
             return '/api/posts/';
+        },
+        defaults: {
+            title: 'todo'
         }
     });
     return PostModel;

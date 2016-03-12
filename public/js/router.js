@@ -36,13 +36,12 @@ define([
             console.log('The content is', content);
             var self = this;
             var collectionUrl;
-            var viewUrl;
+            var collectionUrl;
             if (!content) {
                 return self.goToDashboard();
             }
             collectionUrl = 'collections/' + content;
             viewUrl = 'views/collections/' + content;
-            console.log(collectionUrl, viewUrl);
             require([collectionUrl, viewUrl], function (Collection, View) {
                 var collection = new Collection();
                 self.collection = collection;

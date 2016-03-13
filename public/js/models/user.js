@@ -1,6 +1,7 @@
 define([
-    'models/base'
-], function (BaseModel) {
+    'models/base',
+    'Moment'
+], function (BaseModel, moment) {
 
     console.log("I am inside USER MODEL");
     var UserModel = BaseModel.extend({
@@ -9,7 +10,7 @@ define([
         },
         defaults: {
             fullName: '',
-            dateOfBirth: '',
+            dateOfBirth: moment(),
             age: '',
             location: '',
             email: '',
@@ -20,10 +21,14 @@ define([
             console.log('Model initialized');
         },
         parse: function (response) {
-            if (!response.dateOfBirths) {
-                response.dateOfBirth = new Date();
-                response.age = (new Date() - new Date(response.dateOfBirth)) / (1000 * 60 * 60 * 24 * 365);
-                if (response.age < 1) response.age = ':)';
+            if (response.dateOfBirth) {
+                var year = moment().year();
+                var age = (new Date() - new Date(response.dateOfBirth)) / (1000 * 60 * 60 * 24 * ((year % 4 == 0) ? 366 : 365));
+                age = (age < 1) ? ':)' : age;
+                var dateOfBirth = response.dateOfBirth;
+                dateOfBirth = moment(dateOfBirth).format("MMM Do, YYYY");
+                response.age = age;
+                response.dateOfBirth = dateOfBirth;
             }
             if (response.firstName && response.lastName) response.fullName = response.firstName + ' ' + response.lastName;
             return response;

@@ -4,7 +4,8 @@ define([
     'jQuery',
     'models/user',
     'text!templates/user.html',
-], function (Backbone, _, $, UserModel, userTemplate) {
+    'text!templates/models/user.html',
+], function (Backbone, _, $, UserModel, userTemplate, usrTemplate) {
     console.log("I am inside user view");
     var UserView = Backbone.View.extend({
         el: '#content',
@@ -85,6 +86,12 @@ define([
             });
         },
         render: function () {
+            var templateForUsers = $('#template-for-users');
+            if (templateForUsers.attr('id')) {
+                var template = _.template(usrTemplate);
+                $('#user-item').append(template(this.model.toJSON()));
+                return this;
+            }
             if (APP.userId) {
                 $('#login-form').hide();
                 $('#photoPreviewForm').show();
@@ -93,13 +100,7 @@ define([
                 var uModel = this.model;
                 console.log('uModel', uModel);
                 console.log('self', self);
-                this.$el.append(self.tmpl);
-                _.forEach(_.filter(uModel.keys(), function (key) {
-                    return ['fullName', 'dateOfBirth', 'age', 'email', 'location'].indexOf(key) !== -1;
-                }), function (cleanKey) {
-                    $('#user-page').append('<div>' + cleanKey + ': ' + uModel.get(cleanKey) + '</div>');
-                });
-                $('#preview').attr({src: uModel.get('photo')});
+                this.$el.append(self.tmpl(uModel.toJSON()));
                 return this;
             } else {
                 console.log("We haven't USERMODEL!!!");

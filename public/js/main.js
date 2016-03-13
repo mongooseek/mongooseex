@@ -6,6 +6,7 @@ require.config({
         jQuery: 'libs/jquery/dist/jquery',
         //Bootstrap: 'libs/bootstrap/dist/css/bootstrap',
         Backbone: 'libs/backbone/backbone',
+        Moment: 'libs/moment/moment',
         text: 'libs/text/text',
         views: 'views',
         models: 'models',

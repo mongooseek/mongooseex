@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ModelSchema = new Schema({
     firstName: String,
-    lastName: {type: String, default: ''},
+    lastName: String,
     email: {type: String, unique: true},
     pass: String,
     location: String,
-    dateOfBirth: {type: Date, default: Date.now},
+    dateOfBirth: Date,
     role: String,
     friends: Array,
     authorized: Boolean,

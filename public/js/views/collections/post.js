@@ -20,8 +20,8 @@ define([
         render: function () {
             console.log('Clicked POSTS BUTTON');
             var self = this;
-            var temporaryTemplate = $('#temporary-template');
-            if (temporaryTemplate) {
+            var temporaryTemplate = $('.temporary-template');
+            if (temporaryTemplate.attr('id')) {
                 temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl);

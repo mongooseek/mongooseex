@@ -5,7 +5,8 @@ define([
     'models/user',
     'text!templates/user.html',
     'text!templates/models/user.html',
-], function (Backbone, _, $, UserModel, userTemplate, usrTemplate) {
+    'Moment',
+], function (Backbone, _, $, UserModel, userTemplate, usrTemplate, moment) {
     console.log("I am inside user view");
     var UserView = Backbone.View.extend({
         el: '#content',
@@ -18,7 +19,13 @@ define([
             'click #in-sub': 'login',
             'click #up-sub': 'logup',
             'click #save-photo': 'savePhoto',
-            'click #delete-photo': 'deletePhoto'
+            'click #delete-photo': 'deletePhoto',
+            'click .add-to-friends': 'addToFriends'
+        },
+        addToFriends: function () {
+            this.undelegateEvents();
+            //$(this.el).clear();
+            console.log('ADD TO FRIENDS------------------------------------------------------------------>');
         },
         logup: function () {
             console.log('Signup button clicked!!');
@@ -58,7 +65,7 @@ define([
             this.savePhotoFunc(photo);
         },
         savePhotoFunc: function (photo) {
-            this.model.set('photo', photo);
+            this.model.set({photo: photo, dateOfBirth: moment(this.model.dateOfBirth)});
             this.model.urlRoot = '/api/users';
             this.model.save();
             $('#preview').attr('src', this.model.get('photo'));

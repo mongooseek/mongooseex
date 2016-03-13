@@ -20,12 +20,6 @@ define([
             'click #up-sub': 'logup',
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
-            'click .add-to-friends': 'addToFriends'
-        },
-        addToFriends: function () {
-            this.undelegateEvents();
-            //$(this.el).clear();
-            console.log('ADD TO FRIENDS------------------------------------------------------------------>');
         },
         logup: function () {
             console.log('Signup button clicked!!');

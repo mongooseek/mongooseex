@@ -15,6 +15,11 @@ define([
             this.render();
         },
         events: {
+            'click .add-to-friends': 'addToFriends'
+        },
+        addToFriends: function(e){
+            e.preventDefault();
+            console.dir(e);
         },
         render: function () {
             console.log('Clicked USERS BUTTON');

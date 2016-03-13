@@ -6,7 +6,7 @@ define([
     console.log("I am inside USER MODEL");
     var UserModel = BaseModel.extend({
         urlRoot: function () {
-            return '/users/';
+            return '/api/users/';
         },
         defaults: {
             fullName: '',
@@ -15,6 +15,7 @@ define([
             location: '',
             email: '',
             role: 'user',
+            friends: [],
             photo: 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png'
         },
         initialize: function () {

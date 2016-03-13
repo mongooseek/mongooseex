@@ -1,8 +1,8 @@
-<tr>
-    <td><img src="<%=photo%>" width='150'></td>
+<tr id="<%=_id%>">
+    <td><img src="<%=photo%>" width='100'></td>
     <td>
         <h4><%=fullName%></h4>
-        <a class="btn btn-primary add-to-friends">Add to friends</a>
-        <br><br><a class="btn btn-primary">Read the posts</a>
+        <a type='<%=_id%>' class="btn btn-primary add-to-friends">Add to friends</a>
+        <!--<br><br><a type='<%=_id%>' class="btn btn-primary read-the-posts">Read the posts</a>-->
     </td>
 </tr>

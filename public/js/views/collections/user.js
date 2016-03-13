@@ -4,8 +4,9 @@ define([
     'collections/user',
     'models/user',
     'views/models/user',
-    'text!templates/collections/user.html'
-], function (Backbone, $, UsersCollection, UserModel, UserView, usersTemplate) {
+    'text!templates/collections/user.html',
+    'Moment'
+], function (Backbone, $, UsersCollection, UserModel, UserView, usersTemplate, moment) {
 
     var UsersView = Backbone.View.extend({
         el: "#for-templates",
@@ -17,9 +18,21 @@ define([
         events: {
             'click .add-to-friends': 'addToFriends'
         },
-        addToFriends: function(e){
+        addToFriends: function (e) {
+            var friendId;
+            var friendModel;
+            var userModel;
+            var userFriends;
             e.preventDefault();
-            console.dir(e);
+            friendId = e.target.type;
+            friendModel = this.collection.get(friendId);
+            userModel = this.collection.get(APP.userId);
+            userFriends = userModel.get('friends');
+            if (userFriends.indexOf(friendId) == -1 && friendId != APP.userId) {
+                userFriends.push(friendId);
+                userModel.set({friends: userFriends, dateOfBirth: moment(userModel.get('dateOfBirth'))});
+                userModel.save();
+            }
         },
         render: function () {
             console.log('Clicked USERS BUTTON');

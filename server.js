@@ -82,34 +82,6 @@ function onConnection() {
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', authStackMidlware, userRouter);
 
-    app.get('/photo', function (req, res) {
-        var options = {
-            root: __dirname + '/public',
-            dotfiles: 'deny',
-            headers: {
-                'x-timestamp': Date.now(),
-                'x-sent': true
-            }
-        };
-        res.set({
-            //'Content-Type': 'image/jpeg',
-            //'Content-Length': '123',
-            //'ETag': '12345'
-        });
-        res.sendFile('/uploads/1.txt', options);
-    });
-
-    app.post('/photo', function (req, res) {
-        var Photo = mongoose.model('photo');
-        var photo = new Photo(req.body);
-        photo.save(function (err, photo) {
-            if (err) {
-                return next(err);
-            }
-            res.status(201).send(photo);
-        })
-    });
-
     app.use(function (err, req, res, next) {
         var status = err.status || 500;
         if (process.env.NODE_ENV === 'production') {

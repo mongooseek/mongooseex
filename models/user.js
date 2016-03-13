@@ -8,7 +8,7 @@ var ModelSchema = new Schema({
     location: String,
     dateOfBirth: Date,
     role: String,
-    friends: Array,
+    friends: [],
     authorized: Boolean,
     confirmed: Boolean,
     photo: String

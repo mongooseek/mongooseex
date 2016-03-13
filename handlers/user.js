@@ -112,5 +112,10 @@ module.exports = function () {
                 res.status(200).send(user);
             });
         }
+    };
+
+    this.logout = function (req, res, next) {
+        req.session.loggedIn = false;
+        res.end();
     }
 };

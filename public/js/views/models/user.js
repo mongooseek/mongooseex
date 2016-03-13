@@ -13,13 +13,27 @@ define([
         tmpl: _.template(userTemplate),
         initialize: function () {
             console.log('User VIEW and User MODEL initialized!!!');
+            var self = this;
+            console.log(this.model.get('_id'));
             this.render();
+            if(self.model.get('_id')==APP.userId){
+                console.log('trueeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+                self.model.on('click #save-photo', self.savePhoto)
+            };
         },
         events: {
             'click #in-sub': 'login',
             'click #up-sub': 'logup',
-            'click #save-photo': 'savePhoto',
+            //'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
+            'click #log-out': 'logOut'
+        },
+        logOut: function () {
+            var userModel = new UserModel();
+            userModel.urlRoot = '/logout';
+            $('#login-form').show();
+            $('#photoPreviewForm').hide();
+            $('#user-block').hide();
         },
         logup: function () {
             console.log('Signup button clicked!!');

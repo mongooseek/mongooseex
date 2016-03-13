@@ -1,14 +1,17 @@
 var express = require('express');
-//var fs = require('fs');
-//var url = require('url');
+var http = require('http');
+var app = express();
+var server = http.createServer(app);
+var socket = require('socket.io')(server);
+
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var http = require('http').Server(app);
+
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 MemoryStore = require('connect-mongo')(session);
-var app = express();
-//var multer = require('multer');
+var path = require('path');
+
 var DB_HOST;
 var DB_NAME;
 var DB_PORT;
@@ -78,6 +81,7 @@ function onConnection() {
 
     app.post('/login', userHandler.login);
     app.post('/logup', userHandler.createUser);
+    app.post('/logout', userHandler.logout);
 
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', authStackMidlware, userRouter);
@@ -92,8 +96,9 @@ function onConnection() {
             console.error(err.message + '\n' + err.stack);
         }
     });
+    require('./helpers/sockets')(socket);
 
-    app.listen(port, function () {
+    server.listen(port, function () {
         console.log('server started at port', port);
     });
 };

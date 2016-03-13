@@ -16,7 +16,7 @@ define([
             this.render();
         },
         events: {
-            'click .add-to-friends': 'addToFriends'
+            'click .add-to-friends': 'addToFriends',
         },
         addToFriends: function (e) {
             var friendId;
@@ -33,6 +33,8 @@ define([
                 userModel.set({friends: userFriends, dateOfBirth: moment(userModel.get('dateOfBirth'))});
                 userModel.save();
             }
+            console.dir(this);
+            console.dir(userModel);
         },
         render: function () {
             console.log('Clicked USERS BUTTON');

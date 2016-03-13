@@ -8,6 +8,7 @@ require.config({
         Backbone: 'libs/backbone/backbone',
         Moment: 'libs/moment/moment',
         text: 'libs/text/text',
+        socketio: '/socket.io/socket.io',
         views: 'views',
         models: 'models',
         collections: 'collections',

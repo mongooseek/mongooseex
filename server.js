@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-MemoryStore = require('connect-mongo')(session);
+var MemoryStore = require('connect-mongo')(session);
 var path = require('path');
 
 var DB_HOST;

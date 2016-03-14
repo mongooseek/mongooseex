@@ -39,9 +39,9 @@ define([
         render: function () {
             console.log('Clicked USERS BUTTON');
             var self = this;
-            var temporaryTemplate = $('.temporary-template');
-            if (temporaryTemplate.attr('id')) {
-                temporaryTemplate.remove();
+            var $temporaryTemplate = $('.temporary-template');
+            if ($temporaryTemplate.attr('id')) {
+                $temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl);
             var users = this.collection;

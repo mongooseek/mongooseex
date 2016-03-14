@@ -1,12 +1,8 @@
 define([
     'Backbone',
     'models/user',
-    'views/models/user',
-    'models/post',
-    'views/models/post',
-    'collections/post',
-    'views/collections/post'
-], function (Backbone, UserModel, UserView, PostModel, PostView, PostsCollection, PostsView) {
+    'views/models/usr'
+], function (Backbone, UsrModel, UsrView) {
     var Router = Backbone.Router.extend({
         routes: {
             'myApp(/:content)': 'goToContent',
@@ -15,16 +11,17 @@ define([
             '*any': 'goToDashboard'
         },
         initialize: function () {
-            var userModel = new UserModel();
-            userModel.urlRoot = '/login';
-            userModel.save(null, {
+            var usrModel = new UsrModel();
+            usrModel.urlRoot = '/login';
+            console.log('UsrView', UsrView);
+            usrModel.save(null, {
                 success: function (response) {
-                    APP.userId = userModel.get('_id');
-                    var userView = new UserView({model: userModel});
+                    APP.usrId = usrModel.get('_id');
+                    var usrView = new UsrView({model: usrModel});
                     console.log('BIG SUCCESS');
                 },
                 error: function (err) {
-                    var userView = new UserView({model: userModel});
+                    var usrView = new UsrView({model: usrModel});
                     console.log('SUCCESS BUT NOT BIG');
                 }
             });

@@ -6,6 +6,7 @@ define([
     var Router = Backbone.Router.extend({
         routes: {
             'myApp(/:content)': 'goToContent',
+            'myApp/user/friend': 'goToFriends',
             'myApp/login': 'login',
             'myApp/logup': 'logup',
             '*any': 'goToDashboard'
@@ -46,6 +47,9 @@ define([
                 });
                 collection.fetch({reset: true});
             });
+        },
+        goToFriends: function(){
+
         },
         renderView: function (View) {
             if (this.view) {

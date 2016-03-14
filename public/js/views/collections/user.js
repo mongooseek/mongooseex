@@ -1,12 +1,13 @@
 define([
     'Backbone',
     'jQuery',
+    'Underscore',
     'collections/user',
     'models/user',
     'views/models/user',
     'text!templates/collections/user.html',
     'Moment'
-], function (Backbone, $, UsersCollection, UserModel, UserView, usersTemplate, moment) {
+], function (Backbone, $, _, UsersCollection, UserModel, UserView, usersTemplate, moment) {
 
     var UsersView = Backbone.View.extend({
         el: "#for-templates",
@@ -17,6 +18,21 @@ define([
         },
         events: {
             'click .add-to-friends': 'addToFriends',
+            'click #filter-friends': 'filterFriends'
+        },
+        filterFriends: function () {
+            var self = this;
+            console.log('This user!->', this.collection.get(APP.usrId));
+            var friends = this.collection.get(APP.usrId).get('friends');
+            var $temporaryTemplate = $('.temporary-template');
+            if ($temporaryTemplate.attr('id')) {
+                $temporaryTemplate.remove();
+            }
+            this.$el.append(self.tmpl);
+            friends.forEach(function (friendId) {
+                var friendModel = self.collection.get(friendId);
+                var userView = new UserView({model: friendModel});
+            });
         },
         addToFriends: function (e) {
             console.log('Clicked add to friends');

@@ -21,7 +21,8 @@ define([
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
             'click #log-out': 'logOut',
-            'click #comment': 'comment'
+            'click #comment': 'comment',
+            //'click #filter-friends': 'filterFriends'
         },
         comment: function () {
             var $sendComment = $('#send-comment');

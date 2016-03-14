@@ -115,14 +115,12 @@ module.exports = function () {
     };
 
     this.logout = function (req, res, next) {
-        console.log('This is logout router');
         User.findOne({_id: req.session.uId}, {}, function (err, user) {
-            console.log('err', err);
             if (err) {
                 return next(err);
             }
             req.session.loggedIn = false;
-            res.status(200);
+            res.status(200).end();
         });
     }
 };

@@ -5,7 +5,8 @@ define([
     'models/user',
     'text!templates/usr.html',
     'Moment',
-], function (Backbone, _, $, UsrModel, usrTemplate, moment) {
+    'socketio'
+], function (Backbone, _, $, UsrModel, usrTemplate, moment, socketio) {
     console.log("I am inside user view");
     var UsrView = Backbone.View.extend({
         el: '#content',
@@ -19,7 +20,18 @@ define([
             'click #up-sub': 'logup',
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
-            'click #log-out': 'logOut'
+            'click #log-out': 'logOut',
+            'click #comment': 'comment'
+        },
+        comment: function () {
+            var $sendComment = $('#send-comment');
+            var message = $sendComment.val();
+            if (message) {
+                APP.io.emit('custom_event', message, function (data) {
+                    console.log('data', data);
+                    console.log('message', message);
+                });
+            }
         },
         logOut: function () {
             APP.usrId = {};
@@ -32,12 +44,12 @@ define([
             $('#user-block').hide();
             usrModel.save(null, {
                 success: function (response) {
-                    self.model = new UsrModel();
                 },
                 error: function (err) {
                     console.log(err);
                 }
             });
+            self.model = new UsrModel();
             $('#user-block').remove();
         },
         login: function () {
@@ -110,8 +122,8 @@ define([
                 $('#photoPreviewForm').show();
                 console.log('I am inside userView render function!!!');
                 var self = this;
-                var uModel = this.model;
-                this.$el.append(self.tmpl(uModel.toJSON()));
+                var usrModel = this.model;
+                this.$el.append(self.tmpl(usrModel.toJSON()));
                 return this;
             }
         }

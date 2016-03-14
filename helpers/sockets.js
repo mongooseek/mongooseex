@@ -6,11 +6,11 @@ module.exports = function(sockets){
     ]);
 
     sockets.on('connection', function(socket){
-        socket.join('myRoom');
-        socket.on('custom_event', function(data){
-            data.response = 1000000;
-            console.dir(data);
-            socket.to('myRoom').emit('custom_response', data);
+        //socket.join('myRoom');
+        socket.on('custom_event', function(data, cb){
+            socket.broadcast.emit('custom_response', data);
+            //socket.to('myRoom').emit('custom_response', data);
+            cb(123);
         });
     });
 };

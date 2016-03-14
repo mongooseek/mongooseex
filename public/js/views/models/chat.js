@@ -2,24 +2,24 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'models/user',
+    'models/chat',
     'text!templates/models/user.html',
     'Moment',
-], function (Backbone, _, $, UserModel, userTemplate, moment) {
+], function (Backbone, _, $, UserModel, usrTemplate, userTemplate, moment) {
     console.log("I am inside user view");
     var UserView = Backbone.View.extend({
         el: '#content',
-        tmpl: _.template(userTemplate),
+        tmpl: _.template(usrTemplate),
         initialize: function () {
             console.log('User VIEW and User MODEL initialized!!!');
             this.render();
         },
         events: {},
         render: function () {
-            var self = this;
             var $templateForUsers = $('#template-for-users');
             if ($templateForUsers.attr('id')) {
-                $('#user-item').append(self.tmpl(this.model.toJSON()));
+                var template = _.template(userTemplate);
+                $('#user-item').append(template(this.model.toJSON()));
                 return this;
             }
         }

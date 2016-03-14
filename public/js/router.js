@@ -19,11 +19,9 @@ define([
                 success: function (response) {
                     APP.usrId = usrModel.get('_id');
                     var usrView = new UsrView({model: usrModel});
-                    console.log('BIG SUCCESS');
                 },
                 error: function (err) {
                     var usrView = new UsrView({model: usrModel});
-                    console.log('SUCCESS BUT NOT BIG');
                 }
             });
         },

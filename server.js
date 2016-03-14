@@ -46,7 +46,9 @@ function onConnection() {
         mongooseConnection: db
     };
     var authStackMidlware = require('./helpers/auth');
+    var PostHandler;
     var postRouter;
+    var postHandler;
     var UserHandler;
     var userRouter;
     var userHandler;
@@ -55,9 +57,9 @@ function onConnection() {
 
     require('./models/index');
 
-    //PostHandler = require('./handlers/post');
+    PostHandler = require('./handlers/post');
     postRouter = require('./routers/post');
-    //postHandler = new PostHandler();
+    postHandler = new PostHandler();
     UserHandler = require('./handlers/user');
     userRouter = require('./routers/user');
     userHandler = new UserHandler();
@@ -73,7 +75,7 @@ function onConnection() {
         store: new MemoryStore(sessionConfig)
     }));
 
-    app.use(bodyParser.json({limit: '1mb'}));
+    app.use(bodyParser.json({limit: '2mb'}));
 
     app.get('/', function (req, res, next) {
         res.sendFile(path.join(__dirname, 'index.html'));

@@ -1,4 +1,4 @@
-process.env.PORT = 3000;
+process.env.PORT = 8081;
 //---- db config -----
 process.env.DB_PORT = 27017;
 process.env.DB_NAME = 'usersall';

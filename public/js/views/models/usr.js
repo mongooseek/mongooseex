@@ -23,8 +23,8 @@ define([
         },
         logOut: function () {
             APP.usrId = {};
-            var self = this;
             delete this.model;
+            var self = this;
             var usrModel = new UsrModel();
             usrModel.urlRoot = '/logout';
             $('#login-form').show();
@@ -32,9 +32,7 @@ define([
             $('#user-block').hide();
             usrModel.save(null, {
                 success: function (response) {
-                    console.log(response);
                     self.model = new UsrModel();
-                    console.log(self.model);
                 },
                 error: function (err) {
                     console.log(err);
@@ -44,8 +42,8 @@ define([
         },
         login: function () {
             console.log('Signin button clicked!!');
-            console.log(this.model);
             var self = this;
+            console.log(this.model);
             var usrModel = this.model;
             var email = $('#input-email').val();
             var pass = $('#input-password').val();
@@ -113,8 +111,6 @@ define([
                 console.log('I am inside userView render function!!!');
                 var self = this;
                 var uModel = this.model;
-                console.log('uModel', uModel);
-                console.log('self', self);
                 this.$el.append(self.tmpl(uModel.toJSON()));
                 return this;
             }

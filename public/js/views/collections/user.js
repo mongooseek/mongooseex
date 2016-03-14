@@ -19,22 +19,21 @@ define([
             'click .add-to-friends': 'addToFriends',
         },
         addToFriends: function (e) {
+            console.log('Clicked add to friends');
             var friendId;
             var friendModel;
-            var userModel;
-            var userFriends;
+            var usrModel;
+            var usrFriends;
             e.preventDefault();
             friendId = e.target.type;
             friendModel = this.collection.get(friendId);
-            userModel = this.collection.get(APP.userId);
-            userFriends = userModel.get('friends');
-            if (userFriends.indexOf(friendId) == -1 && friendId != APP.userId) {
-                userFriends.push(friendId);
-                userModel.set({friends: userFriends, dateOfBirth: moment(userModel.get('dateOfBirth'))});
-                userModel.save();
+            usrModel = this.collection.get(APP.usrId);
+            usrFriends = usrModel.get('friends');
+            if (usrFriends.indexOf(friendId) == -1 && friendId != APP.usrId) {
+                usrFriends.push(friendId);
+                usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
+                usrModel.save();
             }
-            console.dir(this);
-            console.dir(userModel);
         },
         render: function () {
             console.log('Clicked USERS BUTTON');
@@ -45,8 +44,8 @@ define([
             }
             this.$el.append(self.tmpl);
             var users = this.collection;
-            users.forEach(function (usrModel) {
-                var view = new UserView({model: usrModel});
+            users.forEach(function (userModel) {
+                var view = new UserView({model: userModel});
             });
             return this;
         }

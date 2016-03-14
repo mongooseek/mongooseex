@@ -11,6 +11,7 @@ define([
             '*any': 'goToDashboard'
         },
         initialize: function () {
+            APP.init = 'Hi!!!';
             var usrModel = new UsrModel();
             usrModel.urlRoot = '/login';
             console.log('UsrView', UsrView);

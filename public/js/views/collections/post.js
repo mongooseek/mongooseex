@@ -20,9 +20,9 @@ define([
         render: function () {
             console.log('Clicked POSTS BUTTON');
             var self = this;
-            var temporaryTemplate = $('.temporary-template');
-            if (temporaryTemplate.attr('id')) {
-                temporaryTemplate.remove();
+            var $temporaryTemplate = $('.temporary-template');
+            if ($temporaryTemplate.attr('id')) {
+                $temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl);
             var posts = this.collection;
@@ -34,9 +34,10 @@ define([
             var content = $('#posts-field').val();
             if (content) {
                 var postModel = new PostModel();
-                postModel.set({content: content, owner: APP.userId});
+                postModel.set({content: content, owner: APP.usrId});
                 console.log('USER ID FOR POST', APP.userId);
-                var postView = new PostView({model: postModel, owner: APP.userId});
+                var postView = new PostView({model: postModel, owner: APP.usrId});
+                $('#posts-field').val('');
             }
         }
     });

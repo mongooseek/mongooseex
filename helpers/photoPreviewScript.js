@@ -1,3 +1,4 @@
+//Module helps to made photo preview.
 window.onload = function () {
     var files = document.querySelectorAll("input[type=file]");
     files[0].addEventListener("change", function (e) {

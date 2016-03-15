@@ -1,3 +1,4 @@
+//Module helps to filter unauth. users.
 module.exports = function (req, res, next) {
     var err;
 

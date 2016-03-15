@@ -1,3 +1,4 @@
+//View to deal with 'user' model.
 define([
     'Backbone',
     'Underscore',
@@ -8,7 +9,7 @@ define([
 ], function (Backbone, _, $, UserModel, userTemplate, moment) {
     console.log("I am inside user view");
     var UserView = Backbone.View.extend({
-        el: '#content',
+        el: '.user-item',
         tmpl: _.template(userTemplate),
         initialize: function () {
             console.log('User VIEW and User MODEL initialized!!!');
@@ -19,7 +20,7 @@ define([
             var self = this;
             var $templateForUsers = $('#template-for-users');
             if ($templateForUsers.attr('id')) {
-                $('.user-item').append(self.tmpl(this.model.toJSON()));
+                self.$el.append(self.tmpl(this.model.toJSON()));
                 return this;
             }
         }

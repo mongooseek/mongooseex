@@ -1,3 +1,5 @@
+//Here placed data for "review" node environment.
+//---- server config -----
 process.env.PORT = 8081;
 //---- db config -----
 process.env.DB_PORT = 31751;

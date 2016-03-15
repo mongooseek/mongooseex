@@ -1,3 +1,4 @@
+//View to deal with 'chat' collection.
 define([
     'Backbone',
     'jQuery',
@@ -24,14 +25,8 @@ define([
         events: {
             'click #comment': 'comment',
         },
-        renderOne: function (model) {
-            var model = new ChatModel(model);
-            var chatView =  new ChatView({model: model});
-        },
         comment: function () {
             var ownerName = $('#user-name').text();
-            console.log('OWNERRRRRRRRRRRRRRR', typeof ownerName);
-            console.log('Clicked comment');
             var content = $('#comment-field').val();
             if (content) {
                 var chatModel = new ChatModel();
@@ -40,6 +35,10 @@ define([
                 $('#comment-field').val('');
             }
 
+        },
+        renderOne: function (model) {
+            var model = new ChatModel(model);
+            var chatView =  new ChatView({model: model});
         },
         render: function () {
             console.log('Clicked CHAT BUTTON');

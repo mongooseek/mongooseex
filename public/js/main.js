@@ -1,3 +1,4 @@
+//Module to upload UI dependencies.
 var APP = APP || {};
 
 require.config({

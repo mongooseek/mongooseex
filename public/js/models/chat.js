@@ -1,3 +1,4 @@
+//Constructor to create chat's model.
 define([
     'models/base',
 ], function (BaseModel) {

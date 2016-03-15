@@ -1,3 +1,4 @@
+//Application.
 define([
     'router',
     'socketio'

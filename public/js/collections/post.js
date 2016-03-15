@@ -1,3 +1,4 @@
+//Collection to deal with posts.
 define([
     'collections/base',
     'models/post'

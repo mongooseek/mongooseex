@@ -1,3 +1,5 @@
+//Here placed data for "production" node environment.
+//---- server config -----
 process.env.PORT = 8081;
 //---- db config -----
 process.env.DB_PORT = 27017;

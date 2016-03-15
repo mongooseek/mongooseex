@@ -1,3 +1,4 @@
+//Collection to deal with users.
 define([
     'collections/base',
     'models/user'

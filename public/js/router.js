@@ -1,3 +1,4 @@
+//Backbone router of application.
 define([
     'Backbone',
     'models/user',

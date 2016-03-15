@@ -1,3 +1,4 @@
+//View to deal with 'post' collection.
 define([
     'Backbone',
     'jQuery',

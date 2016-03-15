@@ -1,3 +1,4 @@
+//View to deal with 'main user' model.
 define([
     'Backbone',
     'Underscore',
@@ -6,7 +7,7 @@ define([
     'text!templates/usr.html',
     'Moment',
     'socketio'
-], function (Backbone, _, $, UsrModel, usrTemplate, moment, socketio) {
+], function (Backbone, _, $, UsrModel, usrTemplate, moment) {
     console.log("I am inside user view");
     var UsrView = Backbone.View.extend({
         el: '#content',
@@ -21,8 +22,6 @@ define([
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
             'click #log-out': 'logOut',
-            //'click #comment': 'comment',
-            //'click #filter-friends': 'filterFriends'
         },
         logOut: function () {
             APP.usrId = {};

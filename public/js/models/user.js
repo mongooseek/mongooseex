@@ -1,3 +1,4 @@
+//Constructor to create user's model.
 define([
     'models/base',
     'Moment'

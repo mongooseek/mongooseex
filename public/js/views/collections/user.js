@@ -1,3 +1,4 @@
+//View to deal with 'user' collection.
 define([
     'Backbone',
     'jQuery',

@@ -1,3 +1,4 @@
+//View to deal with 'post' model.
 define([
     'Backbone',
     'Underscore',

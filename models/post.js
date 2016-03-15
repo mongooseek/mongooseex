@@ -1,3 +1,4 @@
+//Module to get 'post' mongoose model.
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;

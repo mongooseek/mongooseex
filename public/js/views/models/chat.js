@@ -1,3 +1,4 @@
+//View to deal with 'chat' model.
 define([
     'Backbone',
     'Underscore',
@@ -5,7 +6,7 @@ define([
     'models/chat',
     'text!templates/models/chat.html',
     'Moment',
-], function (Backbone, _, $, ChatModel, chatTemplate, moment) {
+], function (Backbone, _, $, ChatModel, chatTemplate) {
     console.log("I am inside user view");
     var ChatView = Backbone.View.extend({
         el: '#comments-area',
@@ -35,15 +36,10 @@ define([
         emmitMessage: function (message) {
             var self = this;
             var mess = message;
-            console.log('messssageeeeeee', mess);
             APP.io.emit('custom_event', mess, function (data) {
                 console.log('data', data);
                 self.appendToChat(mess);
             });
-            /*AP00P.io.on('custom_response', function (data) {
-             console.log('data in ONNNN', data);
-             //self.$el.prepend(self.tmpl({content: data.get('content')}));
-             });*/
         },
         appendToChat: function (message) {
             var mess = message;

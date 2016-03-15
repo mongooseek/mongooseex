@@ -1,3 +1,5 @@
+//Here placed data for development node environment.
+//---- server config -----
 process.env.PORT = 3000;
 //---- db config -----
 process.env.DB_PORT = 27017;

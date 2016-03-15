@@ -1,3 +1,4 @@
+//Collection to deal with chat's messages.
 define([
     'collections/base',
     'models/chat'

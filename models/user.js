@@ -1,3 +1,4 @@
+//Module to get 'user' mongoose model.
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ModelSchema = new Schema({

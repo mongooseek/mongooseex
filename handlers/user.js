@@ -1,9 +1,12 @@
+//DB handler for user.
+//Required dependency.
 var mongoose = require('mongoose');
 
 module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+    //Handler to create a user within registration.
     this.createUser = function (req, res, next) {
         console.log('I am creatin user!');
         var body = req.body;
@@ -25,6 +28,7 @@ module.exports = function () {
         });
     };
 
+    //Handler to get all users from DB.
     this.getAll = function (req, res, next) {
         User.find({}, {pass: 0}, function (err, users) {
             if (err) {
@@ -35,8 +39,8 @@ module.exports = function () {
         });
     };
 
+    //Handler to get user by his id.
     this.getById = function (req, res, next) {
-        //var id = req.params.id;
         var userId = ((!req.params.id) ? (req.session.uId) : req.params.id);
 
         User.findById(userId, {pass: 0}, function (err, user) {
@@ -48,6 +52,7 @@ module.exports = function () {
         });
     };
 
+    //Handler to update users.
     this.update = function (req, res, next) {
         var id = req.params.id;
         var body = req.body;
@@ -61,6 +66,7 @@ module.exports = function () {
         });
     };
 
+    //Handler to remove user from db.
     this.remove = function (req, res, next) {
         var id = req.params.id;
 
@@ -73,6 +79,7 @@ module.exports = function () {
         });
     };
 
+    //Handler to get user within login.
     this.login = function (req, res, next) {
         if (req.session.uId && req.session.loggedIn) {
             console.log(req.session.uId, req.session.loggedIn);
@@ -114,6 +121,7 @@ module.exports = function () {
         }
     };
 
+    //Handler is used within logout from site. It changes session.loggedIn to false.
     this.logout = function (req, res, next) {
         User.findOne({_id: req.session.uId}, {}, function (err, user) {
             if (err) {

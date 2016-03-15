@@ -63,6 +63,9 @@ function onConnection() {
     UserHandler = require('./handlers/user');
     userRouter = require('./routers/user');
     userHandler = new UserHandler();
+    ChatHandler = require('./handlers/chat');
+    chatRouter = require('./routers/chat');
+    chatHandler = new ChatHandler();
 
     app.use(express.static(__dirname + '/public'));
     app.use(cookieParser("myTestPython"));
@@ -87,6 +90,7 @@ function onConnection() {
 
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', authStackMidlware, userRouter);
+    app.use('/api/chats', authStackMidlware, chatRouter);
 
     app.use(function (err, req, res, next) {
         var status = err.status || 500;

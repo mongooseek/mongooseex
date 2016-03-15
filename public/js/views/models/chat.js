@@ -3,26 +3,36 @@ define([
     'Underscore',
     'jQuery',
     'models/chat',
-    'text!templates/models/user.html',
+    'text!templates/models/chat.html',
     'Moment',
-], function (Backbone, _, $, UserModel, usrTemplate, userTemplate, moment) {
+], function (Backbone, _, $, ChatModel, chatTemplate, moment) {
     console.log("I am inside user view");
-    var UserView = Backbone.View.extend({
-        el: '#content',
-        tmpl: _.template(usrTemplate),
+    var ChatView = Backbone.View.extend({
+        el: '#comments-area',
+        tmpl: _.template(chatTemplate),
         initialize: function () {
-            console.log('User VIEW and User MODEL initialized!!!');
+            console.log('Chat view initialized!');
             this.render();
         },
-        events: {},
+        events: {
+
+        },
         render: function () {
-            var $templateForUsers = $('#template-for-users');
-            if ($templateForUsers.attr('id')) {
-                var template = _.template(userTemplate);
-                $('#user-item').append(template(this.model.toJSON()));
-                return this;
+            var self = this;
+            var chatModel = this.model;
+            if (chatModel.get('_id')) {
+                self.$el.prepend(self.tmpl({content: chatModel.get('content')}));
+            } else {
+                chatModel.save(null, {
+                    success: function (response) {
+                        self.$el.prepend(self.tmpl({content: chatModel.get('content')}));
+                    },
+                    error: function (err) {
+                        console.log('Failed to save chat');
+                    }
+                });
             }
         }
     });
-    return UserView;
+    return ChatView;
 });

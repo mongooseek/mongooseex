@@ -13,14 +13,21 @@ define([
         tmpl: _.template(chatsTemplate),
         initialize: function () {
             console.log("CHATS VIEW was INITIALIZED");
+            APP.io = socketio.connect();
             this.render();
         },
         events: {
             'click #comment': 'comment',
         },
-        addToFriends: function (e) {
-            console.log('Clicked comment');
-            e.preventDefault();
+        comment: function () {
+            var $commentField = $('#comment-field');
+            var message = $commentField.val();
+            if (message) {
+                APP.io.emit('custom_event', message, function (data) {
+                    console.log('data', data);
+                    console.log('message', message);
+                });
+            }
         },
         render: function () {
             console.log('Clicked CHAT BUTTON');
@@ -35,7 +42,19 @@ define([
                 var view = new ChatView({model: chatModel});
             });
             return this;
-        }
+        },
+        comment: function () {
+            console.log('Clicked comment');
+            var content = $('#comment-field').val();
+            if (content) {
+                console.log('content is', content);
+                var chatModel = new ChatModel();
+                chatModel.set({content: content, owner: APP.usrId});
+                var chatView = new ChatView({model: chatModel});
+                $('#comment-field').val('');
+            }
+
+        },
     });
 
     return ChatsView;

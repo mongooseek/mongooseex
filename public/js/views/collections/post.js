@@ -36,7 +36,7 @@ define([
                 var postModel = new PostModel();
                 postModel.set({content: content, owner: APP.usrId});
                 console.log('USER ID FOR POST', APP.userId);
-                var postView = new PostView({model: postModel, owner: APP.usrId});
+                var postView = new PostView({model: postModel});
                 $('#posts-field').val('');
             }
         }

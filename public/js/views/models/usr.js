@@ -21,18 +21,8 @@ define([
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
             'click #log-out': 'logOut',
-            'click #comment': 'comment',
+            //'click #comment': 'comment',
             //'click #filter-friends': 'filterFriends'
-        },
-        comment: function () {
-            var $sendComment = $('#send-comment');
-            var message = $sendComment.val();
-            if (message) {
-                APP.io.emit('custom_event', message, function (data) {
-                    console.log('data', data);
-                    console.log('message', message);
-                });
-            }
         },
         logOut: function () {
             APP.usrId = {};
@@ -52,6 +42,7 @@ define([
             });
             self.model = new UsrModel();
             $('#user-block').remove();
+            Backbone.history.navigate.origin;
         },
         login: function () {
             console.log('Signin button clicked!!');

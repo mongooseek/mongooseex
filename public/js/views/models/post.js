@@ -30,24 +30,6 @@ define([
                     }
                 });
             }
-        },
-        post: function () {
-            console.log('Post button clicked!!');
-            var self = this;
-            var pModel = this.model;
-            var post = $("#posts-field").val();
-            pModel.set({title: "New post", owner: APP.usrId, content: post});
-            pModel.urlRoot = "/api/posts";
-            console.log(pModel.urlRoot);
-            pModel.save(null, {
-                    success: function (response) {
-                        $('#post').append(pModel.get('content'));
-                    },
-                    error: function (err) {
-
-                    }
-                }
-            );
         }
     });
     return PostView;

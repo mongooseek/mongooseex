@@ -4,7 +4,7 @@ define([
     console.log('I am inside CHAT MODEL!');
     var ChatModel = BaseModel.extend({
         urlRoot: function () {
-            return '/api/chat/';
+            return '/api/chats/';
         }
     });
     return ChatModel;

@@ -19,7 +19,7 @@ define([
             var self = this;
             var $templateForUsers = $('#template-for-users');
             if ($templateForUsers.attr('id')) {
-                $('#user-item').append(self.tmpl(this.model.toJSON()));
+                $('.user-item').append(self.tmpl(this.model.toJSON()));
                 return this;
             }
         }

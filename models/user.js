@@ -7,7 +7,6 @@ var ModelSchema = new Schema({
     lastName: String,
     email: {type: String, unique: true},
     pass: String,
-    location: String,
     dateOfBirth: Date,
     role: String,
     friends: [
@@ -18,9 +17,9 @@ var ModelSchema = new Schema({
         }
     ],
     city: {
-        cityName: String,
-        cityLongitude: Number,
-        cityLatitude: Number
+        name: String,
+        lat: Number,
+        lng: Number
     },
     authorized: Boolean,
     confirmed: Boolean,

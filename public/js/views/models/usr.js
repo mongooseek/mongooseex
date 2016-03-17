@@ -76,30 +76,31 @@ define([
             var lastName = $('#input-last-name').val();
             var email = $('#input-email').val();
             var pass = $('#input-password').val();
+            var confirmPass = $('#input-confirm-password').val();
             city.name = $('#input-city').val();
             $.ajax({
                 type: "GET",
                 url: 'http://maps.google.com/maps/api/geocode/json?address=' + city.name + '?sensor=false',
                 data: {},
-                success: function(val){
+                success: function (val) {
+                    city.name = val.results[0].address_components[0].long_name;
                     city.lat = val.results[0].geometry.location.lat;
                     city.lng = val.results[0].geometry.location.lng;
-                }
-            });
-            var confirmPass = $('#input-confirm-password').val();
-            usrModel.set({firstName: firstName, lastName: lastName, email: email, pass: pass, city: city});
-            usrModel.urlRoot = '/logup';
-            usrModel.save(null, {
-                success: function (response) {
-                    console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
-                    APP.usrId = usrModel.get('_id');
-                    usrModel.urlRoot = '/api/users';
-                    usrModel.unset('pass', {silent: true});
-                    $('#login-form').hide();
-                    self.render();
-                },
-                error: function (err) {
-                    console.log('Failed to get user!');
+                    usrModel.set({firstName: firstName, lastName: lastName, email: email, pass: pass, city: city});
+                    usrModel.urlRoot = '/logup';
+                    usrModel.save(null, {
+                        success: function (response) {
+                            console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
+                            APP.usrId = usrModel.get('_id');
+                            usrModel.urlRoot = '/api/users';
+                            usrModel.unset('pass', {silent: true});
+                            $('#login-form').hide();
+                            self.render();
+                        },
+                        error: function (err) {
+                            console.log('Failed to get user!');
+                        }
+                    });
                 }
             });
         },

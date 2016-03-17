@@ -13,7 +13,6 @@ define([
             fullName: '',
             dateOfBirth: moment(),
             age: '',
-            location: '',
             email: '',
             role: 'user',
             friends: [],

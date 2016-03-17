@@ -18,9 +18,19 @@ define([
         events: {},
         render: function () {
             var self = this;
+            var friendsArr;
+            var my;
+            var myStatus;
+            var iAmInFriends;
+            friendsArr = self.model.get('friends');
             var $templateForUsers = $('#template-for-users');
             if ($templateForUsers.attr('id')) {
-                self.$el.append(self.tmpl(this.model.toJSON()));
+                my = _.filter(friendsArr, function (me) {
+                    return (me._id == APP.usrId);
+                });
+                iAmNotInFriends = my[0]==undefined;
+                myStatus = (iAmNotInFriends)?'add':my[0].status;
+                self.$el.append(self.tmpl(self.model.toJSON()));
                 return this;
             }
         }

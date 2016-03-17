@@ -37,14 +37,12 @@ define([
             var self = this;
             var mess = message;
             APP.io.emit('custom_event', mess, function (data) {
-                console.log('data', data);
                 self.appendToChat(mess);
             });
         },
         appendToChat: function (message) {
             var mess = message;
             var self = this;
-            console.log(mess);
             self.$el.prepend(self.tmpl(mess.toJSON()));
         }
     });

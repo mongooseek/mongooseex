@@ -1,11 +1,14 @@
 //Backbone router of application.
 define([
     'Backbone',
+    'Underscore',
     'models/user',
     'views/models/usr'
-], function (Backbone, UsrModel, UsrView) {
+], function (Backbone, _, UsrModel, UsrView) {
     var Router = Backbone.Router.extend({
         routes: {
+
+            '': 'start',
             'myApp(/:content)': 'goToContent',
             'myApp/user/friend': 'goToFriends',
             'myApp/login': 'login',
@@ -13,19 +16,22 @@ define([
             '*any': 'goToDashboard'
         },
         initialize: function () {
-            APP.init = 'Hi!!!';
             var usrModel = new UsrModel();
             usrModel.urlRoot = '/login';
             console.log('UsrView', UsrView);
             usrModel.save(null, {
                 success: function (response) {
                     APP.usrId = usrModel.get('_id');
+                    APP.loggedIn = true;
                     var usrView = new UsrView({model: usrModel});
                 },
                 error: function (err) {
                     var usrView = new UsrView({model: usrModel});
                 }
             });
+        },
+        start: function(){
+            self.goToDashboard();
         },
         login: function () {
             console.log('LOGIN FUNCTION TRIGERED');
@@ -59,6 +65,7 @@ define([
             this.view = new View({collection: this.collection});
         },
         goToDashboard: function () {
+            console.log('Go to dashboard!!!');
         }
     });
     return Router;

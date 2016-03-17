@@ -6,6 +6,32 @@ module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+    //
+    this.addToFriends = function (req, res, next) {
+        var id = req.params.id;
+        var friends = req.body.friends;
+        User.findOneAndUpdate(id, {$set: friends}, function (err, doc) {
+            if (err) {
+                return next(err);
+            }
+            res.status(200).send(doc);
+        })
+    };
+
+    //Handler to update users.
+    this.update = function (req, res, next) {
+        var id = req.params.id;
+        var body = req.body;
+
+        User.findByIdAndUpdate(id, {$set: body}, {new: true}, function (err, user) {
+            if (err) {
+                return next(err);
+            }
+
+            res.status(200).send(user);
+        });
+    };
+
     //Handler to create a user within registration.
     this.createUser = function (req, res, next) {
         console.log('I am creatin user!');
@@ -44,20 +70,6 @@ module.exports = function () {
         var userId = ((!req.params.id) ? (req.session.uId) : req.params.id);
 
         User.findById(userId, {pass: 0}, function (err, user) {
-            if (err) {
-                return next(err);
-            }
-
-            res.status(200).send(user);
-        });
-    };
-
-    //Handler to update users.
-    this.update = function (req, res, next) {
-        var id = req.params.id;
-        var body = req.body;
-
-        User.findByIdAndUpdate(id, {$set: body}, {new: true}, function (err, user) {
             if (err) {
                 return next(err);
             }
@@ -130,5 +142,5 @@ module.exports = function () {
             req.session.loggedIn = false;
             res.status(200).end();
         });
-    }
+    };
 };

@@ -1,6 +1,7 @@
 //Module to get 'user' mongoose model.
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = mongoose.Schema.Types.ObjectId;
 var ModelSchema = new Schema({
     firstName: String,
     lastName: String,
@@ -9,7 +10,13 @@ var ModelSchema = new Schema({
     location: String,
     dateOfBirth: Date,
     role: String,
-    friends: [],
+    friends: [
+        {
+            added: {type: Date},
+            status: String,
+            id: {type: ObjectId, ref: 'user'}
+        }
+    ],
     authorized: Boolean,
     confirmed: Boolean,
     photo: String

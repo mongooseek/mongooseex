@@ -41,16 +41,42 @@ define([
             var friendModel;
             var usrModel;
             var usrFriends;
+            var friendFriends;
+            var modelForFriendArray;
+            var modelForUsrArray;
+            var $addToFriends = $('.add-to-friends');
+            var $cancelFriendShip = $('.cancel-friendship');
+            var $readPosts = $('.read-posts');
+            var added = moment();
             e.preventDefault();
             friendId = e.target.type;
             friendModel = this.collection.get(friendId);
             usrModel = this.collection.get(APP.usrId);
+            friendFriends = friendModel.get('friends');
             usrFriends = usrModel.get('friends');
-            if (usrFriends.indexOf(friendId) == -1 && friendId != APP.usrId) {
+
+            modelForFriendArray = {'_id': APP.usrId, added: added, status: 'requested'};
+            modelForUsrArray = {'_id': friendId, added: added, status: 'pending'};
+
+            friendFriends.push(modelForFriendArray);
+            usrFriends.push(modelForUsrArray);
+
+            friendModel.set({friends: friendFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
+            usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
+
+            friendModel.save({patch: true});
+            usrModel.save({patch: true});
+
+            $addToFriends.hide();
+            $cancelFriendShip.show();
+            $readPosts.show();
+
+
+            /*if (usrFriends.indexOf(friendId) == -1 && friendId != APP.usrId) {
                 usrFriends.push(friendId);
                 usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
                 usrModel.save();
-            }
+            }*/
         },
         render: function () {
             console.log('Clicked USERS BUTTON');

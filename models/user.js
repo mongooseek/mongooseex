@@ -17,6 +17,11 @@ var ModelSchema = new Schema({
             id: {type: ObjectId, ref: 'user'}
         }
     ],
+    city: {
+        cityName: String,
+        cityLongitude: Number,
+        cityLatitude: Number
+    },
     authorized: Boolean,
     confirmed: Boolean,
     photo: String

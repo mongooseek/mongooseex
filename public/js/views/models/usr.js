@@ -46,10 +46,11 @@ define([
         login: function () {
             console.log('Signin button clicked!!');
             var self = this;
-            console.log(this.model);
             var usrModel = this.model;
             var email = $('#input-email').val();
             var pass = $('#input-password').val();
+            //city.cityName = $('#input-city').val();
+            //city.coordinates = 'http://maps.google.com/maps/api/geocode/json?address=Uzhgorod?sensor=false';
             usrModel.set({email: email, pass: pass});
             usrModel.urlRoot = '/login';
             usrModel.save(null, {
@@ -68,14 +69,25 @@ define([
         },
         logup: function () {
             console.log('Signup button clicked!!');
+            var city = {};
             var self = this;
             var usrModel = this.model;
             var firstName = $('#input-first-name').val();
             var lastName = $('#input-last-name').val();
             var email = $('#input-email').val();
             var pass = $('#input-password').val();
+            city.name = $('#input-city').val();
+            $.ajax({
+                type: "GET",
+                url: 'http://maps.google.com/maps/api/geocode/json?address=' + city.name + '?sensor=false',
+                data: {},
+                success: function(val){
+                    city.lat = val.results[0].geometry.location.lat;
+                    city.lng = val.results[0].geometry.location.lng;
+                }
+            });
             var confirmPass = $('#input-confirm-password').val();
-            usrModel.set({firstName: firstName, lastName: lastName, email: email, pass: pass});
+            usrModel.set({firstName: firstName, lastName: lastName, email: email, pass: pass, city: city});
             usrModel.urlRoot = '/logup';
             usrModel.save(null, {
                 success: function (response) {

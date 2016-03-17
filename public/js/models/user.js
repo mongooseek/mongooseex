@@ -17,6 +17,7 @@ define([
             email: '',
             role: 'user',
             friends: [],
+            city: {},
             photo: 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png'
         },
         initialize: function () {

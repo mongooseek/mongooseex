@@ -19,10 +19,10 @@ define([
         },
         events: {
             'click .add-to-friends': 'addToFriends',
-            'click .refuse-proposition': 'nullifyProposition',
-            'click .cancel-proposition': 'nullifyProposition',
+            'click .refuse-proposition': 'nullify',
+            'click .cancel-proposition': 'nullify',
             'click .confirm-proposition': 'confirmProposition',
-            'click .remove-friend': 'nullifyProposition'
+            'click .remove-friend': 'nullify'
         },
         filterFriends: function () {
             var self = this;
@@ -53,13 +53,18 @@ define([
             var usrModel;
             var usrFriends;
             var friendFriends;
+            var $refuseProposition;
+            var $confirmProposition;
+            var $removeFriend;
+            var $readPosts;
+            var type;
             var added = moment();
             friendId = e.target.type;
-            /*'click .add-to-friends': 'addToFriends',
-                'click .refuse-proposition': 'nullifyProposition',
-                'click .cancel-proposition': 'nullifyProposition',
-                'click .confirm-proposition': 'confirmProposition',
-                'click .remove-friend': 'nullifyProposition'*/
+            type = "[type='" + friendId + "']";
+            $refuseProposition = $(".refuse-proposition" + type);
+            $confirmProposition = $(".confirm-proposition" + type);
+            $removeFriend = $(".remove-friend" + type);
+            $readPosts = $(".read-posts" + type);
             usrId = APP.usrId;
             friendModel = this.collection.get(friendId);
             usrModel = this.collection.get(usrId);
@@ -73,10 +78,7 @@ define([
                 return friend._id == friendId;
             });
 
-            console.log('friendModelInUsrArr', friendModelInUsrArr);
-            console.log('usrFriends', usrFriends);
             friendIndexInUsrArr = usrFriends.indexOf(friendModelInUsrArr[0]);
-            console.log('friendIndexInUsrArr', friendIndexInUsrArr);
 
             usrFriends[friendIndexInUsrArr] = modelForUsrArray;
 
@@ -84,10 +86,7 @@ define([
                 return friend._id == usrId;
             });
 
-            console.log('usrModelInFriendArr', usrModelInFriendArr);
-            console.log('friendFriends', friendFriends);
             usrIndexInFriendArr = friendFriends.indexOf(usrModelInFriendArr[0]);
-            console.log('usrIndexInFriendArr', usrIndexInFriendArr);
 
             friendFriends[usrIndexInFriendArr] = modelForFriendArray;
 
@@ -96,8 +95,13 @@ define([
 
             friendModel.save({patch: true});
             usrModel.save({patch: true});
+
+            $refuseProposition.hide();
+            $confirmProposition.hide();
+            $removeFriend.show();
+            $readPosts.show();
         },
-        nullifyProposition: function (e) {
+        nullify: function (e) {
             e.preventDefault();
             console.log('Clicked cancel');
             var usrModelInFriendArr;
@@ -110,7 +114,21 @@ define([
             var usrModel;
             var usrFriends;
             var friendFriends;
+            var $addToFriends;
+            var $refuseProposition;
+            var $cancelProposition;
+            var $confirmProposition;
+            var $removeFriend;
+            var $readPosts;
+            var type;
             friendId = e.target.type;
+            type = "[type='" + friendId + "']";
+            $addToFriends = $(".add-to-friends" + type);
+            $refuseProposition = $(".refuse-proposition" + type);
+            $confirmProposition = $(".confirm-proposition" + type);
+            $cancelProposition = $(".cancel-proposition" + type);
+            $removeFriend = $(".remove-friend" + type);
+            $readPosts = $(".read-posts" + type);
             usrId = APP.usrId;
             friendModel = this.collection.get(friendId);
             usrModel = this.collection.get(usrId);
@@ -136,6 +154,13 @@ define([
 
             friendModel.save({patch: true});
             usrModel.save({patch: true});
+
+            $addToFriends.show();
+            $refuseProposition.hide();
+            $confirmProposition.hide();
+            $cancelProposition.hide();
+            $removeFriend.hide();
+            $readPosts.hide();
         },
         addToFriends: function (e) {
             e.preventDefault();
@@ -171,6 +196,7 @@ define([
 
             friendModel.save({patch: true});
             usrModel.save({patch: true});
+
             $addToFriends.hide();
             $cancelProposition.show();
         },

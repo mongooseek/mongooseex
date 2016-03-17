@@ -55,6 +55,11 @@ define([
             var friendFriends;
             var added = moment();
             friendId = e.target.type;
+            /*'click .add-to-friends': 'addToFriends',
+                'click .refuse-proposition': 'nullifyProposition',
+                'click .cancel-proposition': 'nullifyProposition',
+                'click .confirm-proposition': 'confirmProposition',
+                'click .remove-friend': 'nullifyProposition'*/
             usrId = APP.usrId;
             friendModel = this.collection.get(friendId);
             usrModel = this.collection.get(usrId);
@@ -94,7 +99,7 @@ define([
         },
         nullifyProposition: function (e) {
             e.preventDefault();
-            console.log('Clicked add to friends');
+            console.log('Clicked cancel');
             var usrModelInFriendArr;
             var friendModelInUsrArr;
             var usrIndexInFriendArr;
@@ -144,8 +149,12 @@ define([
             var modelForFriendArray;
             var modelForUsrArray;
             var added = moment();
+            var $addToFriends;
+            var $cancelProposition;
             friendId = e.target.type;
             usrId = APP.usrId;
+            $addToFriends = $(".add-to-friends[type='" + friendId + "']");
+            $cancelProposition = $(".cancel-proposition[type='" + friendId + "']");
             friendModel = this.collection.get(friendId);
             usrModel = this.collection.get(usrId);
             friendFriends = friendModel.get('friends');
@@ -162,6 +171,8 @@ define([
 
             friendModel.save({patch: true});
             usrModel.save({patch: true});
+            $addToFriends.hide();
+            $cancelProposition.show();
         },
         render: function () {
             console.log('Clicked USERS BUTTON');

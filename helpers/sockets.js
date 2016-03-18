@@ -7,8 +7,11 @@ module.exports = function(sockets){
     ]);
 
     sockets.on('connection', function(socket){
+        //console.log(socket.id);
+        //console.log();
         socket.on('custom_event', function(data, cb){
-            socket.broadcast.emit('custom_response', data);
+            console.log('data', data);
+            socket.to().broadcast.emit('custom_response', data);
             cb(123);
         });
     });

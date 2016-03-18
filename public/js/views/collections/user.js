@@ -6,23 +6,49 @@ define([
     'collections/user',
     'models/user',
     'views/models/user',
+    'views/collections/replica',
     'text!templates/collections/user.html',
     'Moment'
-], function (Backbone, $, _, UsersCollection, UserModel, UserView, usersTemplate, moment) {
+], function (Backbone, $, _, UsersCollection, UserModel, UserView, ReplicasView, usersTemplate, moment) {
 
     var UsersView = Backbone.View.extend({
         el: "#for-templates",
         tmpl: _.template(usersTemplate),
         initialize: function () {
+            var replicasView = new ReplicasView();
             console.log("USER VIEW was INITIALIZED");
             this.render();
         },
         events: {
+            //Block of events connected to friendship.
             'click .add-to-friends': 'addToFriends',
+            'click .confirm-proposition': 'confirmProposition',
             'click .refuse-proposition': 'nullify',
             'click .cancel-proposition': 'nullify',
-            'click .confirm-proposition': 'confirmProposition',
-            'click .remove-friend': 'nullify'
+            'click .remove-friend': 'nullify',
+            //Block serves to catch events connected to reading posts of user's friends.
+            'click .read-posts': 'readPosts',
+            'click .send-message': 'sendMessage'
+
+        },
+        sendMessage: function(e){
+            e.preventDefault();
+            var usrId;
+            var userId;
+            usrId = APP.usrId;
+            userId = e.target.type;
+
+        },
+        readPosts: function () {
+            e.preventDefault();
+            console.log('Clicked read posts');
+            var friendId;
+            var type;
+            var usrId;
+            friendId = e.target.type;
+            type = "[type='" + friendId + "']";
+            usrId = APP.usrId;
+
         },
         filterFriends: function () {
             var self = this;

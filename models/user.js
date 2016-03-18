@@ -21,6 +21,9 @@ var ModelSchema = new Schema({
         lat: Number,
         lng: Number
     },
+    negotiators: [
+        {type: ObjectId, ref: 'user'}
+    ],
     authorized: Boolean,
     confirmed: Boolean,
     photo: String

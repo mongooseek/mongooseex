@@ -17,7 +17,7 @@ define([
             console.log("CHATS VIEW was INITIALIZED");
             this.render();
             var self = this;
-            APP.io = socketio.connect();
+            //APP.io = socketio.connect();
             APP.io.on('custom_response', function (data) {
                 self.renderOne(data);
             });

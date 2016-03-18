@@ -52,9 +52,9 @@ function onConnection() {
     var UserHandler;
     var userRouter;
     var userHandler;
-    var ChatHandler;
-    var chatRouter;
-    var chatHandler;
+    var ReplicaHandler;
+    var replicaRouter;
+    var replicaHandler;
 
     port = parseInt(port, 10);
 
@@ -66,9 +66,9 @@ function onConnection() {
     UserHandler = require('./handlers/user');
     userRouter = require('./routers/user');
     userHandler = new UserHandler();
-    ChatHandler = require('./handlers/chat');
-    chatRouter = require('./routers/chat');
-    chatHandler = new ChatHandler();
+    ReplicaHandler = require('./handlers/replica');
+    replicaRouter = require('./routers/replica');
+    replicaHandler = new ReplicaHandler();
 
     friendRouter = require('./routers/friend');
 
@@ -95,7 +95,7 @@ function onConnection() {
 
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', authStackMidlware, userRouter);
-    app.use('/api/chats', authStackMidlware, chatRouter);
+    app.use('/api/replicas', authStackMidlware, replicaRouter);
     //app.use('/api/friends', authStackMidlware, friendRouter);
 
     app.use(function (err, req, res, next) {

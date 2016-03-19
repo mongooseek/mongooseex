@@ -273,9 +273,9 @@ define([
                 $temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl);
-            var users = this.collection;
-            users.forEach(function (userModel) {
-                var view = new UserView({model: userModel});
+            var negotiators = this.collection;
+            negotiators.forEach(function (negotiatorModel) {
+                var view = new NegotiatorView({model: negotiatorModel});
             });
             return this;
         }

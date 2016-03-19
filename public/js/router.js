@@ -13,6 +13,7 @@ define([
             'myApp/user/friend': 'goToFriends',
             'myApp/login': 'login',
             'myApp/logup': 'logup',
+            'myApp/:content/conversation/:part2': 'conversation',
             '*any': 'goToDashboard'
         },
         initialize: function () {
@@ -30,11 +31,23 @@ define([
                 }
             });
         },
-        start: function(){
-            self.goToDashboard();
-        },
-        login: function () {
-            console.log('LOGIN FUNCTION TRIGERED');
+        conversation: function (content, part2) {
+            console.log('conversation activated');
+            var apiUrl = '/api/replicas/' + part2 + '/';
+            var self = this;
+            var collectionUrl;
+            var viewUrl;
+            collectionUrl = 'collections/replica';
+            viewUrl = 'views/collections/replica';
+            require([collectionUrl, viewUrl], function (Collection, View) {
+                var collection = new Collection();
+                self.collection = collection;
+                self.collection.url = apiUrl;
+                collection.on('reset', function () {
+                    self.renderView(View);
+                });
+                collection.fetch({reset: true});
+            });
         },
         goToContent: function (content) {
             console.log('The content is', content);
@@ -55,7 +68,7 @@ define([
                 collection.fetch({reset: true});
             });
         },
-        goToFriends: function(){
+        goToFriends: function () {
 
         },
         renderView: function (View) {
@@ -66,6 +79,12 @@ define([
         },
         goToDashboard: function () {
             console.log('Go to dashboard!!!');
+        },
+        start: function () {
+            self.goToDashboard();
+        },
+        login: function () {
+            console.log('LOGIN FUNCTION TRIGERED');
         }
     });
     return Router;

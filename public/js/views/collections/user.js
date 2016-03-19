@@ -43,6 +43,7 @@ define([
             var type;
             var $replicaField;
             var replica;
+            var date = moment();
             usrId = APP.usrId;
             userId = e.target.type;
             usrModel = this.collection.get(usrId);
@@ -55,15 +56,17 @@ define([
                 part2: userId,
                 status: 'sender',
                 text: replica,
-                date: moment()
+                date: date
             });
             var userReplicaModel = new ReplicaModel({
                 part1: userId,
                 part2: usrId,
                 status: 'receiver',
                 text: replica,
-                date: moment()
+                date: date
             });
+            usrReplicaModel.urlRoot = '/api/replicas/' + userId + '/';
+            userReplicaModel.urlRoot = '/api/replicas/' + usrId + '/';
             usrNegotiators = usrModel.get('negotiators');
             userNegotiators = userModel.get('negotiators');
             if (usrNegotiators.indexOf(userId) == -1) {

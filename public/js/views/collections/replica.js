@@ -26,16 +26,21 @@ define([
         events: {
             'click #send-mssg': 'sendMessage',
         },
-        sendMessage: function () {
-            /*var replicaModel = new ReplicaModel();
-            replicaModel.set({
-                part1: '56e737443d6ceabc126c9af2',
-                part2: '56eadde6f8ab6c3c15a9e25a',
+        sendMessage: function (e) {
+            var $messageField;
+            var part1;
+            var part2;
+            part1 = APP.usrId;
+            part2 = e.target.type;
+            var replicaModel1 = new ReplicaModel();
+            replicaModel1.set({
+                part1: part1,
+                part2: part2,
                 status: 'sender',
                 text: 'hi',
                 date: moment()
             });
-            replicaModel.save();*/
+            replicaModel.save();
             var replicasCollection = new ReplicasCollection();
             replicasCollection.url = '/api/replicas/56e737443d6ceabc126c9af2/';
             replicasCollection.fetch();

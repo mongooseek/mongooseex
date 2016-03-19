@@ -11,7 +11,7 @@ module.exports = function () {
         var uId;
         var one;
         uId = req.session.uId;
-        User.find({negotiators: uId}, {photo: 0}, function (err, negotiators) {
+        User.find({negotiators: uId}, {pass: 0}, function (err, negotiators) {
             if (err) {
                 console.log(one);
                 return next(err);
@@ -34,7 +34,7 @@ module.exports = function () {
 
     //Handler to update users.
     this.update = function (req, res, next) {
-        var id = req.params.id; cd 
+        var id = req.params.id;
         var body = req.body;
 
         User.findByIdAndUpdate(id, {$set: body}, {new: true}, function (err, user) {

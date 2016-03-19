@@ -6,9 +6,10 @@ module.exports = function () {
     var Replica = mongoose.model('replica');
 
     //Handler to get all chat messages.
-    this.getAll = function (req, res, next) {
-        console.log(req.params);
-        Replica.find({part1: req.params.part1, part2: '56eadde6f8ab6c3c15a9e25a'}, {__v: 0}, function (err, replicas) {
+    this.getAllWithOne = function (req, res, next) {
+        var part1 = req.session.uId;
+        var part2 = req.params.part2;
+        Replica.find({part1: part1, part2: part2}, {__v: 0}, function (err, replicas) {
             if (err) {
                 return next(err);
             }

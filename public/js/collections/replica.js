@@ -3,7 +3,7 @@ define([
     'Backbone',
     'collections/base',
     'models/replica'
-], function (BaseCollection, ReplicaModel) {
+], function (Backbone, BaseCollection, ReplicaModel) {
 
     var ReplicasCollection = Backbone.Collection.extend({
         //content: "api\/replicas\/:part2",

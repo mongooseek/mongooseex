@@ -5,17 +5,18 @@ define([
     'collections/replica',
     'models/replica',
     'views/models/replica',
-    //'text!templates/collections/replica.html',
+    'text!templates/collections/replica.html',
     'Moment',
     'socketio'
-], function (Backbone, $, ReplicasCollection, ReplicaModel, ReplicaView, /*replicasTemplate, */moment, socketio) {
+], function (Backbone, $, ReplicasCollection, ReplicaModel, ReplicaView, replicasTemplate, moment, socketio) {
 
     var ReplicasView = Backbone.View.extend({
-        el: "#for-all-conversations", //"#for-templates",
+        el: "#conversation", //"#for-templates",
         //el: "#for-replicas", //"#for-templates",
-        //tmpl: _.template(replicasTemplate),
+        tmpl: _.template(replicasTemplate),
         initialize: function () {
             console.log("REPLICAS VIEW was INITIALIZED");
+            this.render();
             /*this.render();
              var self = this;
              //APP.io = socketio.connect();
@@ -25,6 +26,28 @@ define([
         },
         events: {
             'click #send-mssg': 'sendMessage',
+        },
+        render: function () {
+            var self = this;
+            var replicas;
+            self.$el.append(self.tmpl);
+            replicas = this.collection;
+            replicas.forEach(function (replica) {
+                var replicaView = new ReplicaView({model: replica});
+                return this;
+            });
+            /*console.log('Clicked CHAT BUTTON');
+             var self = this;
+             var $temporaryTemplate = $('.temporary-template');
+             if ($temporaryTemplate.attr('id')) {
+             $temporaryTemplate.remove();
+             }
+             this.$el.append(self.tmpl);
+             var chats = this.collection;
+             chats.forEach(function (chatModel) {
+             var view = new ChatView({model: chatModel});
+             });
+             return this;*/
         },
         sendMessage: function (e) {
             var $messageField;
@@ -49,20 +72,6 @@ define([
         renderOne: function (model) {
             /*var model = new ChatModel(model);
              var chatView =  new ChatView({model: model});*/
-        },
-        render: function () {
-            /*console.log('Clicked CHAT BUTTON');
-             var self = this;
-             var $temporaryTemplate = $('.temporary-template');
-             if ($temporaryTemplate.attr('id')) {
-             $temporaryTemplate.remove();
-             }
-             this.$el.append(self.tmpl);
-             var chats = this.collection;
-             chats.forEach(function (chatModel) {
-             var view = new ChatView({model: chatModel});
-             });
-             return this;*/
         }
     });
 

@@ -32,6 +32,11 @@ define([
             });
         },
         conversation: function (content, part2) {
+            var $forReplicas;
+            $forReplicas = $('#template-for-replicas');
+            if ($forReplicas.attr('id')) {
+                $forReplicas.remove();
+            }
             console.log('conversation activated');
             var apiUrl = '/api/replicas/' + part2 + '/';
             var self = this;

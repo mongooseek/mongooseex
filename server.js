@@ -55,6 +55,9 @@ function onConnection() {
     var ReplicaHandler;
     var replicaRouter;
     var replicaHandler;
+    var NegotiatorHandler;
+    var negotiatorRouter;
+    var negotiatorHandler;
 
     port = parseInt(port, 10);
 
@@ -69,6 +72,11 @@ function onConnection() {
     ReplicaHandler = require('./handlers/replica');
     replicaRouter = require('./routers/replica');
     replicaHandler = new ReplicaHandler();
+
+
+    NegotiatorHandler = require('./handlers/user');
+    negotiatorRouter = require('./routers/negotiator');
+    negotiatorHandler = new NegotiatorHandler();
 
     friendRouter = require('./routers/friend');
 
@@ -96,7 +104,7 @@ function onConnection() {
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', authStackMidlware, userRouter);
     app.use('/api/replicas', authStackMidlware, replicaRouter);
-    //app.use('/api/friends', authStackMidlware, friendRouter);
+    app.use('/api/negotiators', authStackMidlware, negotiatorRouter);
 
     app.use(function (err, req, res, next) {
         var status = err.status || 500;

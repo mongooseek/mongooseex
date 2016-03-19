@@ -6,6 +6,20 @@ module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+
+    this.findNegotiators = function (req, res, next) {
+        var uId;
+        var one;
+        uId = req.session.uId;
+        User.find({negotiators: uId}, {photo: 0}, function (err, negotiators) {
+            if (err) {
+                console.log(one);
+                return next(err);
+            }
+            res.status(200).send(negotiators);
+        })
+    };
+
     //
     this.addToFriends = function (req, res, next) {
         var id = req.params.id;
@@ -20,7 +34,7 @@ module.exports = function () {
 
     //Handler to update users.
     this.update = function (req, res, next) {
-        var id = req.params.id;
+        var id = req.params.id; cd 
         var body = req.body;
 
         User.findByIdAndUpdate(id, {$set: body}, {new: true}, function (err, user) {
@@ -94,7 +108,6 @@ module.exports = function () {
     //Handler to get user within login.
     this.login = function (req, res, next) {
         if (req.session.uId && req.session.loggedIn) {
-            console.log(req.session.uId, req.session.loggedIn);
             User.findOne({_id: req.session.uId}, {
                 pass: 0,
                 __v: 0
@@ -111,7 +124,6 @@ module.exports = function () {
             body.pass = shaSum.digest('hex');
             console.log(body);
             User.findOne({pass: body.pass, email: body.email}, function (err, user) {
-                console.log('body', body);
                 if (err) {
                     return next(err);
                 }

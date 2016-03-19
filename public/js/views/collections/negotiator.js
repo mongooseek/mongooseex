@@ -5,19 +5,19 @@ define([
     'Underscore',
     'collections/user',
     'models/user',
-    'views/models/user',
+    'views/models/negotiator',
     'models/replica',
     'views/collections/replica',
-    'text!templates/collections/user.html',
+    'text!templates/collections/negotiator.html',
     'Moment'
-], function (Backbone, $, _, UsersCollection, UserModel, UserView, ReplicaModel, ReplicasView, usersTemplate, moment) {
+], function (Backbone, $, _, UsersCollection, UserModel, NegotiatorView, ReplicaModel, ReplicasView, negotiatorsTemplate, moment) {
 
-    var UsersView = Backbone.View.extend({
+    var NegotiatorsView = Backbone.View.extend({
         el: "#for-templates",
-        tmpl: _.template(usersTemplate),
+        tmpl: _.template(negotiatorsTemplate),
         initialize: function () {
             //var replicasView = new ReplicasView();
-            console.log("USER VIEW was INITIALIZED");
+            console.log("NEGOTIATORS VIEW was INITIALIZED");
             this.render();
         },
         events: {
@@ -281,5 +281,5 @@ define([
         }
     });
 
-    return UsersView;
+    return NegotiatorsView;
 });

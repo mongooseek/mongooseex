@@ -18,7 +18,7 @@ module.exports = function () {
 
     //Handler to get chat's message by id of message.
     this.getById = function (req, res, next) {
-        Chat.find({owner: req.params.id}, {__v: 0}, function (err, post) {
+        Replica.find({owner: req.params.id}, {__v: 0}, function (err, post) {
             if (err) {
                 return next(err);
             }

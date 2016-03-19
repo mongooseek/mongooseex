@@ -22,7 +22,8 @@ var ModelSchema = new Schema({
         lng: Number
     },
     negotiators: [
-        {type: ObjectId, ref: 'user'}
+        ObjectId
+        //{id: {type: ObjectId, ref: 'user'}}
     ],
     authorized: Boolean,
     confirmed: Boolean,

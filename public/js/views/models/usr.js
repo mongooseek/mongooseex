@@ -10,7 +10,7 @@ define([
 ], function (Backbone, _, $, UsrModel, usrTemplate, moment) {
     console.log("I am inside user view");
     var UsrView = Backbone.View.extend({
-        el: '#content',
+        el: '#vrakashy',
         tmpl: _.template(usrTemplate),
         initialize: function () {
             console.log('Main user (usr) initialized');
@@ -121,7 +121,12 @@ define([
             $('#preview').attr('src', this.model.get('photo'));
         },
         render: function () {
+            console.log('I am in render');
             if (APP.usrId) {
+                $mainBlock = $('#main-block');
+                if($mainBlock.attr('id')){
+                    $mainBlock.remove();
+                }
                 $('#login-form').hide();
                 $('#photoPreviewForm').show();
                 console.log('I am inside userView render function!!!');

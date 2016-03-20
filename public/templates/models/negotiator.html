@@ -1,10 +1,15 @@
-<tr id="<%=_id%>">
-    <td><img src="<%=photo%>" width='100'></td>
-    <td>
-        <h4><%=fullName%></h4>
-        <a href="#myApp/negotiator/conversation/<%=_id%>" type='<%=_id%>' class="btn btn-primary conversation">Conversation</a>
-    </td>
-</tr>
-<tr type='<%=_id%>' id="conversation">
+<br>
+<div id="<%=_id%>" class="conatiner">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+            <img src="<%=photo%>" width='200'>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+            <h4><%=fullName%></h4>
+            <a href="#myApp/negotiator/conversation/<%=_id%>" type='<%=_id%>' class="btn btn-primary conversation">Conversation</a>
+        </div>
+        <div type='gi' id="conversation" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
 
-</tr>
+        </div>
+    </div>
+</div>

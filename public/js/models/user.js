@@ -20,7 +20,7 @@ define([
             photo: 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png'
         },
         initialize: function () {
-            console.log('Model initialized');
+            console.log('User model initialized');
         },
         parse: function (response) {
             if (response.dateOfBirth) {

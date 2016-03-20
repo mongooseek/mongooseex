@@ -3,33 +3,49 @@ define([
     'Backbone',
     'Underscore',
     'models/user',
-    'views/models/usr'
-], function (Backbone, _, UsrModel, UsrView) {
+], function (Backbone, _, UsrModel) {
     var Router = Backbone.Router.extend({
         routes: {
-
-            '': 'start',
-            'myApp(/:content)': 'goToContent',
-            'myApp/user/friend': 'goToFriends',
+            'myApp/main': 'main',
             'myApp/login': 'login',
             'myApp/logup': 'logup',
+            'myApp/logout': 'logout',
+            'myApp(/:content)': 'goToContent',
             'myApp/:content/conversation/:part2': 'conversation',
-            '*any': 'goToDashboard'
+            '*any': 'start'
         },
-        initialize: function () {
+        start: function () {
+            Backbone.history.navigate('#myApp/main', {trigger: true});
+
+        },
+        main: function () {
+            var self = this;
+            var viewUrl;
             var usrModel = new UsrModel();
             usrModel.urlRoot = '/login';
-            console.log('UsrView', UsrView);
             usrModel.save(null, {
                 success: function (response) {
+                    console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
                     APP.usrId = usrModel.get('_id');
-                    APP.loggedIn = true;
-                    var usrView = new UsrView({model: usrModel});
+                    viewUrl = 'views/models/usr';
+                    require([viewUrl], function (View) {
+                        if(View){
+                            delete View;
+                            console.log('VIEW deleted');
+                        }
+                        var usrView = new View({model: usrModel});
+                    });
                 },
-                error: function (err) {
-                    var usrView = new UsrView({model: usrModel});
+                error: function (error) {
+                    Backbone.history.navigate('#myApp/login', {triger: true});
                 }
             });
+        },
+        initialize: function () {
+            var self = this;
+        },
+        login: function () {
+            console.log('LOGIN');
         },
         conversation: function (content, part2) {
             var $forReplicas;
@@ -38,7 +54,7 @@ define([
                 $forReplicas.remove();
             }
             console.log('conversation activated');
-            var apiUrl = '/api/replicas/' + part2 + '/';
+            var collectionContent = 'api/replicas/' + part2;
             var self = this;
             var collectionUrl;
             var viewUrl;
@@ -47,7 +63,7 @@ define([
             require([collectionUrl, viewUrl], function (Collection, View) {
                 var collection = new Collection();
                 self.collection = collection;
-                self.collection.url = apiUrl;
+                self.collection.content = collectionContent;
                 collection.on('reset', function () {
                     self.renderView(View);
                 });
@@ -81,15 +97,6 @@ define([
                 this.view.undelegateEvents();
             }
             this.view = new View({collection: this.collection});
-        },
-        goToDashboard: function () {
-            console.log('Go to dashboard!!!');
-        },
-        start: function () {
-            self.goToDashboard();
-        },
-        login: function () {
-            console.log('LOGIN FUNCTION TRIGERED');
         }
     });
     return Router;

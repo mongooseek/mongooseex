@@ -1,12 +1,10 @@
 //Collection to deal with chat's messages.
 define([
-    'Backbone',
     'collections/base',
     'models/replica'
-], function (Backbone, BaseCollection, ReplicaModel) {
+], function (BaseCollection, ReplicaModel) {
 
-    var ReplicasCollection = Backbone.Collection.extend({
-        //content: "api\/replicas\/:part2",
+    var ReplicasCollection = BaseCollection.extend({
         model: ReplicaModel
     });
     return ReplicasCollection;

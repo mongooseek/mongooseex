@@ -11,7 +11,7 @@ define([
         console.log(APP.io);
         //APP.io = socketio.disconnect();
         //APP.io.on('custom_response', function (data) {alert(data);});
-        Backbone.history.start({silent: true});
+        Backbone.history.start({silent: false});
     }
 
     return {

@@ -18,6 +18,8 @@ var DB_PORT;
 var connectionOptions;
 var db;
 
+global.connectedPeople = {};
+
 var env = process.env.NODE_ENV;
 require('./config/' + env);
 

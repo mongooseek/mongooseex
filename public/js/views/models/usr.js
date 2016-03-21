@@ -45,8 +45,9 @@ define([
         },
         login: function () {
             console.log('Signin button clicked!!');
+            var $loginForm = $('#login-form');
             var self = this;
-            var usrModel = this.model;
+            var usrModel = new UsrModel();
             var email = $('#input-email').val();
             var pass = $('#input-password').val();
             //city.cityName = $('#input-city').val();
@@ -59,7 +60,8 @@ define([
                     APP.usrId = usrModel.get('_id');
                     usrModel.urlRoot = '/api/users';
                     usrModel.unset('pass', {silent: true});
-                    $('#login-form').hide();
+                    self.model = usrModel;
+                    $('#login-form').remove();
                     self.render();
                 },
                 error: function (err) {
@@ -122,9 +124,11 @@ define([
         },
         render: function () {
             console.log('I am in render');
+            var self = this;
             if (APP.usrId) {
+                APP.io.emit('start', APP.usrId);
                 $mainBlock = $('#main-block');
-                if($mainBlock.attr('id')){
+                if ($mainBlock.attr('id')) {
                     $mainBlock.remove();
                 }
                 $('#login-form').hide();
@@ -134,6 +138,12 @@ define([
                 var usrModel = this.model;
                 this.$el.append(self.tmpl(usrModel.toJSON()));
                 return this;
+            } else {
+                var loginTemplateUrl = 'text!templates/login.html';
+                require([loginTemplateUrl], function (template) {
+                    self.$el.append(template);
+                });
+
             }
         }
     });

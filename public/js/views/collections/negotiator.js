@@ -28,56 +28,54 @@ define([
             'click .cancel-proposition': 'nullify',
             'click .remove-friend': 'nullify',
             //Block serves to catch events connected to reading posts of user's friends.
-            'click .read-posts': 'readPosts',
-            'click .send-message': 'sendMessage'
-
+            'click .read-posts': 'readPosts'
         },
-        sendMessage: function (e) {
-            e.preventDefault();
-            var usrModel;
-            var userModel;
-            var usrNegotiators;
-            var userNegotiators;
-            var usrId;
-            var userId;
-            var type;
-            var $replicaField;
-            var replica;
-            usrId = APP.usrId;
-            userId = e.target.type;
-            usrModel = this.collection.get(usrId);
-            userModel = this.collection.get(userId);
-            type = '[type=' + userId + ']';
-            $replicaField = $('.message-field' + type);
-            replica = $replicaField.val();
-            var usrReplicaModel = new ReplicaModel({
-                part1: usrId,
-                part2: userId,
-                status: 'sender',
-                text: replica,
-                date: moment()
-            });
-            var userReplicaModel = new ReplicaModel({
-                part1: userId,
-                part2: usrId,
-                status: 'receiver',
-                text: replica,
-                date: moment()
-            });
-            usrNegotiators = usrModel.get('negotiators');
-            userNegotiators = userModel.get('negotiators');
-            if (usrNegotiators.indexOf(userId) == -1) {
-                usrNegotiators.push(userId);
-                usrModel.save({patch: true});
-            }
-            if (userNegotiators.indexOf(usrId) == -1) {
-                userNegotiators.push(usrId);
-                userModel.save({patch: true});
-            }
-            usrReplicaModel.save({patch: true});
-            userReplicaModel.save({patch: true});
-            $replicaField.val('');
-        },
+        /*sendMessage: function (e) {
+         e.preventDefault();
+         var usrModel;
+         var userModel;
+         var usrNegotiators;
+         var userNegotiators;
+         var usrId;
+         var userId;
+         var type;
+         var $replicaField;
+         var replica;
+         usrId = APP.usrId;
+         userId = e.target.type;
+         usrModel = this.collection.get(usrId);
+         userModel = this.collection.get(userId);
+         type = '[type=' + userId + ']';
+         $replicaField = $('.message-field' + type);
+         replica = $replicaField.val();
+         var usrReplicaModel = new ReplicaModel({
+         part1: usrId,
+         part2: userId,
+         status: 'sender',
+         text: replica,
+         date: moment()
+         });
+         var userReplicaModel = new ReplicaModel({
+         part1: userId,
+         part2: usrId,
+         status: 'receiver',
+         text: replica,
+         date: moment()
+         });
+         usrNegotiators = usrModel.get('negotiators');
+         userNegotiators = userModel.get('negotiators');
+         if (usrNegotiators.indexOf(userId) == -1) {
+         usrNegotiators.push(userId);
+         usrModel.save({patch: true});
+         }
+         if (userNegotiators.indexOf(usrId) == -1) {
+         userNegotiators.push(usrId);
+         userModel.save({patch: true});
+         }
+         usrReplicaModel.save({patch: true});
+         userReplicaModel.save({patch: true});
+         $replicaField.val('');
+         },*/
         readPosts: function () {
             e.preventDefault();
             console.log('Clicked read posts');

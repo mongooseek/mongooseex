@@ -18,35 +18,6 @@ define([
             Backbone.history.navigate('#myApp/main', {trigger: true});
 
         },
-        main: function () {
-            var self = this;
-            var viewUrl;
-            var usrModel = new UsrModel();
-            usrModel.urlRoot = '/login';
-            usrModel.save(null, {
-                success: function (response) {
-                    console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
-                    APP.usrId = usrModel.get('_id');
-                    viewUrl = 'views/models/usr';
-                    require([viewUrl], function (View) {
-                        if(View){
-                            delete View;
-                            console.log('VIEW deleted');
-                        }
-                        var usrView = new View({model: usrModel});
-                    });
-                },
-                error: function (error) {
-                    Backbone.history.navigate('#myApp/login', {triger: true});
-                }
-            });
-        },
-        initialize: function () {
-            var self = this;
-        },
-        login: function () {
-            console.log('LOGIN');
-        },
         conversation: function (content, part2) {
             var $forReplicas;
             $forReplicas = $('#template-for-replicas');
@@ -69,6 +40,42 @@ define([
                 });
                 collection.fetch({reset: true});
             });
+        },
+        main: function () {
+            var self = this;
+            var viewUrl;
+            var usrModel = new UsrModel();
+            usrModel.urlRoot = '/login';
+            usrModel.save(null, {
+                success: function (response) {
+                    console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
+                    APP.usrId = usrModel.get('_id');
+                    viewUrl = 'views/models/usr';
+                    require([viewUrl], function (View) {
+                        if (View) {
+                            delete View;
+                            console.log('VIEW deleted');
+                        }
+                        var usrView = new View({model: usrModel});
+                    });
+                },
+                error: function (error) {
+                    Backbone.history.navigate('#myApp/login', {trigger: true});
+                }
+            });
+        },
+        login: function () {
+            var viewUrl = 'views/models/usr';
+            require([viewUrl], function (View) {
+                if (View) {
+                    delete View;
+                    console.log('VIEW deleted');
+                }
+                var usrView = new View();
+            });
+        },
+        initialize: function () {
+            var self = this;
         },
         goToContent: function (content) {
             console.log('The content is', content);

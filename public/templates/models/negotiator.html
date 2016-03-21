@@ -1,15 +1,26 @@
 <br>
 <div id="<%=_id%>" class="conatiner">
     <div class="row">
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
             <img src="<%=photo%>" width='200'>
         </div>
-        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
             <h4><%=fullName%></h4>
-            <a href="#myApp/negotiator/conversation/<%=_id%>" type='<%=_id%>' class="btn btn-primary conversation">Conversation</a>
+            <a href="#myApp/negotiator/conversation/<%=_id%>" type="<%=_id%>" class="btn btn-primary conversation"><i
+                    class="fa fa-weixin"></i> Conversation</a>
         </div>
-        <div type='gi' id="conversation" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
+        <div type='<%=_id%>' class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center conversation">
+            <div type='<%=_id%>' class="temporary-template template-for-replicas" style="display: none;">
+                <div>
+                    <textarea type="<%=_id%>" rows="20" cols="50" id="aboutDescription"
+                              style="max-height:100px;min-height:100px; resize: none"></textarea>
+                </div>
+                <div align="right">
+                    <input class="message-field" type="<%=_id%>">
 
+                    <a class="btn btn-default send-message" type="<%=_id%>"><i class="fa fa-envelope-o"></i> Send</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

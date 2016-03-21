@@ -17,11 +17,13 @@ define([
         },
         events: {},
         render: function () {
+            var part;
             var self = this;
             var type = '[type="' + self.model.get('part2') + '"]';
             console.log(self.model.get('text'));
+            part = (self.model.get('status')=='sender')?'me':'2part';
             $textarea = $('textarea' + type);
-            $textarea.append(self.model.get('text') + '\n\n');
+            $textarea.append(part + ': ' + self.model.get('text') + '\n\n');
         },
         emmitMessage: function (message) {
         },

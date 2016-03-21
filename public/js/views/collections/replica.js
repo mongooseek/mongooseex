@@ -14,8 +14,22 @@ define([
         el: ".conversation",
         tmpl: _.template(replicasTemplate),
         initialize: function () {
+            var self = this;
             console.log("REPLICAS VIEW was INITIALIZED");
             this.render();
+
+            APP.io.on('custom_response', function (message) {
+                self.appendToChat(message);
+            });
+
+        },
+        appendToChat: function (message) {
+            var $textArea;
+            console.log('RECEIVED', message);
+            var type = '[type="' + message.sender + '"]';
+            $textArea = $('textarea' + type);
+            $textArea.append('\n\n' + message.text);
+            console.log($textArea);
         },
         events: {
             'click .send-message': 'sendMessage'
@@ -26,6 +40,7 @@ define([
             var type = '[type="' + id + '"]';
             var $messageField = $('.message-field' + type);
             var message = $messageField.val();
+            $messageField.val('');
             var replicaModel1 = new ReplicaModel();
             var replicaModel2 = new ReplicaModel();
             var date = moment();
@@ -33,9 +48,24 @@ define([
             replicaModel2.set({part1: id, part2: APP.usrId, status: "receiver", text: message, date: date});
             replicaModel1.urlRoot = '/api/replicas/' + id + '/';
             replicaModel2.urlRoot = '/api/replicas/' + APP.usrId + '/';
-            replicaModel1.save();
-            replicaModel2.save();
-            $messageField.val('');
+            replicaModel1.save(null, {
+                success: function (response) {
+                },
+                error: function (err) {
+
+                }
+
+            });
+            replicaModel2.save(null, {
+                    success: function (response) {
+                    },
+                    error: function (err) {
+                    }
+                }
+            );
+            APP.io.emit('custom_event', {_id: id, sender: APP.usrId, text: message}, function (cd) {
+                console.log(cd);
+            });
         },
         renderOne: function (e) {
 

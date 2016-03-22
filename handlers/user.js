@@ -7,6 +7,20 @@ module.exports = function () {
     var crypto = require('crypto');
 
 
+    this.getAllFriends = function (req, res, next) {
+        var uId;
+        var status;
+        uId = req.session.uId;
+        status = 'accepted';
+        User.find({friends: {$elemMatch: {status: status, _id: uId}}}, {pass: 0}, function (err, friends) {
+            if (err) {
+                console.log(one);
+                return next(err);
+            }
+            res.status(200).send(friends);
+        })
+    };
+
     this.findNegotiators = function (req, res, next) {
         var uId;
         var one;

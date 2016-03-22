@@ -31,16 +31,13 @@ define([
             var self = this;
             var usrModel = new UsrModel;
             usrModel.urlRoot = '/logout';
-            /*$('#login-form').show();
-            $('#photoPreviewForm').hide();
-            $('#user-block').hide();*/
             usrModel.save(null, {
                 success: function (response) {
                     $mainBlock.remove();
                     delete self.model;
                     delete APP.usrId;
                     delete usrModel;
-                    APP.io.disconnect();
+                    //APP.io.disconnect();
                     Backbone.history.navigate('myApp/login', {trigger: true});
                 },
                 error: function (err) {
@@ -91,7 +88,7 @@ define([
                 url: 'http://maps.google.com/maps/api/geocode/json?address=' + city.name + '?sensor=false',
                 data: {},
                 success: function (val) {
-                    city.name = val.results[0].address_components[0].long_name;
+                    //city.name = val.results[0].address_components[0].long_name;
                     city.lat = val.results[0].geometry.location.lat;
                     city.lng = val.results[0].geometry.location.lng;
                     usrModel.set({
@@ -100,7 +97,7 @@ define([
                         email: email,
                         pass: pass,
                         dateOfBirth: dateOfBirth,
-                        city: city
+                        location: [city.lng, city.lat]
                     });
                     usrModel.urlRoot = '/logup';
                     usrModel.save(null, {
@@ -131,7 +128,7 @@ define([
                     $mainBlock.remove();
                 }
                 /*$('#login-form').hide();
-                $('#photoPreviewForm').show();*/
+                 $('#photoPreviewForm').show();*/
                 $startForms.remove();
                 console.log('I am inside userView render function!!!');
                 var self = this;

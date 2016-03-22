@@ -21,6 +21,10 @@ var ModelSchema = new Schema({
         lat: Number,
         lng: Number
     },
+    location: {
+        type: [Number],
+        index: '2dsphere'
+    },
     negotiators: [
         ObjectId
         //{id: {type: ObjectId, ref: 'user'}}

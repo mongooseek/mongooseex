@@ -42,27 +42,29 @@ define([
             });
         },
         main: function () {
-            var self = this;
-            var viewUrl;
-            var usrModel = new UsrModel();
-            usrModel.urlRoot = '/login';
-            usrModel.save(null, {
-                success: function (response) {
-                    console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
-                    APP.usrId = usrModel.get('_id');
-                    viewUrl = 'views/models/usr';
-                    require([viewUrl], function (View) {
-                        if (View) {
-                            delete View;
-                            console.log('VIEW deleted');
-                        }
-                        var usrView = new View({model: usrModel});
-                    });
-                },
-                error: function (error) {
-                    Backbone.history.navigate('#myApp/login', {trigger: true});
-                }
-            });
+            if (!APP.usrId) {
+                var self = this;
+                var viewUrl;
+                var usrModel = new UsrModel();
+                usrModel.urlRoot = '/login';
+                usrModel.save(null, {
+                    success: function (response) {
+                        console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
+                        APP.usrId = usrModel.get('_id');
+                        viewUrl = 'views/models/usr';
+                        require([viewUrl], function (View) {
+                            if (View) {
+                                delete View;
+                                console.log('VIEW deleted');
+                            }
+                            var usrView = new View({model: usrModel});
+                        });
+                    },
+                    error: function (error) {
+                        Backbone.history.navigate('#myApp/login', {trigger: true});
+                    }
+                });
+            }
         },
         login: function () {
             var viewUrl = 'views/models/usr';

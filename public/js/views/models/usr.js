@@ -41,7 +41,7 @@ define([
             });
             self.model = new UsrModel();
             $('#user-block').remove();
-            Backbone.history.navigate.origin;
+            //Backbone.history.navigate.origin;
         },
         login: function () {
             console.log('Signin button clicked!!');
@@ -50,8 +50,6 @@ define([
             var usrModel = new UsrModel();
             var email = $('#input-email').val();
             var pass = $('#input-password').val();
-            //city.cityName = $('#input-city').val();
-            //city.coordinates = 'http://maps.google.com/maps/api/geocode/json?address=Uzhgorod?sensor=false';
             usrModel.set({email: email, pass: pass});
             usrModel.urlRoot = '/login';
             usrModel.save(null, {
@@ -62,6 +60,7 @@ define([
                     usrModel.unset('pass', {silent: true});
                     self.model = usrModel;
                     $('#login-form').remove();
+                    Backbone.history.navigate('#myApp/main', {trigger: true});
                     self.render();
                 },
                 error: function (err) {

@@ -48,21 +48,8 @@ define([
             replicaModel2.set({part1: id, part2: APP.usrId, status: "receiver", text: message, date: date});
             replicaModel1.urlRoot = '/api/replicas/' + id + '/';
             replicaModel2.urlRoot = '/api/replicas/' + APP.usrId + '/';
-            replicaModel1.save(null, {
-                success: function (response) {
-                },
-                error: function (err) {
-
-                }
-
-            });
-            replicaModel2.save(null, {
-                    success: function (response) {
-                    },
-                    error: function (err) {
-                    }
-                }
-            );
+            replicaModel1.save({patch: true});
+            replicaModel2.save({patch: true});
             APP.io.emit('custom_event', {_id: id, sender: APP.usrId, text: message}, function (cd) {
                 console.log(cd);
             });

@@ -161,12 +161,9 @@ module.exports = function () {
 
     //Handler is used within logout from site. It changes session.loggedIn to false.
     this.logout = function (req, res, next) {
-        User.findOne({_id: req.session.uId}, {}, function (err, user) {
-            if (err) {
-                return next(err);
-            }
-            req.session.loggedIn = false;
-            res.status(200).end();
-        });
+        var message = {};
+        req.session.loggedIn = false;
+        res.json(message);
+
     };
 };

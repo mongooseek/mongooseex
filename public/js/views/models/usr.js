@@ -17,15 +17,38 @@ define([
             this.render();
         },
         events: {
-            'click #login-button': 'login',
-            'click #logup-button': 'logup',
-            'click [href="#myApp/logup"]': 'logupClicked',
-            'click [href="#myApp/login"]': 'loginClicked',
+            'click #login-button': 'logIn',
+            'click #logup-button': 'logUp',
+            'click [href="#myApp/logup"]': 'logUpClicked',
+            'click [href="#myApp/login"]': 'logInClicked',
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
-            'click #log-out': 'logOut'
+            'click [href="#myApp/logout"]': 'logOut',
         },
-        login: function () {
+        logOut: function () {
+            console.log("I am in logout");
+            var $mainBlock = $('#main-block');
+            var self = this;
+            var usrModel = new UsrModel;
+            usrModel.urlRoot = '/logout';
+            /*$('#login-form').show();
+            $('#photoPreviewForm').hide();
+            $('#user-block').hide();*/
+            usrModel.save(null, {
+                success: function (response) {
+                    $mainBlock.remove();
+                    delete self.model;
+                    delete APP.usrId;
+                    delete usrModel;
+                    APP.io.disconnect();
+                    Backbone.history.navigate('myApp/login', {trigger: true});
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        },
+        logIn: function () {
             console.log('LOGIN button clicked!!');
             var $startForms = $('#start-forms');
             var self = this;
@@ -50,7 +73,7 @@ define([
                 }
             });
         },
-        logup: function () {
+        logUp: function () {
             var $startForms = $('#start-forms');
             console.log('LOGUP button clicked!!');
             var city = {};
@@ -71,7 +94,14 @@ define([
                     city.name = val.results[0].address_components[0].long_name;
                     city.lat = val.results[0].geometry.location.lat;
                     city.lng = val.results[0].geometry.location.lng;
-                    usrModel.set({firstName: firstName, lastName: lastName, email: email, pass: pass, dateOfBirth: dateOfBirth, city: city});
+                    usrModel.set({
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        pass: pass,
+                        dateOfBirth: dateOfBirth,
+                        city: city
+                    });
                     usrModel.urlRoot = '/logup';
                     usrModel.save(null, {
                         success: function (response) {
@@ -100,8 +130,9 @@ define([
                 if ($mainBlock.attr('id')) {
                     $mainBlock.remove();
                 }
-                $('#login-form').hide();
-                $('#photoPreviewForm').show();
+                /*$('#login-form').hide();
+                $('#photoPreviewForm').show();*/
+                $startForms.remove();
                 console.log('I am inside userView render function!!!');
                 var self = this;
                 var usrModel = this.model;
@@ -119,33 +150,13 @@ define([
 
             }
         },
-        logupClicked: function () {
+        logUpClicked: function () {
             $('#login-form').hide();
             $('#logup-form').show();
         },
-        loginClicked: function () {
+        logInClicked: function () {
             $('#logup-form').hide();
             $('#login-form').show();
-        },
-        logOut: function () {
-            APP.usrId = {};
-            delete this.model;
-            var self = this;
-            var usrModel = new UsrModel();
-            usrModel.urlRoot = '/logout';
-            $('#login-form').show();
-            $('#photoPreviewForm').hide();
-            $('#user-block').hide();
-            usrModel.save(null, {
-                success: function (response) {
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-            self.model = new UsrModel();
-            $('#user-block').remove();
-            //Backbone.history.navigate.origin;
         },
         savePhoto: function () {
             console.log("Clicked save photo button.");

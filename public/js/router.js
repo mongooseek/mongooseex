@@ -19,6 +19,9 @@ define([
             Backbone.history.navigate('#myApp/main', {trigger: true});
 
         },
+        logout: function () {
+            console.log('Clicked LOGOUT');
+        },
         conversation: function (content, part2) {
             var $forReplicas;
             $forReplicas = $('#template-for-replicas');
@@ -102,9 +105,6 @@ define([
                 });
                 collection.fetch({reset: true});
             });
-        },
-        goToFriends: function () {
-
         },
         renderView: function (View) {
             if (this.view) {

@@ -11,6 +11,7 @@ define([
             'myApp/logup': 'logup',
             'myApp/logout': 'logout',
             'myApp(/:content)': 'goToContent',
+            'myApp(/:content/:parameter)': 'goToContent',
             'myApp/:content/conversation/:part2': 'conversation',
             '*any': 'start'
         },
@@ -66,7 +67,11 @@ define([
                 });
             }
         },
+        logup: function () {
+            console.log('LOGUP ROUTER TRIGERRED');
+        },
         login: function () {
+            console.log('LOGIN ROUTER TRIGERRED');
             var viewUrl = 'views/models/usr';
             require([viewUrl], function (View) {
                 if (View) {

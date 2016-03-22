@@ -16,7 +16,6 @@ define([
         el: "#for-templates",
         tmpl: _.template(usersTemplate),
         initialize: function () {
-            //var replicasView = new ReplicasView();
             console.log("USER VIEW was INITIALIZED");
             this.render();
         },
@@ -29,8 +28,19 @@ define([
             'click .remove-friend': 'nullify',
             //Block serves to catch events connected to reading posts of user's friends.
             'click .read-posts': 'readPosts',
-            'click .send-message': 'sendMessage'
+            'click .send-message': 'sendMessage',
+            'click #filter-by-location': 'filterByLocation'
 
+        },
+        filterByLocation: function () {
+            var $distance;
+            var distance;
+            var currentUrl;
+            $distance = $('#input-distance');
+            distance = $distance.val();
+            currentUrl = Backbone.history.getFragment();
+            Backbone.history.navigate(currentUrl + '/' +  distance, {trigger: true});
+            $distance.val('');
         },
         sendMessage: function (e) {
             e.preventDefault();

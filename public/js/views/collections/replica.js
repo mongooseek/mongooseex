@@ -35,9 +35,12 @@ define([
             'click .send-message': 'sendMessage'
         },
         sendMessage: function (e) {
+            var $messageField;
+            var $messageArea;
             e.preventDefault();
             var id = e.target.type;
             var type = '[type="' + id + '"]';
+            var $messageArea = $('textarea' + type);;
             var $messageField = $('.message-field' + type);
             var message = $messageField.val();
             $messageField.val('');
@@ -51,6 +54,7 @@ define([
             replicaModel1.save({patch: true});
             replicaModel2.save({patch: true});
             APP.io.emit('custom_event', {_id: id, sender: APP.usrId, text: message}, function (cd) {
+                $messageArea.append(message);
                 console.log(cd);
             });
         },

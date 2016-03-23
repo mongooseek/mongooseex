@@ -15,6 +15,8 @@ define([
         initialize: function () {
             console.log('Main user (usr) initialized');
             this.render();
+            console.log(this);
+            console.log(this.model);
         },
         events: {
             'click #login-button': 'logIn',
@@ -33,12 +35,15 @@ define([
             usrModel.urlRoot = '/logout';
             usrModel.save(null, {
                 success: function (response) {
-                    $mainBlock.remove();
+                    //delete self.model;
+                    //delete UsrModel;
                     delete self.model;
+                    self.model = usrModel;
+                    $mainBlock.remove();
                     delete APP.usrId;
-                    delete usrModel;
                     //APP.io.disconnect();
-                    Backbone.history.navigate('myApp/login', {trigger: true});
+                    Backbone.history.navigate('myApp/login', {replace: true}/*{trigger: true}*/);
+                    self.render();
                 },
                 error: function (err) {
                     console.log(err);
@@ -49,7 +54,9 @@ define([
             console.log('LOGIN button clicked!!');
             var $startForms = $('#start-forms');
             var self = this;
-            var usrModel = new UsrModel();
+            var usrModel;
+            usrModel = this.model;
+            console.log(this.model);
             var email = $('#login-form .input-email').val();
             var pass = $('#login-form .input-password').val();
             usrModel.set({email: email, pass: pass});
@@ -60,9 +67,8 @@ define([
                     APP.usrId = usrModel.get('_id');
                     usrModel.urlRoot = '/api/users';
                     usrModel.unset('pass', {silent: true});
-                    self.model = usrModel;
-                    $('#startForms').remove();
-                    Backbone.history.navigate('#myApp/main', {trigger: true});
+                    $($startForms).remove();
+                    Backbone.history.navigate('#myApp/main', {trigger: false});
                     self.render();
                 },
                 error: function (err) {
@@ -75,7 +81,7 @@ define([
             console.log('LOGUP button clicked!!');
             var city = {};
             var self = this;
-            var usrModel = new UsrModel();
+            var usrModel = this.model;
             var firstName = $('#logup-form .input-first-name').val();
             var lastName = $('#logup-form .input-last-name').val();
             var email = $('#logup-form .input-email').val();
@@ -88,7 +94,7 @@ define([
                 url: 'http://maps.google.com/maps/api/geocode/json?address=' + city.name + '?sensor=false',
                 data: {},
                 success: function (val) {
-                    //city.name = val.results[0].address_components[0].long_name;
+                    city.name = val.results[0].address_components[0].long_name;
                     city.lat = val.results[0].geometry.location.lat;
                     city.lng = val.results[0].geometry.location.lng;
                     usrModel.set({
@@ -97,6 +103,7 @@ define([
                         email: email,
                         pass: pass,
                         dateOfBirth: dateOfBirth,
+                        city: city.name,
                         location: [city.lng, city.lat]
                     });
                     usrModel.urlRoot = '/logup';
@@ -107,7 +114,6 @@ define([
                             usrModel.urlRoot = '/api/users';
                             usrModel.unset('pass', {silent: true});
                             $startForms.remove();
-                            self.model = usrModel;
                             self.render();
                         },
                         error: function (err) {
@@ -127,11 +133,8 @@ define([
                 if ($mainBlock.attr('id')) {
                     $mainBlock.remove();
                 }
-                /*$('#login-form').hide();
-                 $('#photoPreviewForm').show();*/
                 $startForms.remove();
                 console.log('I am inside userView render function!!!');
-                var self = this;
                 var usrModel = this.model;
                 this.$el.append(self.tmpl(usrModel.toJSON()));
                 return this;

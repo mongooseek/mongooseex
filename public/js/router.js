@@ -36,11 +36,14 @@ define([
                     });
                 },
                 error: function (error) {
+                    delete UsrModel;
                     Backbone.history.navigate('#myApp/login', {trigger: true});
                 }
             });
         },
         login: function () {
+            var usrModel = new UsrModel();
+            var self = this;
             console.log('LOGIN ROUTER TRIGERRED');
             var viewUrl = 'views/models/usr';
             require([viewUrl], function (View) {
@@ -48,7 +51,9 @@ define([
                     delete View;
                     console.log('VIEW deleted');
                 }
-                var usrView = new View();
+                var usrView = new View({model: usrModel});
+                console.log(usrView);
+                console.log(usrModel);
             });
         },
         goToContent: function (content) {

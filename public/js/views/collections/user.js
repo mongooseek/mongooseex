@@ -33,14 +33,19 @@ define([
 
         },
         filterByLocation: function () {
-            var $distance;
+            console.log('I am inside filter by location');
+            var usersByLocation = new UsersCollection();
+            usersByLocation.content = 'api\/users\/find\/100';
+            usersByLocation.fetch();
+            console.log(usersByLocation);
+            /*var $distance;
             var distance;
             var currentUrl;
             $distance = $('#input-distance');
             distance = $distance.val();
             currentUrl = Backbone.history.getFragment();
             Backbone.history.navigate(currentUrl + '/' +  distance, {trigger: true});
-            $distance.val('');
+            $distance.val('');*/
         },
         sendMessage: function (e) {
             e.preventDefault();
@@ -53,7 +58,7 @@ define([
             var type;
             var $replicaField;
             var replica;
-            var date = moment();
+            var date;
             usrId = APP.usrId;
             userId = e.target.type;
             usrModel = this.collection.get(usrId);
@@ -61,6 +66,7 @@ define([
             type = '[type=' + userId + ']';
             $replicaField = $('.message-field' + type);
             replica = $replicaField.val();
+            date = moment();
             var usrReplicaModel = new ReplicaModel({
                 part1: usrId,
                 part2: userId,
@@ -81,10 +87,12 @@ define([
             userNegotiators = userModel.get('negotiators');
             if (usrNegotiators.indexOf(userId) == -1) {
                 usrNegotiators.push(userId);
+                usrModel.set({dateOfBirth: moment(usrModel.get('dateOfBirth'))});
                 usrModel.save({patch: true});
             }
             if (userNegotiators.indexOf(usrId) == -1) {
                 userNegotiators.push(usrId);
+                userModel.set({dateOfBirth: moment(userModel.get('dateOfBirth'))});
                 userModel.save({patch: true});
             }
             usrReplicaModel.save({patch: true});
@@ -290,6 +298,7 @@ define([
             users.forEach(function (userModel) {
                 var view = new UserView({model: userModel});
             });
+            this.filterByLocation();
             return this;
         }
     });

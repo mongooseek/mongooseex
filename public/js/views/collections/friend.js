@@ -6,11 +6,11 @@ define([
     'collections/friend',
     'models/friend',
     'views/models/friend',
-    //'models/replica',
-    //'views/collections/replica',
+    'models/replica',
+    'views/collections/replica',
     'text!templates/collections/friend.html',
     'Moment'
-], function (Backbone, $, _, FriendsCollection, FriendModel, FriendView, /*ReplicaModel, ReplicasView,*/ friendsTemplate, moment) {
+], function (Backbone, $, _, FriendsCollection, FriendModel, FriendView, ReplicaModel, ReplicasView, friendsTemplate, moment) {
 
     var FriendsView = Backbone.View.extend({
         el: "#for-templates",

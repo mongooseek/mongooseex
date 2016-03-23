@@ -16,11 +16,12 @@ var ModelSchema = new Schema({
             id: {type: ObjectId, ref: 'user'}
         }
     ],
-    city: {
+    /*city: {
         name: String,
         lat: Number,
         lng: Number
-    },
+    },*/
+    city: String,
     location: {
         type: [Number],
         index: '2dsphere'

@@ -35,7 +35,7 @@ define([
         filterByLocation: function () {
             console.log('I am inside filter by location');
             var usersByLocation = new UsersCollection();
-            usersByLocation.content = 'api\/users\/find\/100';
+            usersByLocation.content = 'api/users/find/5';
             usersByLocation.fetch();
             console.log(usersByLocation);
             /*var $distance;
@@ -298,7 +298,6 @@ define([
             users.forEach(function (userModel) {
                 var view = new UserView({model: userModel});
             });
-            this.filterByLocation();
             return this;
         }
     });

@@ -6,6 +6,47 @@ module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+    //Handler to get all users from DB.
+    this.getAll = function (req, res, next) {
+        var query;
+        var distance;
+        var distanceInMeters;
+        var myCoordinates;
+        distance = req.params.distance;
+        console.log('distance', distance);
+        if (distance) {
+            myCoordinates = req.session.location;
+            distanceInMeters = distance * 1000;
+            query = {
+                location: {
+                    $near: {
+                        $geometry: {type: "Point", coordinates: myCoordinates},
+                        //$minDistance: 0, - because we could do it without value of min distance in this case;
+                        $maxDistance: distanceInMeters
+                    }
+                }
+            }
+        } else {
+            query = {}
+        }
+        console.log('query', query);
+        console.log('myCoordinates', myCoordinates);
+        User.find(query,
+            {
+                pass: 0,
+                __v: 0
+            },
+            function (err, users) {
+                console.log('I am in location query');
+                if (err) {
+                    return next(err);
+                }
+
+                res.status(200).send(users);
+
+            });
+    };
+
     this.getAllFriends = function (req, res, next) {
         var uId;
         var status;
@@ -76,49 +117,8 @@ module.exports = function () {
             delete user.pass;
             req.session.uId = user._id;
             req.session.loggedIn = true;
-            req.session.location = user.location;
             res.status(201).send(user);
         });
-    };
-
-    //Handler to get all users from DB.
-    this.getAll = function (req, res, next) {
-        var query;
-        var distance;
-        var distanceInMeters;
-        var myCoordinates;
-        distance = req.params.distance;
-        console.log('distance', distance);
-        if (distance) {
-            myCoordinates = req.session.location;
-            distanceInMeters = distance * 1000;
-            query = {
-                location: {
-                    $near: {
-                        $geometry: {type: "Point", coordinates: myCoordinates},
-                        //$minDistance: 0, - because we could do it without value of min distance in this case;
-                        $maxDistance: distanceInMeters
-                    }
-                }
-            }
-        } else {
-            query = {}
-        }
-        console.log('query', query);
-        console.log(myCoordinates);
-        User.find(query,
-            {
-                pass: 0,
-                __v: 0
-            },
-            function (err, users) {
-                if (err) {
-                    return next(err);
-                }
-
-                res.status(200).send(users);
-
-            });
     };
 
     //Handler to get user by his id.
@@ -179,6 +179,7 @@ module.exports = function () {
 
                 req.session.uId = user._id;
                 req.session.loggedIn = true;
+                req.session.location = user.location;
 
                 delete user.pass;
 

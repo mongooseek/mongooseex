@@ -2,16 +2,16 @@
 define([
     'Backbone',
     'jQuery',
-    'views/abstract/collections/base',
+    'views/abstract/collections/preBase',
     'collections/replica',
     'models/replica',
     'views/models/replica',
     'text!templates/collections/replica.html',
     'Moment',
     'socketio'
-], function (Backbone, $, BaseCollectionsView, ReplicasCollection, ReplicaModel, ReplicaView, replicasTemplate, moment, socketio) {
+], function (Backbone, $, AllCollectionsView, ReplicasCollection, ReplicaModel, ReplicaView, replicasTemplate, moment, socketio) {
 
-    var ReplicasView = BaseCollectionsView.extend({
+    var ReplicasView = AllCollectionsView.extend({
         el: ".conversation",
         tmpl: _.template(replicasTemplate),
 

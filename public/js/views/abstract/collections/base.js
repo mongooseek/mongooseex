@@ -1,8 +1,8 @@
 define([
-    'Backbone'
-], function (Backbone) {
+    'views/abstract/collections/preBase'
+], function (AllCollectionsView) {
 
-    var CollectionsView = Backbone.View.extend({
+    var CollectionsView = AllCollectionsView.extend({
         initialize: function () {
             console.log('View for collections initialized!');
             this.render();

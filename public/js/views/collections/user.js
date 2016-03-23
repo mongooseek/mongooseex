@@ -29,7 +29,6 @@ define([
             'click .read-posts': 'readPosts',
             'click .send-message': 'sendMessage',
             'click #filter-by-location': 'filterByLocation'
-
         },
         sendMessage: function (e) {
             e.preventDefault();

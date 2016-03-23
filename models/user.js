@@ -16,11 +16,6 @@ var ModelSchema = new Schema({
             id: {type: ObjectId, ref: 'user'}
         }
     ],
-    /*city: {
-        name: String,
-        lat: Number,
-        lng: Number
-    },*/
     city: String,
     location: {
         type: [Number],
@@ -28,7 +23,6 @@ var ModelSchema = new Schema({
     },
     negotiators: [
         ObjectId
-        //{id: {type: ObjectId, ref: 'user'}}
     ],
     authorized: Boolean,
     confirmed: Boolean,

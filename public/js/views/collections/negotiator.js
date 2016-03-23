@@ -26,7 +26,8 @@ define([
             'click .cancel-proposition': 'nullify',
             'click .remove-friend': 'nullify',
             //Block serves to catch events connected to reading posts of user's friends.
-            'click .read-posts': 'readPosts'
+            'click .read-posts': 'readPosts',
+            'click #filter-by-location': 'filterByLocation'
         },
         /*sendMessage: function (e) {
          e.preventDefault();

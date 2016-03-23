@@ -29,8 +29,6 @@ module.exports = function () {
         } else {
             query = {}
         }
-        console.log('query', query);
-        console.log('myCoordinates', myCoordinates);
         User.find(query,
             {
                 pass: 0,
@@ -48,17 +46,47 @@ module.exports = function () {
     };
 
     this.getAllFriends = function (req, res, next) {
+        var query;
+        var distance;
+        var distanceInMeters;
+        var myCoordinates;
         var uId;
         var status;
+        var friendsQuery;
+        distance = req.params.distance;
         uId = req.session.uId;
         status = 'accepted';
-        User.find({friends: {$elemMatch: {status: status, _id: uId}}}, {pass: 0}, function (err, friends) {
-            if (err) {
-                console.log(one);
-                return next(err);
+        if (distance) {
+            myCoordinates = req.session.location;
+            distanceInMeters = distance * 1000;
+            query = {
+                friends: {
+                    $elemMatch: {status: status, _id: uId}
+                },
+                location: {
+                    $near: {
+                        $geometry: {type: "Point", coordinates: myCoordinates},
+                        //$minDistance: 0, - because we could do it without value of min distance in this case;
+                        $maxDistance: distanceInMeters
+                    }
+                }
             }
-            res.status(200).send(friends);
-        })
+        } else {
+            query = {
+                friends: {$elemMatch: {status: status, _id: uId}}
+            }
+        }
+        User.find(query,
+            {
+                pass: 0,
+                __v: 0
+            },
+            function (err, friends) {
+                if (err) {
+                    return next(err);
+                }
+                res.status(200).send(friends);
+            })
     };
 
     this.findNegotiators = function (req, res, next) {
@@ -85,7 +113,7 @@ module.exports = function () {
         })
     };
 
-    //Handler to update users.
+//Handler to update users.
     this.update = function (req, res, next) {
         var id = req.params.id;
         var body = req.body;
@@ -99,7 +127,7 @@ module.exports = function () {
         });
     };
 
-    //Handler to create a user within registration.
+//Handler to create a user within registration.
     this.createUser = function (req, res, next) {
         console.log('I am creatin user!');
         var body = req.body;
@@ -121,7 +149,7 @@ module.exports = function () {
         });
     };
 
-    //Handler to get user by his id.
+//Handler to get user by his id.
     this.getById = function (req, res, next) {
         var userId = ((!req.params.id) ? (req.session.uId) : req.params.id);
 
@@ -134,7 +162,7 @@ module.exports = function () {
         });
     };
 
-    //Handler to remove user from db.
+//Handler to remove user from db.
     this.remove = function (req, res, next) {
         var id = req.params.id;
 
@@ -147,7 +175,7 @@ module.exports = function () {
         });
     };
 
-    //Handler to get user within login.
+//Handler to get user within login.
     this.login = function (req, res, next) {
         if (req.session.uId && req.session.loggedIn) {
             User.findOne({_id: req.session.uId}, {
@@ -188,11 +216,12 @@ module.exports = function () {
         }
     };
 
-    //Handler is used within logout from site. It changes session.loggedIn to false.
+//Handler is used within logout from site. It changes session.loggedIn to false.
     this.logout = function (req, res, next) {
         var message = {};
         req.session.loggedIn = false;
         res.json(message);
 
     };
-};
+}
+;

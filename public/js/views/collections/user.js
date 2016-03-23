@@ -31,31 +31,6 @@ define([
             'click #filter-by-location': 'filterByLocation'
 
         },
-        filterByLocation: function () {
-            var $distanceField;
-            var distance;
-            var distanceUrl;
-            $distanceField = $('#distance-field');
-            distance = $distanceField.val();
-            if (distance && isFinite(distance)) {
-                distanceUrl = 'myApp/user/distance/' + distance;
-                Backbone.history.navigate(distanceUrl, {trigger: true});
-            } else {
-                alert('Please input correct value to make searching by location :)');
-            }
-
-            /*usersByLocation.content = 'api/users/find/5';
-            usersByLocation.fetch();
-            console.log(usersByLocation);*/
-            /*var $distance;
-             var distance;
-             var currentUrl;
-             $distance = $('#input-distance');
-             distance = $distance.val();
-             currentUrl = Backbone.history.getFragment();
-             Backbone.history.navigate(currentUrl + '/' +  distance, {trigger: true});
-             $distance.val('');*/
-        },
         sendMessage: function (e) {
             e.preventDefault();
             var usrModel;

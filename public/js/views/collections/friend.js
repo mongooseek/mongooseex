@@ -26,8 +26,8 @@ define([
             'click .remove-friend': 'nullify',
             //Block serves to catch events connected to reading posts of user's friends.
             'click .read-posts': 'readPosts',
-            'click .send-message': 'sendMessage'
-
+            'click .send-message': 'sendMessage',
+            'click #filter-by-location': 'filterByLocation' //Method moved out to BaseCollectionsView. Look link above.
         },
         render: function () {
             console.log('Clicked FRIENDS BUTTON');

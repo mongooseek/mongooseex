@@ -1,3 +1,4 @@
+//TODO - THIS BLOCK MUST BE DELETED I THINK.
 //View to deal with 'chat' collection.
 define([
     'Backbone',

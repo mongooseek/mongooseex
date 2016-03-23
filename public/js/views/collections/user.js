@@ -3,6 +3,7 @@ define([
     'Backbone',
     'jQuery',
     'Underscore',
+    'views/abstract/collections/base',
     'collections/user',
     'models/user',
     'views/models/user',
@@ -10,15 +11,13 @@ define([
     'views/collections/replica',
     'text!templates/collections/user.html',
     'Moment'
-], function (Backbone, $, _, UsersCollection, UserModel, UserView, ReplicaModel, ReplicasView, usersTemplate, moment) {
+], function (Backbone, $, _, BaseCollectionsView, UsersCollection, UserModel, UserView, ReplicaModel, ReplicasView, usersTemplate, moment) {
 
-    var UsersView = Backbone.View.extend({
+    var UsersView = BaseCollectionsView.extend({
         el: "#for-templates",
         tmpl: _.template(usersTemplate),
-        initialize: function () {
-            console.log("USER VIEW was INITIALIZED");
-            this.render();
-        },
+
+        // <--" initialize: "--> removed to BaseCollectionsView.
         events: {
             //Block of events connected to friendship.
             'click .add-to-friends': 'addToFriends',
@@ -33,19 +32,29 @@ define([
 
         },
         filterByLocation: function () {
-            console.log('I am inside filter by location');
-            var usersByLocation = new UsersCollection();
-            usersByLocation.content = 'api/users/find/5';
-            usersByLocation.fetch();
-            console.log(usersByLocation);
-            /*var $distance;
+            var $distanceField;
             var distance;
-            var currentUrl;
-            $distance = $('#input-distance');
-            distance = $distance.val();
-            currentUrl = Backbone.history.getFragment();
-            Backbone.history.navigate(currentUrl + '/' +  distance, {trigger: true});
-            $distance.val('');*/
+            var distanceUrl;
+            $distanceField = $('#distance-field');
+            distance = $distanceField.val();
+            if (distance && isFinite(distance)) {
+                distanceUrl = 'myApp/user/distance/' + distance;
+                Backbone.history.navigate(distanceUrl, {trigger: true});
+            } else {
+                alert('Please input correct value to make searching by location :)');
+            }
+
+            /*usersByLocation.content = 'api/users/find/5';
+            usersByLocation.fetch();
+            console.log(usersByLocation);*/
+            /*var $distance;
+             var distance;
+             var currentUrl;
+             $distance = $('#input-distance');
+             distance = $distance.val();
+             currentUrl = Backbone.history.getFragment();
+             Backbone.history.navigate(currentUrl + '/' +  distance, {trigger: true});
+             $distance.val('');*/
         },
         sendMessage: function (e) {
             e.preventDefault();

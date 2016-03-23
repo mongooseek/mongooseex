@@ -2,19 +2,18 @@
 define([
     'Backbone',
     'jQuery',
+    'views/abstract/collections/base',
     'collections/post',
     'models/post',
     'views/models/post',
     'text!templates/collections/post.html'
-], function (Backbone, $, PostsCollection, PostModel, PostView, postsTemplate) {
+], function (Backbone, $, BaseCollectionsView, PostsCollection, PostModel, PostView, postsTemplate) {
 
-    var PostsView = Backbone.View.extend({
+    var PostsView = BaseCollectionsView.extend({
         el: "#for-templates",
         tmpl: _.template(postsTemplate),
-        initialize: function () {
-            console.log("POST VIEW was INITIALIZED");
-            this.render();
-        },
+
+        //<--" initialize: "--> removed to BaseCollectionsView.
         events: {
             'click #make-post': 'post'
         },

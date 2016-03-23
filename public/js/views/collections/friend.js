@@ -3,6 +3,7 @@ define([
     'Backbone',
     'jQuery',
     'Underscore',
+    'views/abstract/collections/base',
     'collections/friend',
     'models/friend',
     'views/models/friend',
@@ -10,15 +11,12 @@ define([
     'views/collections/replica',
     'text!templates/collections/friend.html',
     'Moment'
-], function (Backbone, $, _, FriendsCollection, FriendModel, FriendView, ReplicaModel, ReplicasView, friendsTemplate, moment) {
+], function (Backbone, $, _, BaseCollectionsView, FriendsCollection, FriendModel, FriendView, ReplicaModel, ReplicasView, friendsTemplate, moment) {
 
-    var FriendsView = Backbone.View.extend({
+    var FriendsView = BaseCollectionsView.extend({
         el: "#for-templates",
         tmpl: _.template(friendsTemplate),
-        initialize: function () {
-            console.log("FRIENDS VIEW was INITIALIZED");
-            this.render();
-        },
+        // <--" initialize: "--> removed to BaseCollectionsView.
         events: {
             //Block of events connected to friendship.
             'click .add-to-friends': 'addToFriends',

@@ -11,8 +11,8 @@ define([
             'myApp/logup': 'logup',
             'myApp/logout': 'logout',
             'myApp(/:content)': 'goToContent',
-            'myApp(/:content/:parameter)': 'goToContent',
             'myApp/:content/conversation/:part2': 'conversation',
+            'myApp/:content/:findParameter/:parameterValue': 'goToContent',
             '*any': 'start'
         },
         start: function () {
@@ -56,7 +56,8 @@ define([
                 console.log(usrModel);
             });
         },
-        goToContent: function (content) {
+        goToContent: function (content, findParameter, parameterValue) {
+            var content;
             if (APP.usrId) {
                 console.log('The content is', content);
                 var self = this;
@@ -69,6 +70,7 @@ define([
                 viewUrl = 'views/collections/' + content;
                 require([collectionUrl, viewUrl], function (Collection, View) {
                     var collection = new Collection();
+                    collection.content = (!parameterValue) ? collection.content : collection.content + '/' + findParameter + '/' + parameterValue;
                     self.collection = collection;
                     collection.on('reset', function () {
                         self.renderView(View);

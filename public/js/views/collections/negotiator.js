@@ -3,6 +3,7 @@ define([
     'Backbone',
     'jQuery',
     'Underscore',
+    'views/abstract/collections/base',
     'collections/user',
     'models/user',
     'views/models/negotiator',
@@ -10,16 +11,13 @@ define([
     'views/collections/replica',
     'text!templates/collections/negotiator.html',
     'Moment'
-], function (Backbone, $, _, UsersCollection, UserModel, NegotiatorView, ReplicaModel, ReplicasView, negotiatorsTemplate, moment) {
+], function (Backbone, $, _, BaseCollectionsView, UsersCollection, UserModel, NegotiatorView, ReplicaModel, ReplicasView, negotiatorsTemplate, moment) {
 
-    var NegotiatorsView = Backbone.View.extend({
+    var NegotiatorsView = BaseCollectionsView.extend({
         el: "#for-templates",
         tmpl: _.template(negotiatorsTemplate),
-        initialize: function () {
-            //var replicasView = new ReplicasView();
-            console.log("NEGOTIATORS VIEW was INITIALIZED");
-            this.render();
-        },
+
+        // <--" initialize: "--> removed to BaseCollectionsView.
         events: {
             //Block of events connected to friendship.
             'click .add-to-friends': 'addToFriends',

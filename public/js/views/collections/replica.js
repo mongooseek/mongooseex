@@ -2,35 +2,20 @@
 define([
     'Backbone',
     'jQuery',
+    'views/abstract/collections/base',
     'collections/replica',
     'models/replica',
     'views/models/replica',
     'text!templates/collections/replica.html',
     'Moment',
     'socketio'
-], function (Backbone, $, ReplicasCollection, ReplicaModel, ReplicaView, replicasTemplate, moment, socketio) {
+], function (Backbone, $, BaseCollectionsView, ReplicasCollection, ReplicaModel, ReplicaView, replicasTemplate, moment, socketio) {
 
-    var ReplicasView = Backbone.View.extend({
+    var ReplicasView = BaseCollectionsView.extend({
         el: ".conversation",
         tmpl: _.template(replicasTemplate),
-        initialize: function () {
-            var self = this;
-            console.log("REPLICAS VIEW was INITIALIZED");
-            this.render();
 
-            APP.io.on('custom_response', function (message) {
-                self.appendToChat(message);
-            });
-
-        },
-        appendToChat: function (message) {
-            var $textArea;
-            console.log('RECEIVED', message);
-            var type = '[type="' + message.sender + '"]';
-            $textArea = $('textarea' + type);
-            $textArea.append('\n\n' + message.text);
-            console.log($textArea);
-        },
+        //<--" initialize: "--> removed to BaseCollectionsView.
         events: {
             'click .send-message': 'sendMessage'
         },
@@ -40,7 +25,8 @@ define([
             e.preventDefault();
             var id = e.target.type;
             var type = '[type="' + id + '"]';
-            var $messageArea = $('textarea' + type);;
+            var $messageArea = $('textarea' + type);
+            ;
             var $messageField = $('.message-field' + type);
             var message = $messageField.val();
             $messageField.val('');
@@ -58,10 +44,18 @@ define([
                 console.log(cd);
             });
         },
-        renderOne: function (e) {
-
+        appendToChat: function (message) {
+            var $textArea;
+            console.log('RECEIVED', message);
+            var type = '[type="' + message.sender + '"]';
+            $textArea = $('textarea' + type);
+            $textArea.append('\n\n' + message.text);
+            console.log($textArea);
         },
         render: function () {
+            APP.io.on('custom_response', function (message) {
+                self.appendToChat(message);
+            });
             var self = this;
             $('.template-for-replicas').hide();
             var _id = (this.collection.content.match(/\d+\w*/i))[0];
@@ -80,9 +74,6 @@ define([
                 return this;
             });
         },
-        renderOne: function (model) {
-
-        }
     });
 
     return ReplicasView;

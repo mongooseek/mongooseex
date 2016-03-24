@@ -44,7 +44,7 @@ define([
             console.log("I am in logout");
             var $mainBlock = $('#main-block');
             var self = this;
-            var usrModel = new UsrModel;
+            var usrModel = new UsrModel();
             usrModel.urlRoot = '/logout';
             usrModel.save(null, {
                 success: function (response) {

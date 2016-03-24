@@ -35,13 +35,20 @@ define([
                             if (self.usrView) {
                                 self.usrView.undelegateEvents();
                             }
-                            self.usrView = new View({model: usrModel});
+                            self.usrView = new View({model: self.model});
                         });
                     },
                     error: function (error) {
                         delete self.model;
                         self.model = new UsrModel();
-                        Backbone.history.navigate('#myApp/login', {trigger: true});
+                        viewUrl = 'views/models/usr';
+                        require([viewUrl], function (View) {
+                            if (self.usrView) {
+                                self.usrView.undelegateEvents();
+                            }
+                            self.usrView = new View({model: self.model});
+                        });
+                        Backbone.history.navigate('#myApp/login', {replace: true});
                     }
                 });
             } else {
@@ -55,15 +62,15 @@ define([
             }
         },
         login: function () {
-            var self = this;
-            console.log('LOGIN ROUTER TRIGERRED');
-            var viewUrl = 'views/models/usr';
-            require([viewUrl], function (View) {
-                if (self.usrView) {
-                    self.usrView.undelegateEvents();
-                }
-                self.usrView = new View({model: self.model});
-            });
+            /*var self = this;
+             console.log('LOGIN ROUTER TRIGERRED');
+             var viewUrl = 'views/models/usr';
+             require([viewUrl], function (View) {
+             if (self.usrView) {
+             self.usrView.undelegateEvents();
+             }
+             self.usrView = new View({model: self.model});
+             });*/
         },
         goToContent: function (content, findParameter, parameterValue) {
             var content;

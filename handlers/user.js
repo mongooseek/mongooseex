@@ -1,11 +1,96 @@
 //DB handler for user.
 //Required dependency.
 var mongoose = require('mongoose');
-
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
 module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+    this.findOneByEmail = function (req, res, next) {
+        var body;
+        var resetToken;
+        var email = req.body.email;
+        var tokenExpires = Date.now() + 3600000;
+        crypto.randomBytes(31, function (err, buf) {
+            resetToken = buf.toString('hex');
+            body = {email: email, resetToken: resetToken, tokenExpires: tokenExpires};
+            User.update({email: email}, {$set: body}, {new: true}, function (err, result) {
+                /*req.session.tokenExpires = tokenExpires;
+                 req.session.resetToken = resetToken;*/
+                /*var smtpTransport = nodemailer.createTransport('SMTP', {
+                 service: 'SendGrid',
+                 auth: {
+                 user: 'ihor.ilnytskyi@gmail.com',
+                 pass: '//-ihaj2015'
+                 }
+                 });
+                 var mailOptions = {
+                 to: 'teerfeel@gmail.com',
+                 from: 'me',
+                 subject: 'Node.js Password Reset',
+                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                 'http://' + 'localhost:3000' + '/reset/' + resetToken + '\n\n' +
+                 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                 };
+                 smtpTransport.sendMail(mailOptions, function (err) {
+                 console.log('MAIL ERROR', err);
+                 });*/
+
+                var transporter = nodemailer.createTransport(
+                    smtpTransport('smtps://ihor.ilnytskyi%40gmail.com://-ihaj2015@smtp.gmail.com')
+                );
+                transporter.verify(function (error, success) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Server is ready to take our messages');
+                    }
+                });
+
+                res.send(result);
+            });
+        });
+    };
+
+    this.resetPass = function (req, res, next) {
+        /*var body;
+         var resetToken;
+         var email = req.body.email;
+         var tokenExpires = Date.now() + 3600000;
+         crypto.randomBytes(31, function (err, buf) {
+         resetToken = buf.toString('hex');
+         body = {email: email, resetToken: resetToken, tokenExpires: tokenExpires};
+         User.update({email: email}, {$set: body}, {new: true}, function (err, result) {
+         req.session.tokenExpires = tokenExpires;
+         req.session.resetToken = resetToken;
+         res.send(result);
+         });
+         });*/
+    };
+
+    //Handler to create a user within registration.
+    this.createUser = function (req, res, next) {
+        console.log('I am creatin user!');
+        var body = req.body;
+        var user = new User(body);
+        var shaSum = crypto.createHash('sha256');
+
+        shaSum.update(body.pass);
+        user.pass = shaSum.digest('hex');
+
+        user.save(function (err, user) {
+            if (err) {
+                return next(err);
+            }
+
+            delete user.pass;
+            req.session.uId = user._id;
+            req.session.loggedIn = true;
+            res.status(201).send(user);
+        });
+    };
     //Handler to get all users from DB.
     this.getAll = function (req, res, next) {
         var query;
@@ -145,28 +230,6 @@ module.exports = function () {
             }
 
             res.status(200).send(user);
-        });
-    };
-
-    //Handler to create a user within registration.
-    this.createUser = function (req, res, next) {
-        console.log('I am creatin user!');
-        var body = req.body;
-        var user = new User(body);
-        var shaSum = crypto.createHash('sha256');
-
-        shaSum.update(body.pass);
-        user.pass = shaSum.digest('hex');
-
-        user.save(function (err, user) {
-            if (err) {
-                return next(err);
-            }
-
-            delete user.pass;
-            req.session.uId = user._id;
-            req.session.loggedIn = true;
-            res.status(201).send(user);
         });
     };
 

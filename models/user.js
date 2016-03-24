@@ -26,7 +26,9 @@ var ModelSchema = new Schema({
     ],
     authorized: Boolean,
     confirmed: Boolean,
-    photo: String
+    photo: String,
+    resetToken: String,
+    tokenExpires: Date
 });
 var Model = mongoose.model('user', ModelSchema);
 

@@ -109,6 +109,9 @@ function onConnection() {
     app.post('/login', userHandler.login);
     app.post('/logup', userHandler.createUser);
     app.post('/logout', userHandler.logout);
+    app.post('/changepass', userHandler.findOneByEmail);
+    app.get('/reset/:token', userHandler.resetPass);
+    //app.post('/reset/:token', userHandler.loginWithNewPass);
 
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', authStackMidlware, userRouter);

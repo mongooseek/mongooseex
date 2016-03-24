@@ -26,7 +26,6 @@ define([
             var id = e.target.type;
             var type = '[type="' + id + '"]';
             var $messageArea = $('textarea' + type);
-            ;
             var $messageField = $('.message-field' + type);
             var message = $messageField.val();
             $messageField.val('');

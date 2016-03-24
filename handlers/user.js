@@ -1,54 +1,32 @@
 //DB handler for user.
 //Required dependency.
 var mongoose = require('mongoose');
-var nodemailer = require('nodemailer');
-var smtpTransport = require('nodemailer-smtp-transport');
+var sendMail = require("../helpers/mailSender");
 module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
     this.findOneByEmail = function (req, res, next) {
+        var link;
         var body;
         var resetToken;
-        var email = req.body.email;
-        var tokenExpires = Date.now() + 3600000;
+        var email;
+        var tokenExpires;
+        var text = {};
+        var html;
+        link = req.headers.host + '/';
+        console.log(req.headers);
+        body = req.body;
+        email = 'teerfeel@gmail.com';//body.email;
+        tokenExpires = Date.now() + 3600000;
         crypto.randomBytes(31, function (err, buf) {
             resetToken = buf.toString('hex');
+            text = link;
+            html = "<b>" + 'http://' + text + '#myApp/newpass/' + resetToken + "</b>";
+            console.log(html);
             body = {email: email, resetToken: resetToken, tokenExpires: tokenExpires};
             User.update({email: email}, {$set: body}, {new: true}, function (err, result) {
-                /*req.session.tokenExpires = tokenExpires;
-                 req.session.resetToken = resetToken;*/
-                /*var smtpTransport = nodemailer.createTransport('SMTP', {
-                 service: 'SendGrid',
-                 auth: {
-                 user: 'ihor.ilnytskyi@gmail.com',
-                 pass: '//-ihaj2015'
-                 }
-                 });
-                 var mailOptions = {
-                 to: 'teerfeel@gmail.com',
-                 from: 'me',
-                 subject: 'Node.js Password Reset',
-                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                 'http://' + 'localhost:3000' + '/reset/' + resetToken + '\n\n' +
-                 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-                 };
-                 smtpTransport.sendMail(mailOptions, function (err) {
-                 console.log('MAIL ERROR', err);
-                 });*/
-
-                var transporter = nodemailer.createTransport(
-                    smtpTransport('smtps://ihor.ilnytskyi%40gmail.com://-ihaj2015@smtp.gmail.com')
-                );
-                transporter.verify(function (error, success) {
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        console.log('Server is ready to take our messages');
-                    }
-                });
-
+                sendMail(email, 'Get new pass', text, html);
                 res.send(result);
             });
         });

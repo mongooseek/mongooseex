@@ -9,6 +9,7 @@ define([
             'myApp/main': 'main',
             'myApp/login': 'login',
             'myApp/logup': 'logup',
+            'myApp/changepass': 'changepass',
             'myApp/logout': 'logout',
             'myApp(/:content)': 'goToContent',
             'myApp/:content/conversation/:part2': 'conversation',
@@ -21,39 +22,47 @@ define([
         main: function () {
             var self = this;
             var viewUrl;
-            var usrModel = new UsrModel();
-            usrModel.urlRoot = '/login';
-            usrModel.save(null, {
-                success: function (response) {
-                    console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
-                    APP.usrId = usrModel.get('_id');
-                    viewUrl = 'views/models/usr';
-                    require([viewUrl], function (View) {
-                        if (View) {
-                            delete View;
-                        }
-                        var usrView = new View({model: usrModel});
-                    });
-                },
-                error: function (error) {
-                    delete UsrModel;
-                    Backbone.history.navigate('#myApp/login', {trigger: true});
-                }
-            });
+            var usrModel;
+            if (!self.model) {
+                self.model = new UsrModel();
+                self.model.urlRoot = '/login';
+                self.model.save(null, {
+                    success: function (response) {
+                        console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
+                        APP.usrId = usrModel.get('_id');
+                        viewUrl = 'views/models/usr';
+                        require([viewUrl], function (View) {
+                            if (self.usrView) {
+                                self.usrView.undelegateEvents();
+                            }
+                            self.usrView = new View({model: usrModel});
+                        });
+                    },
+                    error: function (error) {
+                        delete self.model;
+                        self.model = new UsrModel();
+                        Backbone.history.navigate('#myApp/login', {trigger: true});
+                    }
+                });
+            } else {
+                viewUrl = 'views/models/usr';
+                require([viewUrl], function (View) {
+                    if (self.usrView) {
+                        self.usrView.undelegateEvents();
+                    }
+                    self.usrView = new View({model: self.model});
+                });
+            }
         },
         login: function () {
-            var usrModel = new UsrModel();
             var self = this;
             console.log('LOGIN ROUTER TRIGERRED');
             var viewUrl = 'views/models/usr';
             require([viewUrl], function (View) {
-                if (View) {
-                    delete View;
-                    console.log('VIEW deleted');
+                if (self.usrView) {
+                    self.usrView.undelegateEvents();
                 }
-                var usrView = new View({model: usrModel});
-                console.log(usrView);
-                console.log(usrModel);
+                self.usrView = new View({model: self.model});
             });
         },
         goToContent: function (content, findParameter, parameterValue) {

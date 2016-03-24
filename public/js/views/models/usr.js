@@ -21,11 +21,24 @@ define([
         events: {
             'click #login-button': 'logIn',
             'click #logup-button': 'logUp',
+            'click #reset-button': 'resetPass',
             'click [href="#myApp/logup"]': 'logUpClicked',
             'click [href="#myApp/login"]': 'logInClicked',
+            'click [href="#myApp/changepass"]': 'changePassClicked',
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
-            'click [href="#myApp/logout"]': 'logOut',
+            'click [href="#myApp/logout"]': 'logOut'
+        },
+        resetPass: function () {
+            console.log('Verify your e-mail, there is link to change your password!!!');
+            var $emailField;
+            var userModel;
+            var email;
+
+            $emailField = $('#reset-form .input-email');
+            email = $emailField.val();
+            console.log(email);
+
         },
         logOut: function () {
             console.log("I am in logout");
@@ -42,7 +55,7 @@ define([
                     $mainBlock.remove();
                     delete APP.usrId;
                     //APP.io.disconnect();
-                    Backbone.history.navigate('myApp/login', {replace: true}/*{trigger: true}*/);
+                    Backbone.history.navigate('myApp/login', {replace: true});
                     self.render();
                 },
                 error: function (err) {
@@ -152,11 +165,18 @@ define([
         },
         logUpClicked: function () {
             $('#login-form').hide();
+            $('#reset-form').hide();
             $('#logup-form').show();
         },
         logInClicked: function () {
             $('#logup-form').hide();
+            $('#reset-form').hide();
             $('#login-form').show();
+        },
+        changePassClicked: function () {
+            $('#logup-form').hide();
+            $('#login-form').hide();
+            $('#reset-form').show();
         },
         savePhoto: function () {
             console.log("Clicked save photo button.");

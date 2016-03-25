@@ -5,13 +5,13 @@ define([
     'jQuery',
     'models/user',
     'text!templates/usr.html',
-    'Moment',
-    'socketio'
-], function (Backbone, _, $, UsrModel, usrTemplate, moment) {
+    'text!templates/login.html',
+    'Moment'
+], function (Backbone, _, $, UsrModel, usrTemplate, loginTemplate, moment) {
     console.log("I am inside user view");
     var UsrView = Backbone.View.extend({
         el: '#vrakashy',
-        tmpl: _.template(usrTemplate),
+        //tmpl: _.template(usrTemplate),
         initialize: function () {
             console.log('Main user (usr) initialized');
             this.render();
@@ -28,6 +28,33 @@ define([
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
             'click [href="#myApp/logout"]': 'logOut'
+        },
+        render: function () {
+            var $startForms = $('#start-forms');
+            console.log('I am in render');
+            var self = this;
+            if (APP.usrId) {
+                self.tmpl = _.template(usrTemplate);
+                APP.io.emit('start', APP.usrId);
+                $mainBlock = $('#main-block');
+                if ($mainBlock.attr('id')) {
+                    $mainBlock.remove();
+                }
+                $startForms.remove();
+                console.log('I am inside userView render function!!!');
+                var usrModel = this.model;
+                this.$el.append(self.tmpl(usrModel.toJSON()));
+                return this;
+            } else {
+                if ($startForms.attr('id')) {
+
+                } else {
+                    self.tmpl = _.template(loginTemplate);
+                    self.$el.append(self.tmpl);
+
+                }
+
+            }
         },
         resetPass: function () {
             console.log('Verify your e-mail, there is link to change your password!!!');
@@ -135,33 +162,6 @@ define([
                     });
                 }
             });
-        },
-        render: function () {
-            var $startForms = $('#start-forms');
-            console.log('I am in render');
-            var self = this;
-            if (APP.usrId) {
-                APP.io.emit('start', APP.usrId);
-                $mainBlock = $('#main-block');
-                if ($mainBlock.attr('id')) {
-                    $mainBlock.remove();
-                }
-                $startForms.remove();
-                console.log('I am inside userView render function!!!');
-                var usrModel = this.model;
-                this.$el.append(self.tmpl(usrModel.toJSON()));
-                return this;
-            } else {
-                if ($startForms.attr('id')) {
-
-                } else {
-                    var loginTemplateUrl = 'text!templates/login.html';
-                    require([loginTemplateUrl], function (template) {
-                        self.$el.append(template);
-                    });
-                }
-
-            }
         },
         logUpClicked: function () {
             $('#login-form').hide();

@@ -6,7 +6,8 @@ module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
-    this.findOneByEmail = function (req, res, next) {
+    this.generateAndSendResetLink = function (req, res, next) {
+        console.log(req);
         var link;
         var body;
         var resetToken;
@@ -19,10 +20,11 @@ module.exports = function () {
         body = req.body;
         email = 'teerfeel@gmail.com';//body.email;
         tokenExpires = Date.now() + 3600000;
-        crypto.randomBytes(31, function (err, buf) {
+        crypto.randomBytes(10, function (err, buf) {
             resetToken = buf.toString('hex');
             text = link;
-            html = "<b>" + 'http://' + text + '#myApp/newpass/' + resetToken + "</b>";
+            //html = "http://127.0.0.1:8080";
+            html = 'http://' + text + '#myApp/newpass/' + resetToken;
             console.log(html);
             body = {email: email, resetToken: resetToken, tokenExpires: tokenExpires};
             User.update({email: email}, {$set: body}, {new: true}, function (err, result) {

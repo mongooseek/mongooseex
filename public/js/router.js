@@ -6,18 +6,24 @@ define([
 ], function (Backbone, _, UsrModel) {
     var Router = Backbone.Router.extend({
         routes: {
+            'myApp/newpass/:resetToken': 'newPass',
             'myApp/main': 'main',
-            'myApp/login': 'login',
+            //'myApp/login': 'login',
             'myApp/logup': 'logup',
             'myApp/changepass': 'changepass',
             'myApp/logout': 'logout',
+            'myApp/newpass/:resetToken': 'newPass',
             'myApp(/:content)': 'goToContent',
             'myApp/:content/conversation/:part2': 'conversation',
             'myApp/:content/:findParameter/:parameterValue': 'goToContent',
             '*any': 'start'
         },
         start: function () {
+            console.log('START');
             Backbone.history.navigate('#myApp/main', {trigger: true});
+        },
+        newPass: function(resetToken){
+          alert(resetToken);
         },
         main: function () {
             var self = this;
@@ -29,7 +35,7 @@ define([
                 self.model.save(null, {
                     success: function (response) {
                         console.log('Successfully GOT user with _id: ' + response.toJSON()._id);
-                        APP.usrId = usrModel.get('_id');
+                        APP.usrId = self.model.get('_id');
                         viewUrl = 'views/models/usr';
                         require([viewUrl], function (View) {
                             if (self.usrView) {

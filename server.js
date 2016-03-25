@@ -102,14 +102,14 @@ function onConnection() {
 
     app.use(bodyParser.json({limit: '2mb'}));
 
-    app.get('/', function (req, res, next) {
+    /*app.get('/', function (req, res, next) {
         res.sendFile(path.join(__dirname, 'index.html'));
-    });
+    });*/
 
     app.post('/login', userHandler.login);
     app.post('/logup', userHandler.createUser);
     app.post('/logout', userHandler.logout);
-    app.post('/changepass', userHandler.findOneByEmail);
+    app.post('/resetpass', userHandler.generateAndSendResetLink);
     app.get('/reset/:token', userHandler.resetPass);
     //app.post('/reset/:token', userHandler.loginWithNewPass);
 

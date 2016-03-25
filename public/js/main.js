@@ -28,5 +28,6 @@ require.config({
 });
 
 require(['app'], function (app) {
+    console.log('INIT APP');
     app.init();
 });

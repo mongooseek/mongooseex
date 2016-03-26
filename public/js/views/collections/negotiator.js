@@ -14,7 +14,7 @@ define([
 ], function (Backbone, $, _, BaseCollectionsView, UsersCollection, UserModel, NegotiatorView, ReplicaModel, ReplicasView, negotiatorsTemplate, moment) {
 
     var NegotiatorsView = BaseCollectionsView.extend({
-        el: "#for-templates",
+        el: "#vrakashy",
         tmpl: _.template(negotiatorsTemplate),
 
         // <--" initialize: "--> removed to BaseCollectionsView.
@@ -28,6 +28,20 @@ define([
             //Block serves to catch events connected to reading posts of user's friends.
             'click .read-posts': 'readPosts',
             'click #filter-by-location': 'filterByLocation'
+        },
+        render: function () {
+            console.log('Clicked USERS BUTTON');
+            var self = this;
+            var $temporaryTemplate = $('.temporary-template');
+            if ($temporaryTemplate.length) {
+                $temporaryTemplate.remove();
+            }
+            this.$el.append(self.tmpl);
+            var negotiators = this.collection;
+            negotiators.forEach(function (negotiatorModel) {
+                var view = new NegotiatorView({model: negotiatorModel});
+            });
+            return this;
         },
         /*sendMessage: function (e) {
          e.preventDefault();
@@ -261,20 +275,6 @@ define([
 
             $addToFriends.hide();
             $cancelProposition.show();
-        },
-        render: function () {
-            console.log('Clicked USERS BUTTON');
-            var self = this;
-            var $temporaryTemplate = $('.temporary-template');
-            if ($temporaryTemplate.attr('id')) {
-                $temporaryTemplate.remove();
-            }
-            this.$el.append(self.tmpl);
-            var negotiators = this.collection;
-            negotiators.forEach(function (negotiatorModel) {
-                var view = new NegotiatorView({model: negotiatorModel});
-            });
-            return this;
         }
     });
 

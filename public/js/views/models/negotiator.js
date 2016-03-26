@@ -19,8 +19,7 @@ define([
         render: function () {
             console.log('I am in negotiator render function!!!');
             var self = this;
-            var $templateForNegotiators = $('#template-for-negotiators');
-            if ($templateForNegotiators.attr('id')) {
+            if (self.$el.length) {
                 self.$el.append(self.tmpl(self.model.toJSON()));
             }
         }

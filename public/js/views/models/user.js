@@ -25,7 +25,7 @@ define([
             var iAmNotInFriends;
             friendsArr = self.model.get('friends');
             var $templateForUsers = $('#template-for-users');
-            if ($templateForUsers.attr('id')) {
+            if ($templateForUsers.length) {
                 my = _.filter(friendsArr, function (me) {
                     return (me._id == APP.usrId);
                 });

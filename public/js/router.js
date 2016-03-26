@@ -8,8 +8,9 @@ define([
         routes: {
             'myApp/newpass/:resetToken': 'newPass',
             'myApp/main': 'main',
-            //'myApp/login': 'login',
+            'myApp/login': 'login',
             'myApp/logup': 'logup',
+            'myApp/reset': 'reset',
             'myApp/changepass': 'changepass',
             'myApp/logout': 'logout',
             'myApp/newpass/:resetToken': 'newPass',
@@ -22,8 +23,30 @@ define([
             console.log('START');
             Backbone.history.navigate('#myApp/main', {trigger: true});
         },
-        newPass: function(resetToken){
-          alert(resetToken);
+        reset: function(){
+            console.log('I am in forgot');
+            var viewUrl;
+            viewUrl = 'views/models/reset';
+            require([viewUrl], function (View) {
+                if (self.forgotView) {
+                    self.forgotView.undelegateEvents();
+                }
+                self.forgotView = new View();
+            });
+        },
+        login: function () {
+            console.log('I am in login');
+            var viewUrl;
+            viewUrl = 'views/models/login';
+            require([viewUrl], function (View) {
+                if (self.loginView) {
+                    self.loginView.undelegateEvents();
+                }
+                self.loginView = new View();
+            });
+        },
+        newPass: function (resetToken) {
+            alert(resetToken);
         },
         main: function () {
             var self = this;
@@ -45,16 +68,7 @@ define([
                         });
                     },
                     error: function (error) {
-                        delete self.model;
-                        self.model = new UsrModel();
-                        viewUrl = 'views/models/usr';
-                        require([viewUrl], function (View) {
-                            if (self.usrView) {
-                                self.usrView.undelegateEvents();
-                            }
-                            self.usrView = new View({model: self.model});
-                        });
-                        Backbone.history.navigate('#myApp/login', {replace: true});
+                        Backbone.history.navigate('#myApp/login', {trigger: true});
                     }
                 });
             } else {
@@ -66,17 +80,6 @@ define([
                     self.usrView = new View({model: self.model});
                 });
             }
-        },
-        login: function () {
-            /*var self = this;
-             console.log('LOGIN ROUTER TRIGERRED');
-             var viewUrl = 'views/models/usr';
-             require([viewUrl], function (View) {
-             if (self.usrView) {
-             self.usrView.undelegateEvents();
-             }
-             self.usrView = new View({model: self.model});
-             });*/
         },
         goToContent: function (content, findParameter, parameterValue) {
             var content;

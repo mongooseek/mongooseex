@@ -10,7 +10,7 @@ define([
 ], function (Backbone, $, BaseCollectionsView, PostsCollection, PostModel, PostView, postsTemplate) {
 
     var PostsView = BaseCollectionsView.extend({
-        el: "#for-templates",
+        el: "#vrakashy",
         tmpl: _.template(postsTemplate),
 
         //<--" initialize: "--> removed to BaseCollectionsView.
@@ -21,7 +21,7 @@ define([
             console.log('Clicked POSTS BUTTON');
             var self = this;
             var $temporaryTemplate = $('.temporary-template');
-            if ($temporaryTemplate.attr('id')) {
+            if ($temporaryTemplate.length) {
                 $temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl);

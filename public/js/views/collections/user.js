@@ -14,7 +14,7 @@ define([
 ], function (Backbone, $, _, BaseCollectionsView, UsersCollection, UserModel, UserView, ReplicaModel, ReplicasView, usersTemplate, moment) {
 
     var UsersView = BaseCollectionsView.extend({
-        el: "#for-templates",
+        el: "#vrakashy",
         tmpl: _.template(usersTemplate),
 
         // <--" initialize: "--> removed to BaseCollectionsView.
@@ -29,6 +29,20 @@ define([
             'click .read-posts': 'readPosts',
             'click .send-message': 'sendMessage',
             'click #filter-by-location': 'filterByLocation'
+        },
+        render: function () {
+            console.log('Clicked USERS BUTTON');
+            var self = this;
+            var $temporaryTemplate = $('.temporary-template');
+            if ($temporaryTemplate.length) {
+                $temporaryTemplate.remove();
+            }
+            this.$el.append(self.tmpl);
+            var users = this.collection;
+            users.forEach(function (userModel) {
+                var view = new UserView({model: userModel});
+            });
+            return this;
         },
         sendMessage: function (e) {
             e.preventDefault();
@@ -268,20 +282,6 @@ define([
 
             $addToFriends.hide();
             $cancelProposition.show();
-        },
-        render: function () {
-            console.log('Clicked USERS BUTTON');
-            var self = this;
-            var $temporaryTemplate = $('.temporary-template');
-            if ($temporaryTemplate.attr('id')) {
-                $temporaryTemplate.remove();
-            }
-            this.$el.append(self.tmpl);
-            var users = this.collection;
-            users.forEach(function (userModel) {
-                var view = new UserView({model: userModel});
-            });
-            return this;
         }
     });
 

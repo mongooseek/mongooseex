@@ -250,8 +250,11 @@ module.exports = function () {
                 res.send(doc);
             })
         }
-        else {
+        else if (req.body.pass == undefined) {
+            res.status(200).json({login: "login"});
+        } else {
             var body = req.body;
+            console.log(req.body);
             var user = new User(body);
             var shaSum = crypto.createHash('sha256');
             shaSum.update(body.pass);

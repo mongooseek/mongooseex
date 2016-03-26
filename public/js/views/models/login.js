@@ -51,9 +51,7 @@ define([
                             success: function (response) {
                                 APP.usrId = self.model.get('_id');
                                 self.view = new View({model: self.model});
-                                Backbone.history.navigate('myApp/main', {replace: true});
-                                $temporaryTemplate.remove();
-
+                                Backbone.history.navigate('myApp/start/main', {replace: true});
                             },
                             error: function (err) {
                                 console.log(err);

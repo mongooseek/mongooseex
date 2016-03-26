@@ -17,6 +17,11 @@ define([
         },
         render: function () {
             var self = this;
+            var $temporaryTemplate;
+            $temporaryTemplate = $('.temporary-template');
+            if($temporaryTemplate.length){
+                $temporaryTemplate.remove();
+            }
             this.$el.append(self.tmpl(self.model.toJSON()));
         }
     });

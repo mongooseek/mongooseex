@@ -8,7 +8,7 @@ define([
     'text!templates/login.html',
     'Moment'
 ], function (Backbone, _, $, UsrModel, usrTemplate, loginTemplate, moment) {
-    console.log("I am inside user view");
+    console.log("I am inside USR view");
     var UsrView = Backbone.View.extend({
         el: '#vrakashy',
         //tmpl: _.template(usrTemplate),

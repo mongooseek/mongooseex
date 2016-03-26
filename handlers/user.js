@@ -257,26 +257,33 @@ module.exports = function () {
             shaSum.update(body.pass);
             body.pass = shaSum.digest('hex');
             console.log(body);
-            User.findOne({pass: body.pass, email: body.email}, function (err, user) {
-                if (err) {
-                    return next(err);
-                }
+            User.findOne(
+                {
+                    pass: body.pass, email: body.email
+                },
+                {
+                    pass: 0
+                },
+                function (err, user) {
+                    if (err) {
+                        return next(err);
+                    }
 
-                if (!user) {
-                    err = new Error('Bad request');
-                    err.status = 400;
+                    if (!user) {
+                        err = new Error('Bad request');
+                        err.status = 400;
 
-                    return next(err);
-                }
+                        return next(err);
+                    }
 
-                req.session.uId = user._id;
-                req.session.loggedIn = true;
-                req.session.location = user.location;
+                    req.session.uId = user._id;
+                    req.session.loggedIn = true;
+                    req.session.location = user.location;
 
-                delete user.pass;
+                    delete user.pass;
 
-                res.status(200).send(user);
-            });
+                    res.status(200).send(user);
+                });
         }
     };
 

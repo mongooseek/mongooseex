@@ -6,9 +6,6 @@ define([
 
     console.log("I am inside USER MODEL");
     var UserModel = BaseModel.extend({
-        urlRoot: function () {
-            return '/api/users/';
-        },
         defaults: {
             fullName: '',
             dateOfBirth: moment(),

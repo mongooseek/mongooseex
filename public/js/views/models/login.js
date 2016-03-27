@@ -3,31 +3,21 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
+    'views/models/start',
     'text!templates/login.html',
-], function (Backbone, _, $, loginTemplate) {
+], function (Backbone, _, $, StartView, template) {
     console.log("I am inside login view");
-    var LoginView = Backbone.View.extend({
-        el: '#vrakashy',
-        tmpl: _.template(loginTemplate),
-        initialize: function () {
-            console.log(this);
-            console.log('LoginView init');
-            this.render();
-        },
-        events: {
-            'click #login-button': 'login'
-        },
-        login: function () {
+    var LoginView = StartView.extend({
+        tmpl: _.template(template),
+        mainMethod: function () {
             var modelUrl;
             var viewUrl;
             var $emailField;
             var $passField;
-            var $temporaryTemplate;
             var email;
             var pass;
             var credentials;
             var self = this;
-            $temporaryTemplate = $('.temporary-template');
             $emailField = $('#input-email');
             $passField = $('#input-pass');
             email = $emailField.val();
@@ -45,7 +35,7 @@ define([
                         self.View.undelegateEvents();
                     }
                     self.model = new Model(credentials);
-                    self.model.urlRoot = '/login'
+                    self.model.content = 'login'
                     self.model.save(null,
                         {
                             success: function (response) {
@@ -61,14 +51,6 @@ define([
             } else {
                 alert('Please, input you e-mail and password to login.');
             }
-        },
-        render: function () {
-            var $temporaryTemplate;
-            $temporaryTemplate = $('.temporary-template');
-            if($temporaryTemplate.length){
-                $temporaryTemplate.remove();
-            }
-            this.$el.append(loginTemplate);
         }
     });
     return LoginView;

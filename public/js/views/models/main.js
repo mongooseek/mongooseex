@@ -4,11 +4,11 @@ define([
     'Underscore',
     'jQuery',
     'text!templates/models/main.html',
-], function (Backbone, _, $, mainTemplate) {
+], function (Backbone, _, $, template) {
     console.log("I am inside main view");
     var MainView = Backbone.View.extend({
         el: '#vrakashy',
-        tmpl: _.template(mainTemplate),
+        tmpl: _.template(template),
         initialize: function () {
             this.render();
         },

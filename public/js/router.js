@@ -8,7 +8,7 @@ define([
         routes: {
             'myApp/newpass/:resetToken': 'newPass',
             'myApp/main': 'main',
-            'myApp/start/(:content)': 'start',
+            'myApp/start/:content(/:token)': 'start',
             'myApp/logout': 'logout',
             'myApp(/:content)': 'goToContent',
             'myApp/:content/conversation/:part2': 'conversation',
@@ -19,10 +19,11 @@ define([
             console.log('DEFAULT');
             Backbone.history.navigate('#myApp/main', {trigger: true});
         },
-        start: function (content) {
+        start: function (content, token) {
             console.log('I am in route:', content);
             var self = this;
             var viewUrl;
+            var modelUrl;
             viewUrl = 'views/models/' + content;
             require([viewUrl], function (View) {
                 if (self.view) {

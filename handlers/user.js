@@ -23,8 +23,7 @@ module.exports = function () {
         crypto.randomBytes(10, function (err, buf) {
             resetToken = buf.toString('hex');
             text = link;
-            //html = "http://127.0.0.1:8080";
-            html = 'http://' + text + '#myApp/newpass/' + resetToken;
+            html = 'http://' + text + '#myApp/start/newpass/' + resetToken;
             console.log(html);
             body = {email: email, resetToken: resetToken, tokenExpires: tokenExpires};
             User.update({email: email}, {$set: body}, {new: true}, function (err, result) {
@@ -35,21 +34,18 @@ module.exports = function () {
     };
 
     this.resetPass = function (req, res, next) {
-        /*var body;
-         var resetToken;
-         var email = req.body.email;
-         var tokenExpires = Date.now() + 3600000;
-         crypto.randomBytes(31, function (err, buf) {
-         resetToken = buf.toString('hex');
-         body = {email: email, resetToken: resetToken, tokenExpires: tokenExpires};
-         User.update({email: email}, {$set: body}, {new: true}, function (err, result) {
-         req.session.tokenExpires = tokenExpires;
-         req.session.resetToken = resetToken;
-         res.send(result);
-         });
-         });*/
+        var body = req.body;
+        console.log(body);
+        User.findOneAndUpdate({resetToken: body.resetToken}, {$set: {resetToken: body.resetToken}},
+            {
+                new: true
+            },
+            function(err, user){
+                delete user.pass;
+                res.send(user);
+            }
+        )
     };
-
     //Handler to create a user within registration.
     this.createUser = function (req, res, next) {
         console.log('I am creatin user!');
@@ -254,7 +250,6 @@ module.exports = function () {
             res.status(200).json({login: "login"});
         } else {
             var body = req.body;
-            console.log(req.body);
             var user = new User(body);
             var shaSum = crypto.createHash('sha256');
             shaSum.update(body.pass);

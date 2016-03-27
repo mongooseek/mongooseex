@@ -3,73 +3,30 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
+    'views/models/start',
     'text!templates/models/reset.html',
-], function (Backbone, _, $, forgotTemplate) {
-    console.log("I am inside forgot view");
-    var ResetView = Backbone.View.extend({
-        el: '#vrakashy',
-        tmpl: _.template(forgotTemplate),
-        initialize: function () {
-            console.log('ForgotView init');
-            this.render();
-        },
-        events: {
-
-        },
-        render: function () {
-            var $temporaryTemplate;
-            $temporaryTemplate = $('.temporary-template');
-            if($temporaryTemplate.length){
-                $temporaryTemplate.remove();
-            }
-            this.$el.append(forgotTemplate);
-        },
-        resetPass: function () {
-            var modelUrl;
-            var viewUrl;
+], function (Backbone, _, $, StartView, template) {
+    console.log("I am inside reset view");
+    var ResetView = StartView.extend({
+        tmpl: _.template(template),
+        mainMethod: function () {
+            console.log('RESET WAS CLICKED');
             var $emailField;
-            var $passField;
-            var $temporaryTemplate;
             var email;
-            var pass;
-            var credentials;
             var self = this;
-            $temporaryTemplate = $('.temporary-template');
-            $emailField = $('#input-email');
-            $passField = $('#input-pass');
+            $emailField = $('#reset-email');
             email = $emailField.val();
-            pass = $passField.val();
-            if (email && pass) {
-                credentials =
-                {
-                    email: email,
-                    pass: pass
-                };
-                viewUrl = 'views/models/main';
-                modelUrl = 'models/user';
-                require([viewUrl, modelUrl], function (View, Model) {
-                    if (self.View) {
-                        self.View.undelegateEvents();
-                    }
-                    self.model = new Model(credentials);
-                    self.model.urlRoot = '/login'
-                    self.model.save(null,
-                        {
-                            success: function (response) {
-                                APP.usrId = self.model.get('_id');
-                                self.view = new View({model: self.model});
-                                Backbone.history.navigate('myApp/main', {replace: true});
-                                $temporaryTemplate.remove();
+            $.ajax({
+                type: "POST",
+                url: '/reset',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({"email": email}),
+                success: function (val) {
+                    console.log(val);
+                }
+            })
 
-                            },
-                            error: function (err) {
-                                console.log(err);
-                            }
-                        });
-                });
-            } else {
-                alert('Please, input you e-mail and password to login.');
-            }
         }
     });
     return ResetView;

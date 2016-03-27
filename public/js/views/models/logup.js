@@ -3,74 +3,67 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
+    'views/models/start',
     'text!templates/models/logup.html',
-], function (Backbone, _, $, template) {
-    console.log("I am inside login view");
-    var LogupView = Backbone.View.extend({
-        el: '#vrakashy',
+], function (Backbone, _, $, StartView, template) {
+    console.log("I am inside logup view");
+    var LogupView = StartView.extend({
         tmpl: _.template(template),
-        initialize: function () {
-            console.log(this);
-            console.log('LogupView init');
-            this.render();
-        },
-        events: {
-            'click #login-button': 'logup'
-        },
-        render: function () {
+        mainMethod: function () {
+            console.log('Main method is working');
             var self = this;
-            var $temporaryTemplate;
-            $temporaryTemplate = $('.temporary-template');
-            if ($temporaryTemplate.length) {
-                $temporaryTemplate.remove();
-            }
-            self.$el.append(self.tmpl);
-        },
-        login: function () {
-            var modelUrl;
             var viewUrl;
-            var $emailField;
-            var $passField;
-            var $temporaryTemplate;
-            var email;
-            var pass;
-            var credentials;
-            var self = this;
-            $temporaryTemplate = $('.temporary-template');
-            $emailField = $('#input-email');
-            $passField = $('#input-pass');
-            email = $emailField.val();
-            pass = $passField.val();
-            if (email && pass) {
-                credentials =
-                {
-                    email: email,
-                    pass: pass
-                };
+            var modelUrl;
+            var $formsFields;
+            var field;
+            var registrationData = {};
+            $formsFields = $('.form-control');
+            $formsFields.each(function () {
+                field = $(this).attr('id');
+                registrationData[field] = $(this).val();
+                $(this).val('');
+            });
+            if (registrationData.email && registrationData.pass && registrationData.pass == registrationData.confirm) {
                 viewUrl = 'views/models/main';
                 modelUrl = 'models/user';
                 require([viewUrl, modelUrl], function (View, Model) {
-                    if (self.View) {
-                        self.View.undelegateEvents();
-                    }
-                    self.model = new Model(credentials);
-                    self.model.urlRoot = '/login'
-                    self.model.save(null,
-                        {
-                            success: function (response) {
-                                APP.usrId = self.model.get('_id');
+                        self.model = new Model(registrationData);
+                        self.model.content = 'logup';
+                        self.model.save(null, {
+                            success: function(responce){
+                                if (self.view) {
+                                    self.view.undelegateEvents();
+                                }
                                 self.view = new View({model: self.model});
-                                Backbone.history.navigate('myApp/main', {replace: true});
-                                $temporaryTemplate.remove();
-
                             },
-                            error: function (err) {
+
+                            error: function(err){
                                 console.log(err);
                             }
                         });
-                });
+                    }
+                )
+                /*$.ajax({
+                 type: "POST",
+                 url: '/logup',
+                 dataType: "json",
+                 contentType: "application/json; charset=utf-8",
+                 data: JSON.stringify(this.model),
+                 success: function (val) {
+                 viewUrl = 'views/models/main';
+                 modelUrl = 'models/user';
+                 require([viewUrl, modelUrl], function (View, Model) {
+                 self.model = new Model(val);
+                 if (self.view) {
+                 self.view.undelegateEvents();
+                 }
+                 self.view = new View({model: self.model});
+                 }
+                 )
+                 }
+                 })*/
             } else {
-                alert('Please, input you e-mail and password to login.');
+                console.log('Input correct data');
             }
         }
     });

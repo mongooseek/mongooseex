@@ -35,6 +35,7 @@ define([
                                     self.view.undelegateEvents();
                                 }
                                 self.view = new View({model: self.model});
+                                Backbone.history.navigate('myApp/main', {replace: true});
                             },
 
                             error: function(err){

@@ -56,7 +56,25 @@ define([
                 });
             }
             if (!APP.usrId) {
+                viewUrl = 'views/models/main';
                 modelUrl = 'models/user';
+                require([viewUrl, modelUrl], function (View, Model) {
+                        self.model = new Model();
+                        self.model.content = 'login';
+                        self.model.save(null, {
+                            success: function(responce){
+                                if (self.view) {
+                                    self.view.undelegateEvents();
+                                }
+                                self.view = new View({model: self.model});
+                            },
+                            error: function(err){
+                                Backbone.history.navigate('myApp/start/login', {trigger: true});
+                            }
+                        });
+                    }
+                )
+                /*modelUrl = 'models/user';
                 require([modelUrl], function (Model) {
                     $.ajax({
                         type: "POST",
@@ -68,7 +86,8 @@ define([
                             if (val.login == "login") {
                                 Backbone.history.navigate('myApp/start/login', {trigger: true});
                             } else {
-                                self.model = new Model(val);
+                                self.model = new Model();
+                                self.model.set(val);
                                 viewUrl = 'views/models/main';
                                 require([viewUrl], function (View) {
                                         if (self.view) {
@@ -80,7 +99,7 @@ define([
                             }
                         }
                     })
-                });
+                });*/
             }
         },
         goToContent: function (content, findParameter, parameterValue) {

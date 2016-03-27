@@ -1,13 +1,12 @@
 var nodemailer = require("nodemailer");
 
-module.exports = function (to, subject, text, html) {
+module.exports = function (to, subject, html) {
     var smtpTransport = nodemailer.createTransport('smtps://ihor.ilnytskyi%40gmail.com:ihaj2016@smtp.gmail.com');
 
     var mail = {
         from: "VRakashy",
         to: to,
         subject: subject,
-        text: text,
         html: html
     };
 

@@ -10,20 +10,48 @@ define([
     var NewPassView = StartView.extend({
         tmpl: _.template(template),
         mainMethod: function () {
+            var self = this;
+            var viewUrl;
+            var modelUrl;
             var $newPasswordField;
             var $newPasswordConfirmField;
             var newPassword;
             var newPasswordConfirm;
             var currentPath;
             var resetToken;
+            var resetData;
             $newPasswordField = $('#input-password');
             $newPasswordConfirmField = $('#confirm-password');
             newPassword = $newPasswordField.val();
             newPasswordConfirm = $newPasswordConfirmField.val();
-            if (newPassword && newPasswordConfirm && newPassword === newPasswordConfirm) {
+            if (newPassword && newPassword === newPasswordConfirm) {
                 currentPath = Backbone.history.getFragment();
                 resetToken = currentPath.substr(-20, 20);
-                $.ajax({
+                resetData = {
+                    resetToken: resetToken,
+                    pass: newPassword
+                };
+                viewUrl = 'views/models/main';
+                modelUrl = 'models/user';
+                require([viewUrl, modelUrl], function (View, Model) {
+                        self.model = new Model(resetData);
+                        self.model.content = 'newpass';
+                        self.model.save(null, {
+                            success: function(responce){
+                                if (self.view) {
+                                    self.view.undelegateEvents();
+                                }
+                                self.view = new View({model: self.model});
+                                Backbone.history.navigate('myApp/main', {replace: true});
+                            },
+
+                            error: function(err){
+                                console.log(err);
+                            }
+                        });
+                    }
+                )
+                /*$.ajax({
                     type: "POST",
                     url: '/newpass',
                     dataType: "json",
@@ -36,7 +64,7 @@ define([
                             Backbone.history.navigate('myApp/start/login', {trigger: true});
                         } else {
                             console.log(val);
-                            /*self.model = new Model(val);
+                            /!*self.model = new Model(val);
                             viewUrl = 'views/models/main';
                             require([viewUrl], function (View) {
                                     if (self.view) {
@@ -44,10 +72,10 @@ define([
                                     }
                                     self.view = new View({model: self.model});
                                 }
-                            )*/
+                            )*!/
                         }
                     }
-                })
+                })*/
             }else{
                 console.log('Please, input correct data');
             }

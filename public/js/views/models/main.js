@@ -13,7 +13,23 @@ define([
             this.render();
         },
         events: {
-
+            'click #save-photo': 'savePhoto',
+        },
+        savePhoto: function () {
+            console.log("Clicked save photo button.");
+            var photo = $('#preview').attr('src');
+            this.savePhotoFunc(photo);
+        },
+        deletePhoto: function () {
+            console.log("Clicked delete photo button.");
+            var photo = this.model.defaults.photo;
+            this.savePhotoFunc(photo);
+        },
+        savePhotoFunc: function (photo) {
+            this.model.set({photo: photo/*, dateOfBirth: moment(this.model.dateOfBirth)*/});
+            this.model.urlRoot = '/api/users';
+            this.model.save();
+            $('#preview').attr('src', this.model.get('photo'));
         },
         render: function () {
             var self = this;
@@ -22,6 +38,7 @@ define([
             if($temporaryTemplate.length){
                 $temporaryTemplate.remove();
             }
+            self.model.content = 'api/users';
             this.$el.append(self.tmpl(self.model.toJSON()));
         }
     });

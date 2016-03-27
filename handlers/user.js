@@ -7,27 +7,22 @@ module.exports = function () {
     var crypto = require('crypto');
 
     this.generateAndSendResetLink = function (req, res, next) {
-        console.log(req);
-        var link;
-        var body;
-        var resetToken;
         var email;
+        var baseLink;
+        var resetToken;
         var tokenExpires;
-        var text = {};
         var html;
-        link = req.headers.host + '/';
-        console.log(req.headers);
-        body = req.body;
-        email = 'teerfeel@gmail.com';//body.email;
+        var body;
+        email = req.body.email;
+        baseLink = req.headers.host + '/';
         tokenExpires = Date.now() + 3600000;
         crypto.randomBytes(10, function (err, buf) {
             resetToken = buf.toString('hex');
-            text = link;
-            html = 'http://' + text + '#myApp/start/newpass/' + resetToken;
+            html = 'http://' + baseLink + '#myApp/start/newpass/' + resetToken;
             console.log(html);
             body = {email: email, resetToken: resetToken, tokenExpires: tokenExpires};
             User.update({email: email}, {$set: body}, {new: true}, function (err, result) {
-                sendMail(email, 'Get new pass', text, html);
+                sendMail(email, 'Get new pass', html);
                 res.send(result);
             });
         });
@@ -36,12 +31,23 @@ module.exports = function () {
     this.resetPass = function (req, res, next) {
         var body = req.body;
         console.log(body);
-        User.findOneAndUpdate({resetToken: body.resetToken}, {$set: {resetToken: body.resetToken}},
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(body.pass);
+        body.pass = shaSum.digest('hex');
+        User.findOneAndUpdate(
+            {
+                resetToken: body.resetToken, tokenExpires: {$gte: Date.now()}
+            },
+            {
+                $set: {resetToken: 'Hello world', pass: body.pass}
+            },
             {
                 new: true
             },
             function(err, user){
                 delete user.pass;
+                req.session.uId = user._id;
+                req.session.loggedIn = true;
                 res.send(user);
             }
         )
@@ -237,6 +243,7 @@ module.exports = function () {
 
     //Handler to get user within login.
     this.login = function (req, res, next) {
+        console.log(req.body);
         if (req.session.uId && req.session.loggedIn) {
             User.findOne({_id: req.session.uId}, {
                 pass: 0,
@@ -245,9 +252,6 @@ module.exports = function () {
                 console.log("Received a GET request for loginned _id: " + doc._id);
                 res.send(doc);
             })
-        }
-        else if (req.body.pass == undefined) {
-            res.status(200).json({login: "login"});
         } else {
             var body = req.body;
             var user = new User(body);

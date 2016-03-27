@@ -8,6 +8,7 @@ define([
 ], function (Backbone, _, $, StartView, template) {
     console.log("I am inside login view");
     var LoginView = StartView.extend({
+        content: 'login',
         tmpl: _.template(template),
         mainMethod: function () {
             var modelUrl;

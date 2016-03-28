@@ -12,6 +12,19 @@ define([
         events: {
             'click #main-button': 'mainMethod'
         },
+        getFormsData: function () {
+            var formsData;
+            var $formsFields;
+            var field;
+            formsData = {};
+            $formsFields = $('.form-control');
+            $formsFields.each(function () {
+                field = $(this).attr('id');
+                if ($(this).val()) formsData[field] = $(this).val();
+                $(this).val('');
+            });
+            return formsData;
+        },
         render: function () {
             var self = this;
             var $temporaryTemplate;

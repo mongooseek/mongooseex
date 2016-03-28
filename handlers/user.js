@@ -6,6 +6,29 @@ module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+    this.inviteFriend = function (req, res, next) {
+        console.log('I am inviting!');
+        var body;
+        var email;
+        var baseLink;
+        var inviteToken;
+        var user;
+        var html;
+        body = req.body;
+        email = body.email;
+        baseLink = req.headers.host + '/';
+        inviteToken = crypto.randomBytes(10).toString('hex');
+        html = 'http://' + baseLink + '#myApp/start/invite/' + inviteToken + email;
+        user = new User({email: email, inviteToken: inviteToken});
+        console.log(user);
+        user.save(function (err, user) {
+            if (err) {
+                return next(err);
+            }
+            sendMail(email, 'Invitation', html);
+            res.status(201).send(user);
+        });
+    };
     //Handler is used within logout from site. It changes session.loggedIn to false.
     this.logout = function (req, res, next) {
         var message = {};
@@ -13,6 +36,32 @@ module.exports = function () {
         res.json(message);
 
     };
+    this.createInvitedUser = function (req, res, next) {
+        console.log('I am creating invited user again!');
+        var body;
+        var user;
+        var inviteToken;
+        var shaSum = crypto.createHash('sha256');
+        body = req.body;
+        inviteToken = body.inviteToken;
+        shaSum.update(body.pass);
+        body.pass = shaSum.digest('hex');
+        User.findOneAndUpdate(
+            {
+                inviteToken: inviteToken
+            },
+            {
+                $set: body
+            },
+            {
+                new: true
+            },
+            function (err, user) {
+                res.status(200).send(user);
+            }
+        );
+    };
+
     //Handler to create a user within registration.
     this.createUser = function (req, res, next) {
         console.log('I am creatin user again!');

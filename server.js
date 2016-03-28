@@ -112,6 +112,8 @@ function onConnection() {
     app.post('/logout', userHandler.logout);
     app.post('/reset', userHandler.generateAndSendResetLink);
     app.post('/newpass', userHandler.resetPass);
+    app.post('/invite', userHandler.inviteFriend);
+    app.post('/invitation', userHandler.createInvitedUser);
 
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', authStackMidlware, userRouter);

@@ -28,6 +28,7 @@ var ModelSchema = new Schema({
     ],
     confirmed: {type: Boolean, default: false},
     confirmToken: String,
+    inviteToken: String,
     photo: String,
     resetToken: String,
     tokenExpires: Date

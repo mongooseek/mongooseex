@@ -6,6 +6,13 @@ module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+    //Handler is used within logout from site. It changes session.loggedIn to false.
+    this.logout = function (req, res, next) {
+        var message = {};
+        req.session.loggedIn = false;
+        res.json(message);
+
+    };
     //Handler to create a user within registration.
     this.createUser = function (req, res, next) {
         console.log('I am creatin user again!');
@@ -340,13 +347,4 @@ module.exports = function () {
                 });
         }
     };
-
-    //Handler is used within logout from site. It changes session.loggedIn to false.
-    this.logout = function (req, res, next) {
-        var message = {};
-        req.session.loggedIn = false;
-        res.json(message);
-
-    };
-}
-;
+};

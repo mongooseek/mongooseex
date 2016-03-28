@@ -24,7 +24,7 @@ module.exports = function () {
 
         crypto.randomBytes(10, function (err, buf) {
             confirmToken = buf.toString('hex');
-            user.confirmed = confirmToken;
+            user.confirmToken = confirmToken;
             html = 'http://' + baseLink + '#myApp/start/confirm/' + confirmToken;
             console.log(user);
             user.save(function (err, user) {
@@ -38,6 +38,48 @@ module.exports = function () {
                 res.status(201).send(user);
             });
         });
+    };
+    this.confirmEmail = function (req, res, next) {
+        var body;
+        var shaSum = crypto.createHash('sha256');
+        body = req.body;
+        shaSum.update(body.pass);
+        body.pass = shaSum.digest('hex');
+        User.findOneAndUpdate(
+            {
+                confirmToken: body.confirmToken,
+                confirmed: body.confirmed,
+                email: body.email,
+                pass: body.pass
+            },
+            {
+                $set: {confirmToken: 'Hello World', confirmed: true}
+            },
+            {
+                new: true
+            },
+            function (err, user) {
+                if (err) {
+                    return next(err);
+                }
+
+                if (!user) {
+                    err = new Error('Bad request');
+                    err.status = 400;
+
+                    return next(err);
+                }
+
+                req.session.uId = user._id;
+                req.session.loggedIn = true;
+                req.session.location = user.location;
+
+                delete res.user.pass;
+                delete res.user.confirmed;
+                delete res.user.confirmToken;
+
+                res.status(200).send(user);
+            });
     };
     this.generateAndSendResetLink = function (req, res, next) {
         var email;
@@ -251,7 +293,7 @@ module.exports = function () {
         });
     };
 
-    //Handler to get user within login.
+    //Handler to get user within nn.
     this.login = function (req, res, next) {
         console.log(req.body);
         if (req.session.uId && req.session.loggedIn) {
@@ -271,7 +313,7 @@ module.exports = function () {
             console.log(body);
             User.findOne(
                 {
-                    pass: body.pass, email: body.email
+                    pass: body.pass, email: body.email, confirmed: true
                 },
                 {
                     pass: 0

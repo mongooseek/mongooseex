@@ -26,7 +26,7 @@ var ModelSchema = new Schema({
     negotiators: [
         ObjectId
     ],
-    confirmed: Boolean,
+    confirmed: {type: Boolean, default: false},
     confirmToken: String,
     photo: String,
     resetToken: String,

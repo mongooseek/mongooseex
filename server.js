@@ -108,6 +108,7 @@ function onConnection() {
 
     app.post('/login', userHandler.login);
     app.post('/logup', userHandler.createUser);
+    app.post('/confirm', userHandler.confirmEmail);
     app.post('/logout', userHandler.logout);
     app.post('/reset', userHandler.generateAndSendResetLink);
     app.post('/newpass', userHandler.resetPass);

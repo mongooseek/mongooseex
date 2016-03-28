@@ -7,7 +7,9 @@ var ModelSchema = new Schema({
     lastName: String,
     email: {type: String, unique: true},
     pass: String,
-    dateOfBirth: Date,
+    dateOfBirth: {
+        type: Date, default: Date.now
+    },
     role: String,
     friends: [
         {
@@ -24,8 +26,8 @@ var ModelSchema = new Schema({
     negotiators: [
         ObjectId
     ],
-    authorized: Boolean,
     confirmed: Boolean,
+    confirmToken: String,
     photo: String,
     resetToken: String,
     tokenExpires: Date

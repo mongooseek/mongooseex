@@ -30,6 +30,111 @@ define([
             'click .send-message': 'sendMessage',
             'click #filter-by-location': 'filterByLocation'
         },
+        confirmProposition: function (e) {
+            e.preventDefault();
+            console.log('Clicked confirm');
+            var modelForFriendArray;
+            var modelForUsrArray;
+            var usrModelInFriendArr;
+            var friendModelInUsrArr;
+            var usrIndexInFriendArr;
+            var friendIndexInUsrArr;
+            var friendId;
+            var usrId;
+            var friendModel;
+            var usrModel;
+            var usrFriends;
+            var friendFriends;
+            var $refuseProposition;
+            var $confirmProposition;
+            var $removeFriend;
+            var $readPosts;
+            var type;
+            var added = moment();
+            friendId = e.target.type;
+            type = "[type='" + friendId + "']";
+            $refuseProposition = $(".refuse-proposition" + type);
+            $confirmProposition = $(".confirm-proposition" + type);
+            $removeFriend = $(".remove-friend" + type);
+            $readPosts = $(".read-posts" + type);
+            usrId = APP.usrId;
+            friendModel = this.collection.get(friendId);
+            friendModel.content = 'api/users';
+            usrModel = this.collection.get(usrId);
+            usrModel.content = 'api/users';
+            friendFriends = friendModel.get('friends');
+            usrFriends = usrModel.get('friends');
+
+            modelForFriendArray = {'_id': usrId, added: added, status: 'accepted'};
+            modelForUsrArray = {'_id': friendId, added: added, status: 'accepted'};
+
+            friendModelInUsrArr = _.filter(usrFriends, function (friend) {
+                return friend._id == friendId;
+            });
+
+            friendIndexInUsrArr = usrFriends.indexOf(friendModelInUsrArr[0]);
+
+            usrFriends[friendIndexInUsrArr] = modelForUsrArray;
+
+            usrModelInFriendArr = _.filter(friendFriends, function (friend) {
+                return friend._id == usrId;
+            });
+
+            usrIndexInFriendArr = friendFriends.indexOf(usrModelInFriendArr[0]);
+
+            friendFriends[usrIndexInFriendArr] = modelForFriendArray;
+
+            friendModel.set({friends: friendFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
+            usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
+
+            friendModel.save({patch: true});
+            usrModel.save({patch: true});
+
+            $refuseProposition.hide();
+            $confirmProposition.hide();
+            $removeFriend.show();
+            $readPosts.show();
+        },
+        addToFriends: function (e) {
+            e.preventDefault();
+            console.log('Clicked add to friends');
+            var friendId;
+            var usrId;
+            var friendModel;
+            var usrModel;
+            var usrFriends;
+            var friendFriends;
+            var modelForFriendArray;
+            var modelForUsrArray;
+            var added = moment();
+            var $addToFriends;
+            var $cancelProposition;
+            friendId = e.target.type;
+            usrId = APP.usrId;
+            $addToFriends = $(".add-to-friends[type='" + friendId + "']");
+            $cancelProposition = $(".cancel-proposition[type='" + friendId + "']");
+            friendModel = this.collection.get(friendId);
+            friendModel.content = 'api/users';
+            usrModel = this.collection.get(usrId);
+            usrModel.content = 'api/users';
+            friendFriends = friendModel.get('friends');
+            usrFriends = usrModel.get('friends');
+
+            modelForFriendArray = {'_id': usrId, added: added, status: 'pending'};
+            modelForUsrArray = {'_id': friendId, added: added, status: 'requested'};
+
+            friendFriends.push(modelForFriendArray);
+            usrFriends.push(modelForUsrArray);
+
+            friendModel.set({friends: friendFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
+            usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
+
+            friendModel.save({patch: true});
+            usrModel.save({patch: true});
+
+            $addToFriends.hide();
+            $cancelProposition.show();
+        },
         render: function () {
             console.log('Clicked USERS BUTTON');
             var self = this;
@@ -121,69 +226,6 @@ define([
                 var userView = new UserView({model: friendModel});
             });
         },
-        confirmProposition: function (e) {
-            e.preventDefault();
-            console.log('Clicked confirm');
-            var modelForFriendArray;
-            var modelForUsrArray;
-            var usrModelInFriendArr;
-            var friendModelInUsrArr;
-            var usrIndexInFriendArr;
-            var friendIndexInUsrArr;
-            var friendId;
-            var usrId;
-            var friendModel;
-            var usrModel;
-            var usrFriends;
-            var friendFriends;
-            var $refuseProposition;
-            var $confirmProposition;
-            var $removeFriend;
-            var $readPosts;
-            var type;
-            var added = moment();
-            friendId = e.target.type;
-            type = "[type='" + friendId + "']";
-            $refuseProposition = $(".refuse-proposition" + type);
-            $confirmProposition = $(".confirm-proposition" + type);
-            $removeFriend = $(".remove-friend" + type);
-            $readPosts = $(".read-posts" + type);
-            usrId = APP.usrId;
-            friendModel = this.collection.get(friendId);
-            usrModel = this.collection.get(usrId);
-            friendFriends = friendModel.get('friends');
-            usrFriends = usrModel.get('friends');
-
-            modelForFriendArray = {'_id': usrId, added: added, status: 'accepted'};
-            modelForUsrArray = {'_id': friendId, added: added, status: 'accepted'};
-
-            friendModelInUsrArr = _.filter(usrFriends, function (friend) {
-                return friend._id == friendId;
-            });
-
-            friendIndexInUsrArr = usrFriends.indexOf(friendModelInUsrArr[0]);
-
-            usrFriends[friendIndexInUsrArr] = modelForUsrArray;
-
-            usrModelInFriendArr = _.filter(friendFriends, function (friend) {
-                return friend._id == usrId;
-            });
-
-            usrIndexInFriendArr = friendFriends.indexOf(usrModelInFriendArr[0]);
-
-            friendFriends[usrIndexInFriendArr] = modelForFriendArray;
-
-            friendModel.set({friends: friendFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
-            usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
-
-            friendModel.save({patch: true});
-            usrModel.save({patch: true});
-
-            $refuseProposition.hide();
-            $confirmProposition.hide();
-            $removeFriend.show();
-            $readPosts.show();
-        },
         nullify: function (e) {
             e.preventDefault();
             console.log('Clicked cancel');
@@ -214,7 +256,9 @@ define([
             $readPosts = $(".read-posts" + type);
             usrId = APP.usrId;
             friendModel = this.collection.get(friendId);
+            friendModel.content = 'api/users';
             usrModel = this.collection.get(usrId);
+            usrModel.content = 'api/users';
             friendFriends = friendModel.get('friends');
             usrFriends = usrModel.get('friends');
 
@@ -244,44 +288,6 @@ define([
             $cancelProposition.hide();
             $removeFriend.hide();
             $readPosts.hide();
-        },
-        addToFriends: function (e) {
-            e.preventDefault();
-            console.log('Clicked add to friends');
-            var friendId;
-            var usrId;
-            var friendModel;
-            var usrModel;
-            var usrFriends;
-            var friendFriends;
-            var modelForFriendArray;
-            var modelForUsrArray;
-            var added = moment();
-            var $addToFriends;
-            var $cancelProposition;
-            friendId = e.target.type;
-            usrId = APP.usrId;
-            $addToFriends = $(".add-to-friends[type='" + friendId + "']");
-            $cancelProposition = $(".cancel-proposition[type='" + friendId + "']");
-            friendModel = this.collection.get(friendId);
-            usrModel = this.collection.get(usrId);
-            friendFriends = friendModel.get('friends');
-            usrFriends = usrModel.get('friends');
-
-            modelForFriendArray = {'_id': usrId, added: added, status: 'pending'};
-            modelForUsrArray = {'_id': friendId, added: added, status: 'requested'};
-
-            friendFriends.push(modelForFriendArray);
-            usrFriends.push(modelForUsrArray);
-
-            friendModel.set({friends: friendFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
-            usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
-
-            friendModel.save({patch: true});
-            usrModel.save({patch: true});
-
-            $addToFriends.hide();
-            $cancelProposition.show();
         }
     });
 

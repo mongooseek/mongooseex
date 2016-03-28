@@ -37,7 +37,7 @@ define([
                         self.model = new Model(resetData);
                         self.model.content = 'newpass';
                         self.model.save(null, {
-                            success: function(responce){
+                            success: function (responce) {
                                 if (self.view) {
                                     self.view.undelegateEvents();
                                 }
@@ -45,38 +45,13 @@ define([
                                 Backbone.history.navigate('myApp/main', {replace: true});
                             },
 
-                            error: function(err){
+                            error: function (err) {
                                 console.log(err);
                             }
                         });
                     }
                 )
-                /*$.ajax({
-                    type: "POST",
-                    url: '/newpass',
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({"resetToken": resetToken, "pass": newPassword}),
-                    success: function (val) {
-                        console.log(val);
-                        if (val.login == "login") {
-                            console.log(val);
-                            Backbone.history.navigate('myApp/start/login', {trigger: true});
-                        } else {
-                            console.log(val);
-                            /!*self.model = new Model(val);
-                            viewUrl = 'views/models/main';
-                            require([viewUrl], function (View) {
-                                    if (self.view) {
-                                        self.view.undelegateEvents();
-                                    }
-                                    self.view = new View({model: self.model});
-                                }
-                            )*!/
-                        }
-                    }
-                })*/
-            }else{
+            } else {
                 console.log('Please, input correct data');
             }
         }

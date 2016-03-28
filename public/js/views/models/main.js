@@ -33,12 +33,12 @@ define([
         },
         render: function () {
             var self = this;
+            self.model.content = 'api/users';
             var $temporaryTemplate;
             $temporaryTemplate = $('.temporary-template');
             if($temporaryTemplate.length){
                 $temporaryTemplate.remove();
             }
-            self.model.content = 'api/users';
             this.$el.append(self.tmpl(self.model.toJSON()));
         }
     });

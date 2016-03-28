@@ -6,6 +6,39 @@ module.exports = function () {
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+    //Handler to create a user within registration.
+    this.createUser = function (req, res, next) {
+        console.log('I am creatin user again!');
+        var body;
+        var email;
+        var baseLink;
+        var confirmToken;
+        var user;
+        var shaSum = crypto.createHash('sha256');
+        body = req.body;
+        user = new User(body);
+        email = body.email;
+        baseLink = req.headers.host + '/';
+        shaSum.update(body.pass);
+        user.pass = shaSum.digest('hex');
+
+        crypto.randomBytes(10, function (err, buf) {
+            confirmToken = buf.toString('hex');
+            user.confirmed = confirmToken;
+            html = 'http://' + baseLink + '#myApp/start/confirm/' + confirmToken;
+            console.log(user);
+            user.save(function (err, user) {
+                if (err) {
+                    return next(err);
+                }
+                sendMail(email, 'Confirm email', html);
+                delete user.pass;
+                req.session.uId = user._id;
+                req.session.loggedIn = true;
+                res.status(201).send(user);
+            });
+        });
+    };
     this.generateAndSendResetLink = function (req, res, next) {
         var email;
         var baseLink;
@@ -19,7 +52,6 @@ module.exports = function () {
         crypto.randomBytes(10, function (err, buf) {
             resetToken = buf.toString('hex');
             html = 'http://' + baseLink + '#myApp/start/newpass/' + resetToken;
-            console.log(html);
             body = {email: email, resetToken: resetToken, tokenExpires: tokenExpires};
             User.update({email: email}, {$set: body}, {new: true}, function (err, result) {
                 sendMail(email, 'Get new pass', html);
@@ -27,7 +59,6 @@ module.exports = function () {
             });
         });
     };
-
     this.resetPass = function (req, res, next) {
         var body = req.body;
         console.log(body);
@@ -44,34 +75,13 @@ module.exports = function () {
             {
                 new: true
             },
-            function(err, user){
+            function (err, user) {
                 delete user.pass;
                 req.session.uId = user._id;
                 req.session.loggedIn = true;
                 res.send(user);
             }
         )
-    };
-    //Handler to create a user within registration.
-    this.createUser = function (req, res, next) {
-        console.log('I am creatin user!');
-        var body = req.body;
-        var user = new User(body);
-        var shaSum = crypto.createHash('sha256');
-
-        shaSum.update(body.pass);
-        user.pass = shaSum.digest('hex');
-
-        user.save(function (err, user) {
-            if (err) {
-                return next(err);
-            }
-
-            delete user.pass;
-            req.session.uId = user._id;
-            req.session.loggedIn = true;
-            res.status(201).send(user);
-        });
     };
     //Handler to get all users from DB.
     this.getAll = function (req, res, next) {

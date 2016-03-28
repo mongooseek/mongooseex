@@ -40,6 +40,7 @@ define([
                 modelUrl = 'models/user';
                 require([modelUrl], function (Model) {
                     self.model = new Model({_id: APP.usrId});
+                    self.model.content = 'api/users';
                     self.model.fetch({
                         success: function (response) {
                             viewUrl = 'views/models/main';
@@ -62,70 +63,41 @@ define([
                         self.model = new Model();
                         self.model.content = 'login';
                         self.model.save(null, {
-                            success: function(responce){
+                            success: function (responce) {
+                                APP.usrId = self.model.get('_id');
                                 if (self.view) {
                                     self.view.undelegateEvents();
                                 }
                                 self.view = new View({model: self.model});
                             },
-                            error: function(err){
+                            error: function (err) {
                                 Backbone.history.navigate('myApp/start/login', {trigger: true});
                             }
                         });
                     }
                 )
-                /*modelUrl = 'models/user';
-                require([modelUrl], function (Model) {
-                    $.ajax({
-                        type: "POST",
-                        url: '/login',
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        //data: JSON.stringify({"pass": "undefined", "email": "undefined"}),
-                        success: function (val) {
-                            if (val.login == "login") {
-                                Backbone.history.navigate('myApp/start/login', {trigger: true});
-                            } else {
-                                self.model = new Model();
-                                self.model.set(val);
-                                viewUrl = 'views/models/main';
-                                require([viewUrl], function (View) {
-                                        if (self.view) {
-                                            self.view.undelegateEvents();
-                                        }
-                                        self.view = new View({model: self.model});
-                                    }
-                                )
-                            }
-                        }
-                    })
-                });*/
             }
         },
         goToContent: function (content, findParameter, parameterValue) {
             var content = content;
-            if (APP.usrId) {
-                console.log('The content is', content);
-                var self = this;
-                var collectionUrl;
-                var viewUrl;
-                if (!content) {
-                    return self.goToDashboard();
-                }
-                collectionUrl = 'collections/' + content;
-                viewUrl = 'views/collections/' + content;
-                require([collectionUrl, viewUrl], function (Collection, View) {
-                    var collection = new Collection();
-                    collection.content = (!parameterValue) ? collection.content : collection.content + '/' + findParameter + '/' + parameterValue;
-                    self.collection = collection;
-                    collection.on('reset', function () {
-                        self.renderView(View);
-                    });
-                    collection.fetch({reset: true});
-                });
-            } else {
-                Backbone.history.navigate('#myApp/main', {trigger: true});
+            console.log('The content is', content);
+            var self = this;
+            var collectionUrl;
+            var viewUrl;
+            if (!content) {
+                return self.goToDashboard();
             }
+            collectionUrl = 'collections/' + content;
+            viewUrl = 'views/collections/' + content;
+            require([collectionUrl, viewUrl], function (Collection, View) {
+                var collection = new Collection();
+                collection.content = (!parameterValue) ? collection.content : collection.content + '/' + findParameter + '/' + parameterValue;
+                self.collection = collection;
+                collection.on('reset', function () {
+                    self.renderView(View);
+                });
+                collection.fetch({reset: true});
+            });
         },
         conversation: function (content, part2) {
             if (APP.usrId) {

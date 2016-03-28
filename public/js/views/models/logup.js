@@ -20,7 +20,7 @@ define([
             $formsFields = $('.form-control');
             $formsFields.each(function () {
                 field = $(this).attr('id');
-                registrationData[field] = $(this).val();
+                if ($(this).val()) registrationData[field] = $(this).val();
                 $(this).val('');
             });
             if (registrationData.email && registrationData.pass && registrationData.pass == registrationData.confirm) {
@@ -29,8 +29,9 @@ define([
                 require([viewUrl, modelUrl], function (View, Model) {
                         self.model = new Model(registrationData);
                         self.model.content = 'logup';
+                        console.log(self.model);
                         self.model.save(null, {
-                            success: function(responce){
+                            success: function (responce) {
                                 if (self.view) {
                                     self.view.undelegateEvents();
                                 }
@@ -38,7 +39,7 @@ define([
                                 Backbone.history.navigate('myApp/main', {replace: true});
                             },
 
-                            error: function(err){
+                            error: function (err) {
                                 console.log(err);
                             }
                         });

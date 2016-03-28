@@ -36,10 +36,11 @@ define([
                         self.View.undelegateEvents();
                     }
                     self.model = new Model(credentials);
-                    self.model.content = 'login'
+                    self.model.content = 'login';
                     self.model.save(null,
                         {
                             success: function (response) {
+                                self.model.content = 'api/users';
                                 APP.usrId = self.model.get('_id');
                                 self.view = new View({model: self.model});
                                 Backbone.history.navigate('myApp/start/main', {replace: true});

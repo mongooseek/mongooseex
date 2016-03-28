@@ -22,15 +22,16 @@ define([
             console.log('User model initialized');
         },
         parse: function (response) {
-            /*if (response.dateOfBirth) {
-                var year = moment().year();
+            if (response.dateOfBirth) {
+                /*var year = moment().year();
                 var age = (new Date() - new Date(response.dateOfBirth)) / (1000 * 60 * 60 * 24 * ((year % 4 == 0) ? 366 : 365));
                 age = (age < 1) ? ':)' : age;
                 var dateOfBirth = response.dateOfBirth;
                 dateOfBirth = moment(dateOfBirth).format("MMM Do, YYYY");
                 response.age = age;
-                response.dateOfBirth = dateOfBirth;
-            }*/
+                response.dateOfBirth = dateOfBirth;*/
+                response.birth = moment(response.dateOfBirth).format("MMM Do, YYYY");
+            }
             if (response.firstName && response.lastName) response.fullName = response.firstName + ' ' + response.lastName;
             return response;
         }

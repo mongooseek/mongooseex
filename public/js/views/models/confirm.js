@@ -26,7 +26,7 @@ define([
             });
             currentPath = Backbone.history.getFragment();
             credentials.confirmToken = currentPath.substr(-20, 20);
-            credentials.confirmed = false;
+            console.log('confirmToken', credentials.confirmToken);
             if (credentials.email && credentials.pass) {
                 viewUrl = 'views/models/main';
                 modelUrl = 'models/user';

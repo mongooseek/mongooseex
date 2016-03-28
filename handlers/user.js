@@ -55,7 +55,6 @@ module.exports = function () {
         User.findOneAndUpdate(
             {
                 confirmToken: body.confirmToken,
-                confirmed: body.confirmed,
                 email: body.email,
                 pass: body.pass
             },
@@ -81,9 +80,9 @@ module.exports = function () {
                 req.session.loggedIn = true;
                 req.session.location = user.location;
 
-                delete res.user.pass;
-                delete res.user.confirmed;
-                delete res.user.confirmToken;
+                delete user.pass;
+                delete user.confirmed;
+                delete user.confirmToken;
 
                 res.status(200).send(user);
             });

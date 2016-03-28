@@ -19,7 +19,7 @@ module.exports = function () {
         baseLink = req.headers.host + '/';
         inviteToken = crypto.randomBytes(10).toString('hex');
         html = 'http://' + baseLink + '#myApp/start/invite/' + inviteToken + email;
-        user = new User({email: email, inviteToken: inviteToken});
+        user = new User({email: email, inviteToken: inviteToken, confirmed: true});
         console.log(user);
         user.save(function (err, user) {
             if (err) {
@@ -57,6 +57,9 @@ module.exports = function () {
                 new: true
             },
             function (err, user) {
+                req.session.uId = user._id;
+                req.session.loggedIn = true;
+                delete user.pass;
                 res.status(200).send(user);
             }
         );
@@ -387,7 +390,6 @@ module.exports = function () {
 
                     req.session.uId = user._id;
                     req.session.loggedIn = true;
-                    req.session.location = user.location;
 
                     delete user.pass;
 

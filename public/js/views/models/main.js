@@ -14,6 +14,24 @@ define([
         },
         events: {
             'click #save-photo': 'savePhoto',
+            'click #invite-friend': 'sendInvitation'
+        },
+        sendInvitation: function () {
+            var $emailField;
+            var email;
+            $emailField = $('#email-field');
+            email = $emailField.val();
+            $emailField.val('');
+            $.ajax({
+                type: "POST",
+                url: '/invite',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({"email": email}),
+                success: function (val) {
+                    alert('Invitation was sent.');
+                }
+            });
         },
         savePhoto: function () {
             console.log("Clicked save photo button.");
@@ -36,7 +54,7 @@ define([
             self.model.content = 'api/users';
             var $temporaryTemplate;
             $temporaryTemplate = $('.temporary-template');
-            if($temporaryTemplate.length){
+            if ($temporaryTemplate.length) {
                 $temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl(self.model.toJSON()));

@@ -341,14 +341,15 @@ module.exports = function () {
     //Handler to remove user from db.
     this.remove = function (req, res, next) {
         var id = req.params.id;
+        if(req.session.isAdministrator) {
+            User.findByIdAndRemove(id, function (err, user) {
+                if (err) {
+                    return next(err);
+                }
 
-        User.findByIdAndRemove(id, function (err, user) {
-            if (err) {
-                return next(err);
-            }
-
-            res.status(200).send(user);
-        });
+                res.status(200).send(user);
+            });
+        }
     };
 
     //Handler to get user within nn.
@@ -390,7 +391,8 @@ module.exports = function () {
 
                     req.session.uId = user._id;
                     req.session.loggedIn = true;
-
+                    req.session.location = user.location;
+                    if(user.role === 'admin') req.session.isAdministrator = true;
                     delete user.pass;
 
                     res.status(200).send(user);

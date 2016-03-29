@@ -4,7 +4,7 @@ define([
     'Underscore',
     'jQuery',
     'views/models/start',
-    'text!templates/login.html',
+    'text!templates/models/login.html',
 ], function (Backbone, _, $, StartView, template) {
     console.log("I am inside login view");
     var LoginView = StartView.extend({

@@ -11,6 +11,7 @@ define([
         tmpl: _.template(template),
         mainMethod: function () {
             console.log('Main method is working');
+            var city = {};
             var self = this;
             var viewUrl;
             var modelUrl;
@@ -27,20 +28,31 @@ define([
                 viewUrl = 'views/models/main';
                 modelUrl = 'models/user';
                 require([viewUrl, modelUrl], function (View, Model) {
-                        self.model = new Model(registrationData);
-                        self.model.content = 'logup';
-                        console.log(self.model);
-                        self.model.save(null, {
-                            success: function (responce) {
-                                if (self.view) {
-                                    self.view.undelegateEvents();
-                                }
-                                self.view = new View({model: self.model});
-                                Backbone.history.navigate('myApp/main', {replace: true});
-                            },
-
-                            error: function (err) {
-                                console.log(err);
+                        $.ajax({
+                            type: "GET",
+                            url: 'http://maps.google.com/maps/api/geocode/json?address=' + registrationData["city"] + '?sensor=false',
+                            data: {},
+                            success: function (val) {
+                                city.name = val.results[0].address_components[0].long_name;
+                                city.lat = val.results[0].geometry.location.lat;
+                                city.lng = val.results[0].geometry.location.lng;
+                                registrationData["city"] = city.name;
+                                registrationData["location"] = [city.lng, city.lat];
+                                self.model = new Model(registrationData);
+                                self.model.content = 'logup';
+                                console.log(self.model);
+                                self.model.save(null, {
+                                    success: function (responce) {
+                                        if (self.view) {
+                                            self.view.undelegateEvents();
+                                        }
+                                        self.view = new View({model: self.model});
+                                        Backbone.history.navigate('myApp/main', {replace: true});
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                    }
+                                });
                             }
                         });
                     }

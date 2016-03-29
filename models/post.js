@@ -5,7 +5,13 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var ModelSchema = new Schema({
     title: String,
     owner: {type: ObjectId, ref: 'user'},
-    content: String
+    firstName: String,
+    lastName: String,
+    photo: String,
+    content: String,
+    time: {
+        type: Date, default: Date.now
+    }
 });
 var Model = mongoose.model('post', ModelSchema);
 

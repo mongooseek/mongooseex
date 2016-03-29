@@ -10,6 +10,7 @@ define([
         el: '#vrakashy',
         tmpl: _.template(template),
         initialize: function () {
+            console.log(this);
             this.render();
         },
         events: {
@@ -58,6 +59,7 @@ define([
                 $temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl(self.model.toJSON()));
+            if(this.model.get('role') === 'admin') alert('ADMIN');
         }
     });
     return MainView;

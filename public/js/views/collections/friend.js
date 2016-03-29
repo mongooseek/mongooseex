@@ -14,7 +14,6 @@ define([
 ], function (Backbone, $, _, BaseCollectionsView, FriendsCollection, FriendModel, FriendView, ReplicaModel, ReplicasView, friendsTemplate, moment) {
 
     var FriendsView = BaseCollectionsView.extend({
-        el: "#vrakashy",
         tmpl: _.template(friendsTemplate),
         // <--" initialize: "--> removed to BaseCollectionsView.
         events: {

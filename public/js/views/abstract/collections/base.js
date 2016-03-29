@@ -3,10 +3,7 @@ define([
 ], function (AllCollectionsView) {
 
     var CollectionsView = AllCollectionsView.extend({
-        initialize: function () {
-            console.log('View for collections initialized!');
-            this.render();
-        },
+        
         filterByLocation: function () {
             var $distanceField;
             var distance;

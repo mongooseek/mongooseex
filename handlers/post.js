@@ -7,7 +7,7 @@ module.exports = function () {
 
     //Handler to get all messages.
     this.getAll = function (req, res, next) {
-        Post.find({owner: req.session.uId}, {__v: 0}, function (err, posts) {
+        Post.find({}, {__v: 0}, function (err, posts) {
             if (err) {
                 return next(err);
             }

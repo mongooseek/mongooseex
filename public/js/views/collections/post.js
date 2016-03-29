@@ -2,15 +2,15 @@
 define([
     'Backbone',
     'jQuery',
-    'views/abstract/collections/base',
+    'views/abstract/collections/preBase',
     'collections/post',
     'models/post',
     'views/models/post',
     'text!templates/collections/post.html'
-], function (Backbone, $, BaseCollectionsView, PostsCollection, PostModel, PostView, postsTemplate) {
+], function (Backbone, $, AllCollectionsView, PostsCollection, PostModel, PostView, postsTemplate) {
 
-    var PostsView = BaseCollectionsView.extend({
-        el: "#vrakashy",
+    var PostsView = AllCollectionsView.extend({
+
         tmpl: _.template(postsTemplate),
 
         //<--" initialize: "--> removed to BaseCollectionsView.
@@ -31,13 +31,39 @@ define([
             });
         },
         post: function () {
+            var postData;
             var content = $('#posts-field').val();
             if (content) {
-                var postModel = new PostModel();
-                postModel.set({content: content, owner: APP.usrId});
-                console.log('USER ID FOR POST', APP.userId);
-                var postView = new PostView({model: postModel});
                 $('#posts-field').val('');
+                $.ajax({
+                    type: "POST",
+                    url: '/login',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    //data: JSON.stringify({"pass": "9", "email": "9@1.1"}),
+                    success: function (creator) {
+                        console.log('CREATOR', creator);
+                        postData = {
+                            content: content,
+                            owner: creator._id,
+                            firstName: creator.firstName,
+                            lastName: creator.lastName,
+                            photo: creator.photo,
+                        };
+                        var postModel = new PostModel(postData);
+                        postModel.save(null, {
+                            success: function (response) {
+                                var postView = new PostView({model: postModel});
+                                console.log(postModel);
+                            },
+                            error: function (err) {
+
+                            }
+                        })
+                    }
+                })
+            } else {
+                alert('Please, enter your message before sending.');
             }
         }
     });

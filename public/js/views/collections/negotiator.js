@@ -14,7 +14,6 @@ define([
 ], function (Backbone, $, _, BaseCollectionsView, UsersCollection, UserModel, NegotiatorView, ReplicaModel, ReplicasView, negotiatorsTemplate, moment) {
 
     var NegotiatorsView = BaseCollectionsView.extend({
-        el: "#vrakashy",
         tmpl: _.template(negotiatorsTemplate),
 
         // <--" initialize: "--> removed to BaseCollectionsView.

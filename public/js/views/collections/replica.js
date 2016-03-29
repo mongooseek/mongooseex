@@ -12,12 +12,20 @@ define([
 ], function (Backbone, $, AllCollectionsView, ReplicasCollection, ReplicaModel, ReplicaView, replicasTemplate, moment, socketio) {
 
     var ReplicasView = AllCollectionsView.extend({
-        el: ".conversation",
+        el: "#vrakashy",
         tmpl: _.template(replicasTemplate),
 
         //<--" initialize: "--> removed to BaseCollectionsView.
         events: {
-            'click .send-message': 'sendMessage'
+            'click .send-message': 'sendMessage',
+            'click #message-button': 'message'
+        },
+        message: function () {
+            var $messageField;
+            var message;
+            $messageField = $('message-field');
+            message = $messageField.val();
+            console.log(message);
         },
         sendMessage: function (e) {
             var $messageField;

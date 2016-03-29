@@ -3,17 +3,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var ModelSchema = new Schema({
-    part1: {
-        type: ObjectId,
-        ref: 'user'
-    },
-    part2: {
-        type: ObjectId,
-        ref: 'user'
-    },
-    status: String, //receiver or sender
     text: String,
-    date: Date
+    parts: [ObjectId],
+    date: {type: Date, default: Date.now},
+    sender: {firstName: String, lastName: String, id: ObjectId}
 });
 var Model = mongoose.model('replica', ModelSchema);
 

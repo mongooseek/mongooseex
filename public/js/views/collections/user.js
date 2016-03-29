@@ -28,7 +28,11 @@ define([
             //Block serves to catch events connected to reading posts of user's friends.
             'click .read-posts': 'readPosts',
             'click .send-message': 'sendMessage',
+            'click #message-button': 'message',
             'click #filter-by-location': 'filterByLocation'
+        },
+        message: function () {
+            console.log('You haven\'t chosen a person for conversation!');
         },
         confirmProposition: function (e) {
             e.preventDefault();

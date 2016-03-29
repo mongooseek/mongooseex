@@ -34,14 +34,40 @@
             </div>
         </div>
     </div>
+    <br>
+
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <div  style="height:500px; overflow-y:scroll;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
             <table class="table table-condensed">
                 <!--Place to add a user-->
-                <tbody class="">
-                <div class="divScroll user-item" style="overflow-y:scroll; height:70%;"></div>
+                <tbody class="user-item">
+
                 </tbody>
             </table>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center" style="height:500px; overflow-y:scroll;">
+            <table class="table table-condensed">
+                <!--Place to add a user-->
+                <tbody class="message-item">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div  class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
+
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center">
+            <div class="input-group double-input">
+                <input id='message-field' type="text" placeholder="Write your message" class="form-control"/>
+    <span class="input-group-btn">
+        <a id="message-button" class="btn btn-primary">
+            <i class="fa fa-paper-plane-o"></i> Send
+        </a>
+    </span>
+            </div>
         </div>
     </div>
 </div>

@@ -5,6 +5,16 @@ var mongoose = require('mongoose');
 module.exports = function () {
     var Post = mongoose.model('post');
 
+    this.remove = function (req, res, next) {
+        var id = req.params.id;
+        Post.findByIdAndRemove(id, function (err, post) {
+            if (err) {
+                return next(err);
+            }
+            res.status(200).send(post);
+        });
+    };
+
     //Handler to get all messages.
     this.getAll = function (req, res, next) {
         Post.find({}, {__v: 0}, function (err, posts) {

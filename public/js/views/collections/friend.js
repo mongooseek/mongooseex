@@ -57,6 +57,8 @@ define([
             usrId = APP.usrId;
             userId = e.target.type;
             usrModel = this.collection.get(usrId);
+            console.log(usrId);
+            console.log(usrModel);
             userModel = this.collection.get(userId);
             type = '[type=' + userId + ']';
             $replicaField = $('.message-field' + type);

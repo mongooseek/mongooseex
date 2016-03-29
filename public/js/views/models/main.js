@@ -59,7 +59,7 @@ define([
                 $temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl(self.model.toJSON()));
-            if(this.model.get('role') === 'admin') alert('ADMIN');
+            if(this.model.get('role') === 'admin') console.log('user is admin');
         }
     });
     return MainView;

@@ -15,51 +15,65 @@ define([
 
         //<--" initialize: "--> removed to BaseCollectionsView.
         events: {
-            'click #make-post': 'post'
+            'click #make-post': 'post',
+            'click .trash-button': 'deletePost'
+        },
+        deletePost: function (e) {
+            e.preventDefault();
+            var postId;
+            postId = e.target.id;
+            console.log(postId);
+            var postModel = this.collection.get(postId);
+            postModel.destroy();
         },
         render: function () {
             console.log('Clicked POSTS BUTTON');
             var self = this;
-            var $temporaryTemplate = $('.temporary-template');
-            if ($temporaryTemplate.length) {
-                $temporaryTemplate.remove();
-            }
-            this.$el.append(self.tmpl);
-            var posts = this.collection;
-            posts.forEach(function (postModel) {
-                var view = new PostView({model: postModel});
+            $.ajax({
+                type: "POST",
+                url: '/login',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                //data: JSON.stringify({"pass": "9", "email": "9@1.1"}),
+                success: function (creator) {
+                    self.creator = creator;
+                    APP.usrId = creator._id;
+                    var $temporaryTemplate = $('.temporary-template');
+                    if ($temporaryTemplate.length) {
+                        $temporaryTemplate.remove();
+                    }
+                    self.$el.append(self.tmpl({"role": self.creator.role}));
+                    var posts = self.collection;
+                    posts.forEach(function (postModel) {
+                        var view = new PostView({model: postModel});
+                    });
+                }
             });
         },
         post: function () {
+            var self = this;
             var postData;
+            var title = $('#titles-field').val();
             var content = $('#posts-field').val();
             if (content) {
+                $('#titles-field').val('');
                 $('#posts-field').val('');
-                $.ajax({
-                    type: "POST",
-                    url: '/login',
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    //data: JSON.stringify({"pass": "9", "email": "9@1.1"}),
-                    success: function (creator) {
-                        console.log('CREATOR', creator);
-                        postData = {
-                            content: content,
-                            owner: creator._id,
-                            firstName: creator.firstName,
-                            lastName: creator.lastName,
-                            photo: creator.photo,
-                        };
-                        var postModel = new PostModel(postData);
-                        postModel.save(null, {
-                            success: function (response) {
-                                var postView = new PostView({model: postModel});
-                                console.log(postModel);
-                            },
-                            error: function (err) {
+                postData = {
+                    title: title,
+                    content: content,
+                    owner: self.creator._id,
+                    firstName: self.creator.firstName,
+                    lastName: self.creator.lastName,
+                    photo: self.creator.photo,
+                };
+                var postModel = new PostModel(postData);
+                postModel.save(null, {
+                    success: function (response) {
+                        var postView = new PostView({model: postModel});
+                        console.log(postModel);
+                    },
+                    error: function (err) {
 
-                            }
-                        })
                     }
                 })
             } else {

@@ -25,6 +25,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+            <input id='titles-field' type="text" placeholder="Write a title" class="form-control"/>
             <div class="input-group double-input">
                 <input id='posts-field' type="text" placeholder="Write your message" class="form-control"/>
     <span class="input-group-btn">
@@ -35,10 +36,16 @@
             </div>
         </div>
     </div>
+    <br>
     <!--Place to add a post-->
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-            <div id="posts-area"></div>
+            <table class="table table-condensed">
+                <!--Place to add a user-->
+                <tbody class="posts-area" role="<%=role%>">
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

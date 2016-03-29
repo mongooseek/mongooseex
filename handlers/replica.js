@@ -9,10 +9,11 @@ module.exports = function () {
     this.getAllWithOne = function (req, res, next) {
         var part1 = req.session.uId;
         var part2 = req.params.part2;
-        Replica.find({parts: [part1, part2]}, {__v: 0}, function (err, replicas) {
+        Replica.find({$or: [{parts: [part1, part2]}, {parts: [part2, part1]}]}, {__v: 0}, function (err, replicas) {
             if (err) {
                 return next(err);
             }
+            console.log(replicas);
             res.status(200).send(replicas);
         });
     };

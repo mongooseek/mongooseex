@@ -12,9 +12,7 @@ module.exports = function (sockets) {
         });
         socket.on('custom_event', function (message, cb) {
             console.log('ID IS', global.connectedPeople[message._id]);
-            //socket.broadcast.emit('custom_response', message);
             socket.broadcast.to(global.connectedPeople[message._id]).emit('custom_response', message);
-            //socket.broadcast.emit('custom_response', _id);
             cb(123);
         })
     });

@@ -6,11 +6,11 @@ define([
     'models/replica',
     'text!templates/models/replica.html',
     'Moment',
-], function (Backbone, _, $, ReplicaModel, replicaTemplate, moment) {
+], function (Backbone, _, $, ReplicaModel, template, moment) {
     console.log("I am inside replica view");
     var ReplicaView = Backbone.View.extend({
-        //el: '#textarea',
-        tmpl: _.template(replicaTemplate),
+        el: '.message-item',
+        tmpl: _.template(template),
         initialize: function () {
             console.log('Replica view initialized!');
             this.render();
@@ -19,11 +19,7 @@ define([
         render: function () {
             var part;
             var self = this;
-            var type = '[type="' + self.model.get('part2') + '"]';
-            console.log(self.model.get('text'));
-            part = (self.model.get('status')=='sender')?'me':'2part';
-            $textarea = $('textarea' + type);
-            $textarea.append(part + ': ' + self.model.get('text') + '\n\n');
+            self.$el.append(self.tmpl(self.model.toJSON()));
         },
         emmitMessage: function (message) {
         },

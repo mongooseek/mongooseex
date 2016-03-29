@@ -1,9 +1,11 @@
-<br>
-<div class="replica-unit">
-    <%if(status=="sender"){%>
-    <p>Sender</p>
-    <%}else{%>
-    <p>Receiver</p>
-    <%}%>
-    <%= text %>
-</div>
+<tr id="<%=_id%>">
+    <td>
+        <h4><%=fullName%>:</h4>
+    </td>
+    <td>
+        <h5><%=text%></h5>
+    </td>
+    <td>
+        <h6><%=created%></h6>
+    </td>
+</tr>

@@ -12,7 +12,6 @@ define([
 ], function (Backbone, $, AllCollectionsView, ReplicasCollection, ReplicaModel, ReplicaView, template, moment, socketio) {
 
     var ReplicasView = AllCollectionsView.extend({
-        el: "#vrakashy",
         tmpl: _.template(template),
 
         //<--" initialize: "--> removed to BaseCollectionsView.
@@ -28,8 +27,9 @@ define([
             var firstPartId;
             var replicaModel;
             var replicaData;
-            $messageField = $('message-field');
+            $messageField = $('#message-field');
             message = $messageField.val();
+            $messageField.val('');
             secondPartId = this.collection.content.substring(13);
             firstPartId = APP.usrId;
             replicaModel = new ReplicaModel();
@@ -41,63 +41,39 @@ define([
                     lastName: self.thisUser.lastName,
                     id: self.thisUser._id
                 },
-                text: 'Hello world'
+                text: message
             };
             replicaModel.set(replicaData);
             replicaModel.content = 'api/replicas';
-            replicaModel.save();
-        },
-        sendMessage: function (e) {
-            var $messageField;
-            var $messageArea;
-            e.preventDefault();
-            var id = e.target.type;
-            var type = '[type="' + id + '"]';
-            var $messageArea = $('textarea' + type);
-            var $messageField = $('.message-field' + type);
-            var message = $messageField.val();
-            $messageField.val('');
-            var replicaModel1 = new ReplicaModel();
-            var replicaModel2 = new ReplicaModel();
-            var date = moment();
-            replicaModel1.set({part1: APP.usrId, part2: id, status: "sender", text: message, date: date});
-            replicaModel2.set({part1: id, part2: APP.usrId, status: "receiver", text: message, date: date});
-            replicaModel1.urlRoot = '/api/replicas/' + id + '/';
-            replicaModel2.urlRoot = '/api/replicas/' + APP.usrId + '/';
-            replicaModel1.save({patch: true});
-            replicaModel2.save({patch: true});
-            APP.io.emit('custom_event', {_id: id, sender: APP.usrId, text: message}, function (cd) {
-                $messageArea.append(message);
-                console.log(cd);
+            replicaModel.save(null, {
+                success: function (responce) {
+                    APP.io.emit('custom_event', {_id: secondPartId, replica: replicaModel}, function (cd) {
+                        /*{_id: id, sender: APP.usrId, text: message}*/
+                        self.appendToChat(replicaModel);
+                    });
+                },
+                error: function (err) {
+
+                }
             });
         },
-        appendToChat: function (message) {
-            var $textArea;
-            console.log('RECEIVED', message);
-            var type = '[type="' + message.sender + '"]';
-            $textArea = $('textarea' + type);
-            $textArea.append('\n\n' + message.text);
-            console.log($textArea);
+        appendToChat: function (replica) {
+            var view = new ReplicaView({model: replica});
         },
         render: function () {
             var self = this;
             APP.io.on('custom_response', function (message) {
-                self.appendToChat(message);
+                alert(100);
+                //self.appendToChat(message);
             });
             $.ajax({
                 type: "POST",
                 url: '/login',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                //data: JSON.stringify({"pass": "9", "email": "9@1.1"}),
                 success: function (thisUser) {
                     self.thisUser = thisUser;
                     APP.usrId = thisUser._id;
-                    var $temporaryTemplate = $('.temporary-template');
-                    if ($temporaryTemplate.length) {
-                        $temporaryTemplate.remove();
-                    }
-                    $('#message-item').append(self.tmpl);
                     var replicas = self.collection;
                     replicas.forEach(function (replica) {
                         var view = new ReplicaView({model: replica});

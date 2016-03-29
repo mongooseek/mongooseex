@@ -51,6 +51,7 @@ define([
             $('#preview').attr('src', this.model.get('photo'));
         },
         render: function () {
+            if (APP.usrId) APP.io.emit('start', APP.usrId);
             var self = this;
             self.model.content = 'api/users';
             var $temporaryTemplate;
@@ -59,7 +60,7 @@ define([
                 $temporaryTemplate.remove();
             }
             this.$el.append(self.tmpl(self.model.toJSON()));
-            if(this.model.get('role') === 'admin') console.log('user is admin');
+            if (this.model.get('role') === 'admin') console.log('user is admin');
         }
     });
     return MainView;

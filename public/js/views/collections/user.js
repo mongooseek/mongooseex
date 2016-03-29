@@ -7,11 +7,9 @@ define([
     'collections/user',
     'models/user',
     'views/models/user',
-    'models/replica',
-    'views/collections/replica',
     'text!templates/collections/user.html',
     'Moment'
-], function (Backbone, $, _, BaseCollectionsView, UsersCollection, UserModel, UserView, ReplicaModel, ReplicasView, usersTemplate, moment) {
+], function (Backbone, $, _, BaseCollectionsView, UsersCollection, UserModel, UserView, usersTemplate, moment) {
 
     var UsersView = BaseCollectionsView.extend({
 

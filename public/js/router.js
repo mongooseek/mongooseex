@@ -100,31 +100,22 @@ define([
             });
         },
         conversation: function (content, part2) {
-            if (APP.usrId) {
-                var $forReplicas;
-                $forReplicas = $('#template-for-replicas');
-                if ($forReplicas.attr('id')) {
-                    $forReplicas.remove();
-                }
-                console.log('conversation activated');
-                var collectionContent = 'api/replicas/' + part2;
-                var self = this;
-                var collectionUrl;
-                var viewUrl;
-                collectionUrl = 'collections/replica';
-                viewUrl = 'views/collections/replica';
-                require([collectionUrl, viewUrl], function (Collection, View) {
-                    var collection = new Collection();
-                    self.collection = collection;
-                    self.collection.content = collectionContent;
-                    collection.on('reset', function () {
-                        self.renderView(View);
-                    });
-                    collection.fetch({reset: true});
+            console.log('conversation activated');
+            var collectionContent = 'api/replicas/' + part2;
+            var self = this;
+            var collectionUrl;
+            var viewUrl;
+            collectionUrl = 'collections/replica';
+            viewUrl = 'views/collections/replica';
+            require([collectionUrl, viewUrl], function (Collection, View) {
+                var collection = new Collection();
+                self.collection = collection;
+                self.collection.content = collectionContent;
+                collection.on('reset', function () {
+                    self.renderView(View);
                 });
-            } else {
-                Backbone.history.navigate('#myApp/main', {trigger: true});
-            }
+                collection.fetch({reset: true});
+            });
         },
         renderView: function (View) {
             if (this.view) {

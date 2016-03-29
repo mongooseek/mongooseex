@@ -3,7 +3,6 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
-    //'models/user',
     //'text!templates/models/user.html',
     'Moment'
 ], function (Backbone, _, $, moment) {

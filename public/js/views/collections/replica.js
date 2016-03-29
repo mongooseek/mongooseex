@@ -9,11 +9,11 @@ define([
     'text!templates/collections/replica.html',
     'Moment',
     'socketio'
-], function (Backbone, $, AllCollectionsView, ReplicasCollection, ReplicaModel, ReplicaView, replicasTemplate, moment, socketio) {
+], function (Backbone, $, AllCollectionsView, ReplicasCollection, ReplicaModel, ReplicaView, template, moment, socketio) {
 
     var ReplicasView = AllCollectionsView.extend({
         el: "#vrakashy",
-        tmpl: _.template(replicasTemplate),
+        tmpl: _.template(template),
 
         //<--" initialize: "--> removed to BaseCollectionsView.
         events: {
@@ -21,11 +21,31 @@ define([
             'click #message-button': 'message'
         },
         message: function () {
+            var self = this;
             var $messageField;
             var message;
+            var secondPartId;
+            var firstPartId;
+            var replicaModel;
+            var replicaData;
             $messageField = $('message-field');
             message = $messageField.val();
-            console.log(message);
+            secondPartId = this.collection.content.substring(13);
+            firstPartId = APP.usrId;
+            replicaModel = new ReplicaModel();
+            replicaData = {
+                parts: [firstPartId, secondPartId],
+                date: Date.now(),
+                sender: {
+                    firstName: self.thisUser.firstName,
+                    lastName: self.thisUser.lastName,
+                    id: self.thisUser._id
+                },
+                text: 'Hello world'
+            };
+            replicaModel.set(replicaData);
+            replicaModel.content = 'api/replicas';
+            replicaModel.save();
         },
         sendMessage: function (e) {
             var $messageField;
@@ -60,28 +80,31 @@ define([
             console.log($textArea);
         },
         render: function () {
+            var self = this;
             APP.io.on('custom_response', function (message) {
                 self.appendToChat(message);
             });
-            var self = this;
-            $('.template-for-replicas').hide();
-            var _id = (this.collection.content.match(/\d+\w*/i))[0];
-            var type = '[type="' + _id + '"]';
-            $('.template-for-replicas' + type).show();
-            var replicas;
-            replicas = this.collection;
-            var $textArea = $('textarea' + type);
-            var textAreaVal = $textArea.val();
-            if (textAreaVal) {
-                $textArea.empty();
-            }
-            replicas.forEach(function (replica) {
-                console.log(replica);
-                var replicaView = new ReplicaView({model: replica});
-                return this;
+            $.ajax({
+                type: "POST",
+                url: '/login',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                //data: JSON.stringify({"pass": "9", "email": "9@1.1"}),
+                success: function (thisUser) {
+                    self.thisUser = thisUser;
+                    APP.usrId = thisUser._id;
+                    var $temporaryTemplate = $('.temporary-template');
+                    if ($temporaryTemplate.length) {
+                        $temporaryTemplate.remove();
+                    }
+                    $('#message-item').append(self.tmpl);
+                    var replicas = self.collection;
+                    replicas.forEach(function (replica) {
+                        var view = new ReplicaView({model: replica});
+                    });
+                }
             });
         },
     });
-
     return ReplicasView;
 });

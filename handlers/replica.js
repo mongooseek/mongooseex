@@ -40,10 +40,11 @@ module.exports = function () {
         });
     };
 
-    this.setReplicasStatus = function (req, res, next) {
+    this.setReplicasRead = function (req, res, next) {
         var body = req.body;
-        //var replica = new Replica(body);
-        Replica.find({parts: [part2, part1]}, {__v: 0}, function (err, replicas) {
+        var part1 = body.part1;
+        var part2 = body.part2;
+        Replica.update({parts: [part1, part2]}, {$set: {read: true}}, {multi: true}, function (err, replicas) {
             if (err) {
                 return next(err);
             }

@@ -115,6 +115,7 @@ function onConnection() {
     app.post('/invite', userHandler.inviteFriend);
     app.post('/invitation', userHandler.createInvitedUser);
     app.post('/unread', replicaHandler.countUnreadReplicas);
+    app.post('/read', replicaHandler.setReplicasRead);
 
     app.use('/api/posts', authStackMidlware, postRouter);
     app.use('/api/users', authStackMidlware, userRouter);

@@ -20,6 +20,7 @@ define([
             if (self.model.get('_id')) {
                 console.log(self.model);
                 self.$el.prepend(self.tmpl(self.model.toJSON()));
+                
             }
         }
     });

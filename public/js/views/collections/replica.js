@@ -58,13 +58,20 @@ define([
             });
         },
         appendToChat: function (replica) {
+            console.log(replica);
             var view = new ReplicaView({model: replica});
         },
         render: function () {
             var self = this;
+            var secondPartId = self.collection.content.substring(13);
+            var senderId;
+            APP.io.removeListener('custom_response');
             APP.io.on('custom_response', function (message) {
-                alert(100);
-                //self.appendToChat(message);
+                senderId = message.sender.id;
+                if (secondPartId === senderId) {
+                    var replicaModel = new ReplicaModel(message);
+                    self.appendToChat(replicaModel);
+                }
             });
             $.ajax({
                 type: "POST",
@@ -74,6 +81,10 @@ define([
                 success: function (thisUser) {
                     self.thisUser = thisUser;
                     APP.usrId = thisUser._id;
+                    if ($('#message-item').length) {
+                        $('#message-item').remove();
+                    }
+                    $('#messages-table').append(self.tmpl({id: secondPartId}));
                     var replicas = self.collection;
                     replicas.forEach(function (replica) {
                         var view = new ReplicaView({model: replica});

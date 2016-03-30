@@ -9,7 +9,7 @@ define([
 ], function (Backbone, _, $, ReplicaModel, template, moment) {
     console.log("I am inside replica view");
     var ReplicaView = Backbone.View.extend({
-        el: '.message-item',
+        el: '#message-item',
         tmpl: _.template(template),
         initialize: function () {
             console.log('Replica view initialized!');
@@ -19,11 +19,8 @@ define([
         render: function () {
             var part;
             var self = this;
-            self.$el.append(self.tmpl(self.model.toJSON()));
-        },
-        emmitMessage: function (message) {
-        },
-        appendToChat: function (message) {
+            console.log(self.model.toJSON());
+            self.$el.prepend(self.tmpl(self.model.toJSON()));
         }
     });
     return ReplicaView;

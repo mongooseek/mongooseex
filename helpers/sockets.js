@@ -11,8 +11,8 @@ module.exports = function (sockets) {
             global.connectedPeople[_id] = socket.id;
         });
         socket.on('custom_event', function (message, cb) {
-            console.log('ID IS', global.connectedPeople[message._id]);
-            socket.broadcast.to(global.connectedPeople[message._id]).emit('custom_response', message);
+            console.log('REPLICA', message.replica);
+            socket.broadcast.to(global.connectedPeople[message._id]).emit('custom_response', message.replica);
             cb(123);
         })
     });

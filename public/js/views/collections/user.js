@@ -24,7 +24,6 @@ define([
             'click .cancel-proposition': 'nullify',
             'click .remove-friend': 'nullify',
             'click #message-button': 'message',
-            'click #filter-by-location': 'filterByLocation',
             'click .trash-button': 'removeUser'
         },
         removeUser: function (e) {
@@ -169,83 +168,6 @@ define([
             });
             self.messagesCounter()
             return this;
-        },
-        sendMessage: function (e) {
-            e.preventDefault();
-            var usrModel;
-            var userModel;
-            var usrNegotiators;
-            var userNegotiators;
-            var usrId;
-            var userId;
-            var type;
-            var $replicaField;
-            var replica;
-            var date;
-            usrId = APP.usrId;
-            userId = e.target.type;
-            usrModel = this.collection.get(usrId);
-            userModel = this.collection.get(userId);
-            type = '[type=' + userId + ']';
-            $replicaField = $('.message-field' + type);
-            replica = $replicaField.val();
-            date = moment();
-            var usrReplicaModel = new ReplicaModel({
-                part1: usrId,
-                part2: userId,
-                status: 'sender',
-                text: replica,
-                date: date
-            });
-            var userReplicaModel = new ReplicaModel({
-                part1: userId,
-                part2: usrId,
-                status: 'receiver',
-                text: replica,
-                date: date
-            });
-            usrReplicaModel.urlRoot = '/api/replicas/' + userId + '/';
-            userReplicaModel.urlRoot = '/api/replicas/' + usrId + '/';
-            usrNegotiators = usrModel.get('negotiators');
-            userNegotiators = userModel.get('negotiators');
-            if (usrNegotiators.indexOf(userId) == -1) {
-                usrNegotiators.push(userId);
-                usrModel.set({dateOfBirth: moment(usrModel.get('dateOfBirth'))});
-                usrModel.save({patch: true});
-            }
-            if (userNegotiators.indexOf(usrId) == -1) {
-                userNegotiators.push(usrId);
-                userModel.set({dateOfBirth: moment(userModel.get('dateOfBirth'))});
-                userModel.save({patch: true});
-            }
-            usrReplicaModel.save({patch: true});
-            userReplicaModel.save({patch: true});
-            $replicaField.val('');
-        },
-        readPosts: function () {
-            e.preventDefault();
-            console.log('Clicked read posts');
-            var friendId;
-            var type;
-            var usrId;
-            friendId = e.target.type;
-            type = "[type='" + friendId + "']";
-            usrId = APP.usrId;
-
-        },
-        filterFriends: function () {
-            var self = this;
-            console.log('This user!->', this.collection.get(APP.usrId));
-            var friends = this.collection.get(APP.usrId).get('friends');
-            var $temporaryTemplate = $('.temporary-template');
-            if ($temporaryTemplate.attr('id')) {
-                $temporaryTemplate.remove();
-            }
-            this.$el.append(self.tmpl);
-            friends.forEach(function (friendId) {
-                var friendModel = self.collection.get(friendId);
-                var userView = new UserView({model: friendModel});
-            });
         },
         nullify: function (e) {
             e.preventDefault();

@@ -44,12 +44,11 @@ module.exports = function () {
         var body = req.body;
         var part1 = body.part1;
         var part2 = body.part2;
-        Replica.update({parts: [part1, part2]}, {$set: {read: true}}, {multi: true}, function (err, replicas) {
+        Replica.update({parts: [part1, part2]}, {$set: {read: true}}, {multi: true}, function (err, result) {
             if (err) {
                 return next(err);
             }
-            console.log(replicas);
-            res.status(200).send(replicas);
+            res.status(200).send(result.nModified);
         });
     };
 

@@ -3,9 +3,12 @@ define([
     'Backbone',
     'Underscore',
     'jQuery',
-    //'text!templates/models/user.html',
+    'text!templates/models/friendshipStatus/accepted.html',
+    'text!templates/models/friendshipStatus/add.html',
+    'text!templates/models/friendshipStatus/pending.html',
+    'text!templates/models/friendshipStatus/requested.html',
     'Moment'
-], function (Backbone, _, $, moment) {
+], function (Backbone, _, $, accepted, add, pending, requested, moment) {
     console.log("I am inside user view");
     var UserView = Backbone.View.extend({
         el: '.user-item',
@@ -16,8 +19,8 @@ define([
         },
         events: {},
         render: function () {
-            var friendshipTemplateUrl;
             var self = this;
+            var template
             var friendsArr;
             var my;
             var myStatus;
@@ -30,15 +33,13 @@ define([
                     return (me._id == APP.usrId);
                 });
                 iAmNotInFriends = my[0] == undefined;
-                myStatus = (iAmNotInFriends) ? 'add' : my[0].status;
-                friendshipTemplateUrl = 'text!templates/models/friendshipStatus/' + myStatus + '.html';
-                require([friendshipTemplateUrl], function (template) {
-                    self.tmpl = _.template(template);
-                    self.$el.append(self.tmpl(self.model.toJSON()));
-                    if(usrRole !== 'admin'){
-                        $('a.trash-button').remove();
-                    }
-                });
+                template = eval((iAmNotInFriends) ? "add" : my[0].status);
+                self.tmpl = _.template(template);
+                self.$el.append(self.tmpl(self.model.toJSON()));
+                if (usrRole !== 'admin') {
+                    $('a.trash-button').remove();
+                }
+
                 return this;
             }
         }

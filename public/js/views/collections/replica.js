@@ -21,13 +21,12 @@ define([
         },
         message: function () {
             var self = this;
-            var $messageField;
+            var $messageField = $('#message-field');
             var message;
             var secondPartId;
             var firstPartId;
             var replicaModel;
             var replicaData;
-            $messageField = $('#message-field');
             message = $messageField.val();
             $messageField.val('');
             secondPartId = this.collection.content.substring(13);
@@ -62,16 +61,21 @@ define([
             var view = new ReplicaView({model: replica});
         },
         render: function () {
+            console.log('In replicas render');
             var self = this;
+            var $messagesCounter = $('#counter');
             var secondPartId = self.collection.content.substring(13);
             var senderId;
+            var unreadMessages;
             APP.io.removeListener('custom_response');
             APP.io.on('custom_response', function (message) {
-                console.log('I am there');
                 senderId = message.sender.id;
                 if (secondPartId === senderId) {
                     var replicaModel = new ReplicaModel(message);
                     self.appendToChat(replicaModel);
+                } else {
+                    unreadMessages = parseInt($messagesCounter.text(), 10);
+                    $messagesCounter.text(++unreadMessages);
                 }
             });
             $.ajax({
@@ -90,9 +94,31 @@ define([
                     replicas.forEach(function (replica) {
                         var view = new ReplicaView({model: replica});
                     });
+                    self.setMessagesRead();
+                }
+            });
+        },
+        setMessagesRead: function () {
+            var secondPartId = APP.usrId;
+            var firstPartId = this.collection.content.substring(13);
+            var $messagesCounter = $('#counter');
+            var quantityOfReadMessages;
+            var unreadMessages;
+            $.ajax({
+                type: "POST",
+                url: '/read',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({"part1": firstPartId, "part2": secondPartId}),
+                success: function (alreadyRead) {
+                    quantityOfReadMessages = alreadyRead;
+                    unreadMessages = $messagesCounter.text() - quantityOfReadMessages;
+                    $messagesCounter.text(unreadMessages);
+                    console.log(unreadMessages);
                 }
             });
         },
     });
+
     return ReplicasView;
 });

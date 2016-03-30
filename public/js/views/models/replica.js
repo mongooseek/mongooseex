@@ -19,7 +19,6 @@ define([
         render: function () {
             var part;
             var self = this;
-            console.log(self.model.toJSON());
             self.$el.prepend(self.tmpl(self.model.toJSON()));
         }
     });

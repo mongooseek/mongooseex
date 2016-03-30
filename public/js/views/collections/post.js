@@ -24,9 +24,11 @@ define([
             postId = e.target.id;
             console.log(postId);
             var postModel = this.collection.get(postId);
+            var blockToRemove = 'tr[id="' + postId + '"]';
+            var $blockToRemove = $(blockToRemove);
             postModel.destroy({
                 success: function (ressponce) {
-
+                    $blockToRemove.remove();
                 },
                 error: function (err) {
 
@@ -76,6 +78,7 @@ define([
                 var postModel = new PostModel(postData);
                 postModel.save(null, {
                     success: function (response) {
+                        self.collection.add(postModel);
                         var postView = new PostView({model: postModel});
                         console.log(postModel);
                     },

@@ -23,9 +23,6 @@ define([
             'click .refuse-proposition': 'nullify',
             'click .cancel-proposition': 'nullify',
             'click .remove-friend': 'nullify',
-            //Block serves to catch events connected to reading posts of user's friends.
-            'click .read-posts': 'readPosts',
-            'click .send-message': 'sendMessage',
             'click #message-button': 'message',
             'click #filter-by-location': 'filterByLocation'
         },
@@ -140,11 +137,12 @@ define([
         render: function () {
             console.log('Clicked USERS BUTTON');
             var self = this;
+            var userRole = this.collection.get(APP.usrId).get('role');
             var $temporaryTemplate = $('.temporary-template');
             if ($temporaryTemplate.length) {
                 $temporaryTemplate.remove();
             }
-            this.$el.append(self.tmpl);
+            this.$el.append(self.tmpl({"role": userRole}));
             var users = this.collection;
             users.forEach(function (userModel) {
                 var view = new UserView({model: userModel});

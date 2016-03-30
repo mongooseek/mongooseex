@@ -22,6 +22,7 @@ define([
             var my;
             var myStatus;
             var iAmNotInFriends;
+            var usrRole = ($('tbody').attr('role'));
             friendsArr = self.model.get('friends');
             var $templateForUsers = $('#template-for-users');
             if ($templateForUsers.length) {
@@ -34,6 +35,9 @@ define([
                 require([friendshipTemplateUrl], function (template) {
                     self.tmpl = _.template(template);
                     self.$el.append(self.tmpl(self.model.toJSON()));
+                    if(usrRole !== 'admin'){
+                        $('a.trash-button').remove();
+                    }
                 });
                 return this;
             }

@@ -167,6 +167,7 @@ define([
             users.forEach(function (userModel) {
                 var view = new UserView({model: userModel});
             });
+            self.messagesCounter()
             return this;
         },
         sendMessage: function (e) {
@@ -308,6 +309,21 @@ define([
             $cancelProposition.hide();
             $removeFriend.hide();
             $readPosts.hide();
+        },
+        messagesCounter: function () {
+            var $messagesCounter = $('#counter');
+            console.log($messagesCounter);
+            $.ajax({
+                type: "POST",
+                url: '/unread',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({"part2": APP.usrId}),
+                success: function (unread) {
+                    console.log(unread.length);
+                    $messagesCounter.text(unread.length);
+                }
+            });
         }
     });
 

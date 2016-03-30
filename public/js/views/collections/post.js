@@ -24,7 +24,14 @@ define([
             postId = e.target.id;
             console.log(postId);
             var postModel = this.collection.get(postId);
-            postModel.destroy();
+            postModel.destroy({
+                success: function (ressponce) {
+
+                },
+                error: function (err) {
+
+                }
+            });
         },
         render: function () {
             console.log('Clicked POSTS BUTTON');
@@ -42,7 +49,7 @@ define([
                     if ($temporaryTemplate.length) {
                         $temporaryTemplate.remove();
                     }
-                    self.$el.append(self.tmpl({"role": self.creator.role}));
+                    self.$el.append(self.tmpl({"creator": self.creator._id, "role": self.creator.role}));
                     var posts = self.collection;
                     posts.forEach(function (postModel) {
                         var view = new PostView({model: postModel});

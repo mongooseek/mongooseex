@@ -65,10 +65,14 @@
             <br>
             <br>
 
-            <div>Name & surname: <b id="user-name"><%=fullName%></b></div>
-            <div>Birth: <%=birth%></div>
-            <div>E-mail: <%=email%></div>
-            <div>Place: <%=city%></div>
+            <div class="for-render">Name & surname: <b id="first-name"><%=firstName%> </b><b id="last-name"><%=lastName%></b></div>
+            <div class="for-edit" style="display: none;">Name & surname: <input id="first-name" value="<%=firstName%>"> <input id="last-name" value="<%=lastName%>"></div>
+            <div class="for-render">Birth: <%=birth%></div>
+            <div class="for-edit" style="display: none;">Birth: <input id="date-of-birth" value="<%=dateOfBirth%>"></div>
+            <div class="for-render">E-mail: <%=email%></div>
+            <div class="for-edit" style="display: none;">E-mail: <input id="email" value="<%=email%>"></div>
+            <div class="for-render">Place: <%=city%></div>
+            <div class="for-edit" style="display: none;">Place: <input id="city" value="<%=city%>"></div>
         </div>
     </div>
 </div>

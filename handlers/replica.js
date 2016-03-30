@@ -48,7 +48,7 @@ module.exports = function () {
             if (err) {
                 return next(err);
             }
-            res.status(200).send(result.nModified);
+            res.status(200).send(result);
         });
     };
 

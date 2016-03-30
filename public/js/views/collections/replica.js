@@ -111,10 +111,9 @@ define([
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({"part1": firstPartId, "part2": secondPartId}),
                 success: function (alreadyRead) {
-                    quantityOfReadMessages = alreadyRead;
-                    unreadMessages = $messagesCounter.text() - quantityOfReadMessages;
+                    quantityOfReadMessages = alreadyRead.nModified;
+                    unreadMessages = parseInt($messagesCounter.text()) - quantityOfReadMessages;
                     $messagesCounter.text(unreadMessages);
-                    console.log(unreadMessages);
                 }
             });
         },

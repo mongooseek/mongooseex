@@ -15,7 +15,23 @@ define([
         },
         events: {
             'click #save-photo': 'savePhoto',
-            'click #invite-friend': 'sendInvitation'
+            'click #invite-friend': 'sendInvitation',
+            'click #edit-profile': 'editProfile',
+            'click #cancel-edition': 'cancelEdition',
+            'click #save-profile': 'saveProfile'
+        },
+        saveProfile: function () {
+            $('.for-render').show();
+            $('.for-edit').hide();
+            console.log($('.for-edit input'));
+        },
+        editProfile: function () {
+            $('.for-render').hide();
+            $('.for-edit').show();
+        },
+        cancelEdition: function () {
+            $('.for-render').show();
+            $('.for-edit').hide();
         },
         sendInvitation: function () {
             var $emailField;

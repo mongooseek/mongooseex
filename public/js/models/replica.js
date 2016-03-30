@@ -5,6 +5,9 @@ define([
 ], function (BaseModel, moment) {
     console.log('I am inside REPLICA MODEL!');
     var ReplicaModel = BaseModel.extend({
+        defaults: {
+            read: false
+        },
         parse: function (response) {
             if (response.sender) response.fullName = response.sender.firstName + ' ' + response.sender.lastName;
             if (response.date) {

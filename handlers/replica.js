@@ -39,4 +39,27 @@ module.exports = function () {
             res.status(201).send(replica);
         });
     };
+
+    this.setReplicasStatus = function (req, res, next) {
+        var body = req.body;
+        //var replica = new Replica(body);
+        Replica.find({parts: [part2, part1]}, {__v: 0}, function (err, replicas) {
+            if (err) {
+                return next(err);
+            }
+            console.log(replicas);
+            res.status(200).send(replicas);
+        });
+    };
+
+    this.countUnreadReplicas = function (req, res, next) {
+        var body = req.body;
+        Replica.find({"sender.id": {$ne: req.body.part2}, parts: req.body.part2, read: false}, {__v: 0}, function (err, replicas) {
+            if (err) {
+                return next(err);
+            }
+            console.log(replicas);
+            res.status(200).send(replicas);
+        });
+    };
 }

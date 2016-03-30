@@ -20,6 +20,7 @@ define([
         },
         deletePost: function (e) {
             e.preventDefault();
+            var self = this;
             var postId;
             postId = e.target.id;
             console.log(postId);

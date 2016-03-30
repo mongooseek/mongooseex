@@ -67,6 +67,7 @@ define([
             var senderId;
             APP.io.removeListener('custom_response');
             APP.io.on('custom_response', function (message) {
+                console.log('I am there');
                 senderId = message.sender.id;
                 if (secondPartId === senderId) {
                     var replicaModel = new ReplicaModel(message);

@@ -159,6 +159,7 @@ module.exports = function () {
             });
         });
     };
+
     this.resetPass = function (req, res, next) {
         var body = req.body;
         console.log(body);

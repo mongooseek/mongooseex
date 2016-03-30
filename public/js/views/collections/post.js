@@ -29,6 +29,7 @@ define([
             postModel.destroy({
                 success: function (ressponce) {
                     $blockToRemove.remove();
+                    self.collection.remove(postModel);
                 },
                 error: function (err) {
 

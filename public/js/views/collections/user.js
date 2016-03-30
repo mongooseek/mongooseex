@@ -24,7 +24,27 @@ define([
             'click .cancel-proposition': 'nullify',
             'click .remove-friend': 'nullify',
             'click #message-button': 'message',
-            'click #filter-by-location': 'filterByLocation'
+            'click #filter-by-location': 'filterByLocation',
+            'click .trash-button': 'removeUser'
+        },
+        removeUser: function (e) {
+            e.preventDefault();
+            var self = this;
+            var userId = e.target.id;
+            console.log(userId);
+            var blockToRemove = 'tr[id="' + userId + '"]';
+            var userModel = this.collection.get(userId);
+            var $blockToRemove = $(blockToRemove);
+            userModel.content = 'api/users';
+            userModel.destroy({
+                success: function (ressponce) {
+                    self.collection.remove(userModel);
+                    $blockToRemove.remove();
+                },
+                error: function (err) {
+
+                }
+            });
         },
         message: function () {
             console.log('You haven\'t chosen a person for conversation!');

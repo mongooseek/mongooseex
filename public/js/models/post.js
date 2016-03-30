@@ -7,13 +7,11 @@ define([
         urlRoot: function () {
             return '/api/posts/';
         },
-        defaults: {
-            title: 'todo'
-        },
         parse: function (response) {
             if (response.firstName && response.lastName) response.fullName = response.firstName + ' ' + response.lastName;
             return response;
         }
     });
+
     return PostModel;
 });

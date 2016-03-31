@@ -5,11 +5,12 @@ define([
     'Underscore',
     'views/abstract/collections/base',
     'collections/friend',
+    'models/user',
     'models/friend',
     'views/models/friend',
     'text!templates/collections/friend.html',
     'Moment'
-], function (Backbone, $, _, BaseView, FriendsCollection, FriendModel, FriendView, template, moment) {
+], function (Backbone, $, _, BaseView, FriendsCollection, UserModel, FriendModel, FriendView, template, moment) {
 
     var FriendsView = BaseView.extend({
         tmpl: _.template(template),
@@ -32,23 +33,21 @@ define([
             friends.forEach(function (friendModel) {
                 var view = new FriendView({model: friendModel});
             });
-            self.messagesCounter();
+            this.messagesCounter();
+            this.getMainUser();
             return this;
         },
         nullify: function (e) {
             e.preventDefault();
+            console.log(this.usrModel);
             var friendId = e.target.type;
             var type = "[type='" + friendId + "']";
-            var $addToFriends = $(".add-to-friends" + type);
-            var $refuseProposition = $(".refuse-proposition" + type);
-            var $confirmProposition = $(".confirm-proposition" + type);
-            var $cancelProposition = $(".cancel-proposition" + type);
-            var $removeFriend = $(".remove-friend" + type);
             var usrId = APP.usrId;
             var friendModel = this.collection.get(friendId);
-            var usrModel = this.collection.get(usrId);
+            var usrModel = this.usrModel;
             var friendFriends = friendModel.get('friends');
             var usrFriends = usrModel.get('friends');
+            var $friendItem = $("tr#" + friendId);
 
             var usrModelInFriendArr = _.filter(friendFriends, function (friend) {
                 return friend._id == usrId;
@@ -67,8 +66,27 @@ define([
             friendModel.set({friends: friendFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
             usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
 
-            friendModel.save({patch: true});
-            usrModel.save({patch: true});
+            friendModel.content = 'api/users';
+            friendModel.save();
+            usrModel.content = 'api/users';
+            usrModel.save();
+
+            $friendItem.remove();
+        },
+        getMainUser: function () {
+            var self = this;
+            var userModel;
+            $.ajax({
+                type: "POST",
+                url: '/login',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                //data: JSON.stringify({"email": email}),
+                success: function (user) {
+                    userModel = new UserModel(user);
+                    self.usrModel = userModel;
+                }
+            });
         }
     });
 

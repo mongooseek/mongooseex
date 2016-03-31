@@ -11,7 +11,6 @@ define([
         },
         messageSystem: function () {
             var self = this;
-            console.log(self);
             var $messagesCounter = $('#counter');
             var secondPartId;
             var senderId;

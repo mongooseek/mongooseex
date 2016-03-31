@@ -9,15 +9,11 @@ define([
     'views/models/user',
     'text!templates/collections/user.html',
     'Moment'
-], function (Backbone, $, _, BaseCollectionsView, UsersCollection, UserModel, UserView, usersTemplate, moment) {
+], function (Backbone, $, _, BaseView, UsersCollection, UserModel, UserView, template, moment) {
 
-    var UsersView = BaseCollectionsView.extend({
-
-        tmpl: _.template(usersTemplate),
-
-        // <--" initialize: "--> removed to BaseCollectionsView.
+    var UsersView = BaseView.extend({
+        tmpl: _.template(template),
         events: {
-            //Block of events connected to friendship.
             'click .add-to-friends': 'addToFriends',
             'click .confirm-proposition': 'confirmProposition',
             'click .refuse-proposition': 'nullify',
@@ -26,6 +22,9 @@ define([
             'click #message-button': 'message',
             'click .trash-button': 'removeUser',
             'click #filter-by-location': 'filterByLocation'
+        },
+        message: function () {
+            console.log('You haven\'t chosen a person for conversation!');
         },
         removeUser: function (e) {
             e.preventDefault();
@@ -46,60 +45,39 @@ define([
                 }
             });
         },
-        message: function () {
-            console.log('You haven\'t chosen a person for conversation!');
-        },
         confirmProposition: function (e) {
             e.preventDefault();
-            console.log('Clicked confirm');
-            var modelForFriendArray;
-            var modelForUsrArray;
-            var usrModelInFriendArr;
-            var friendModelInUsrArr;
-            var usrIndexInFriendArr;
-            var friendIndexInUsrArr;
-            var friendId;
-            var usrId;
-            var friendModel;
-            var usrModel;
-            var usrFriends;
-            var friendFriends;
-            var $refuseProposition;
-            var $confirmProposition;
-            var $removeFriend;
-            var $readPosts;
-            var type;
             var added = moment();
-            friendId = e.target.type;
-            type = "[type='" + friendId + "']";
-            $refuseProposition = $(".refuse-proposition" + type);
-            $confirmProposition = $(".confirm-proposition" + type);
-            $removeFriend = $(".remove-friend" + type);
-            $readPosts = $(".read-posts" + type);
-            usrId = APP.usrId;
-            friendModel = this.collection.get(friendId);
+            var friendId = e.target.type;
+            var type = "[type='" + friendId + "']";
+            var $refuseProposition = $(".refuse-proposition" + type);
+            var $confirmProposition = $(".confirm-proposition" + type);
+            var $removeFriend = $(".remove-friend" + type);
+            var $readPosts = $(".read-posts" + type);
+            var usrId = APP.usrId;
+            var friendModel = this.collection.get(friendId);
             friendModel.content = 'api/users';
-            usrModel = this.collection.get(usrId);
+            var usrModel = this.collection.get(usrId);
             usrModel.content = 'api/users';
-            friendFriends = friendModel.get('friends');
-            usrFriends = usrModel.get('friends');
+            var friendFriends = friendModel.get('friends');
+            var usrFriends = usrModel.get('friends');
 
-            modelForFriendArray = {'_id': usrId, added: added, status: 'accepted'};
-            modelForUsrArray = {'_id': friendId, added: added, status: 'accepted'};
+            var modelForFriendArray = {'_id': usrId, added: added, status: 'accepted'};
+            var modelForUsrArray = {'_id': friendId, added: added, status: 'accepted'};
 
-            friendModelInUsrArr = _.filter(usrFriends, function (friend) {
+            var friendModelInUsrArr = _.filter(usrFriends, function (friend) {
                 return friend._id == friendId;
             });
 
-            friendIndexInUsrArr = usrFriends.indexOf(friendModelInUsrArr[0]);
+            var friendIndexInUsrArr = usrFriends.indexOf(friendModelInUsrArr[0]);
 
             usrFriends[friendIndexInUsrArr] = modelForUsrArray;
 
-            usrModelInFriendArr = _.filter(friendFriends, function (friend) {
+            var usrModelInFriendArr = _.filter(friendFriends, function (friend) {
                 return friend._id == usrId;
             });
 
-            usrIndexInFriendArr = friendFriends.indexOf(usrModelInFriendArr[0]);
+            var usrIndexInFriendArr = friendFriends.indexOf(usrModelInFriendArr[0]);
 
             friendFriends[usrIndexInFriendArr] = modelForFriendArray;
 
@@ -112,11 +90,9 @@ define([
             $refuseProposition.hide();
             $confirmProposition.hide();
             $removeFriend.show();
-            $readPosts.show();
         },
         addToFriends: function (e) {
             e.preventDefault();
-            console.log('Clicked add to friends');
             var friendId;
             var usrId;
             var friendModel;

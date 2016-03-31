@@ -14,6 +14,7 @@ define([
                 self.$el.append(self.tmpl(self.model.toJSON()));
                 return this;
             }
+            self.messageSystem();
         }
     });
 

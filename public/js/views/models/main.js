@@ -27,6 +27,7 @@ define([
             }
             self.$el.append(self.tmpl(self.model.toJSON()));
             self.messagesCounter();
+            self.messageSystem();
         },
         saveProfile: function () {
             $('.for-render').show();

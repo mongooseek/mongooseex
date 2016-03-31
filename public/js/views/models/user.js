@@ -32,9 +32,9 @@ define([
                 if (usrRole !== 'admin') {
                     $('a.trash-button').remove();
                 }
-
-                return this;
             }
+            self.messageSystem();
+            return this;
         }
     });
     return UserView;

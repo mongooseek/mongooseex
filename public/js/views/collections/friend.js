@@ -9,11 +9,10 @@ define([
     'views/models/friend',
     'text!templates/collections/friend.html',
     'Moment'
-], function (Backbone, $, _, BaseCollectionsView, FriendsCollection, FriendModel, FriendView, template, moment) {
+], function (Backbone, $, _, BaseView, FriendsCollection, FriendModel, FriendView, template, moment) {
 
-    var FriendsView = BaseCollectionsView.extend({
+    var FriendsView = BaseView.extend({
         tmpl: _.template(template),
-        // <--" initialize: "--> removed to BaseCollectionsView.
         events: {
             'click .remove-friend': 'nullify',
             'click #message-button': 'message',
@@ -38,50 +37,31 @@ define([
         },
         nullify: function (e) {
             e.preventDefault();
-            console.log('Clicked cancel');
-            var usrModelInFriendArr;
-            var friendModelInUsrArr;
-            var usrIndexInFriendArr;
-            var friendIndexInUsrArr;
-            var friendId;
-            var usrId;
-            var friendModel;
-            var usrModel;
-            var usrFriends;
-            var friendFriends;
-            var $addToFriends;
-            var $refuseProposition;
-            var $cancelProposition;
-            var $confirmProposition;
-            var $removeFriend;
-            var $readPosts;
-            var type;
-            friendId = e.target.type;
-            type = "[type='" + friendId + "']";
-            $addToFriends = $(".add-to-friends" + type);
-            $refuseProposition = $(".refuse-proposition" + type);
-            $confirmProposition = $(".confirm-proposition" + type);
-            $cancelProposition = $(".cancel-proposition" + type);
-            $removeFriend = $(".remove-friend" + type);
-            $readPosts = $(".read-posts" + type);
-            usrId = APP.usrId;
-            friendModel = this.collection.get(friendId);
-            usrModel = this.collection.get(usrId);
-            friendFriends = friendModel.get('friends');
-            usrFriends = usrModel.get('friends');
+            var friendId = e.target.type;
+            var type = "[type='" + friendId + "']";
+            var $addToFriends = $(".add-to-friends" + type);
+            var $refuseProposition = $(".refuse-proposition" + type);
+            var $confirmProposition = $(".confirm-proposition" + type);
+            var $cancelProposition = $(".cancel-proposition" + type);
+            var $removeFriend = $(".remove-friend" + type);
+            var usrId = APP.usrId;
+            var friendModel = this.collection.get(friendId);
+            var usrModel = this.collection.get(usrId);
+            var friendFriends = friendModel.get('friends');
+            var usrFriends = usrModel.get('friends');
 
-            usrModelInFriendArr = _.filter(friendFriends, function (friend) {
+            var usrModelInFriendArr = _.filter(friendFriends, function (friend) {
                 return friend._id == usrId;
             });
 
-            usrIndexInFriendArr = friendFriends.indexOf(usrModelInFriendArr[0]);
+            var usrIndexInFriendArr = friendFriends.indexOf(usrModelInFriendArr[0]);
             friendFriends.splice(usrIndexInFriendArr, 1);
 
-            friendModelInUsrArr = _.filter(friendFriends, function (friend) {
+            var friendModelInUsrArr = _.filter(friendFriends, function (friend) {
                 return friend._id == friendId;
             });
 
-            friendIndexInUsrArr = usrFriends.indexOf(friendModelInUsrArr[0]);
+            var friendIndexInUsrArr = usrFriends.indexOf(friendModelInUsrArr[0]);
             usrFriends.splice(friendIndexInUsrArr, 1);
 
             friendModel.set({friends: friendFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
@@ -95,7 +75,6 @@ define([
             $confirmProposition.hide();
             $cancelProposition.hide();
             $removeFriend.hide();
-            $readPosts.hide();
         },
         messagesCounter: function () {
             var $messagesCounter = $('#counter');

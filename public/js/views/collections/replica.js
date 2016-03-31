@@ -2,19 +2,17 @@
 define([
     'Backbone',
     'jQuery',
-    'views/abstract/collections/preBase',
+    'views/abstract/all',
     'collections/replica',
     'models/replica',
     'views/models/replica',
     'text!templates/collections/replica.html',
     'Moment',
     'socketio'
-], function (Backbone, $, AllCollectionsView, ReplicasCollection, ReplicaModel, ReplicaView, template, moment, socketio) {
+], function (Backbone, $, AllView, ReplicasCollection, ReplicaModel, ReplicaView, template, moment, socketio) {
 
-    var ReplicasView = AllCollectionsView.extend({
+    var ReplicasView = AllView.extend({
         tmpl: _.template(template),
-
-        //<--" initialize: "--> removed to BaseCollectionsView.
         events: {
             'click .send-message': 'sendMessage',
             'click #message-button': 'message'
@@ -47,7 +45,6 @@ define([
             replicaModel.save(null, {
                 success: function (responce) {
                     APP.io.emit('custom_event', {_id: secondPartId, replica: replicaModel}, function (cd) {
-                        /*{_id: id, sender: APP.usrId, text: message}*/
                         self.appendToChat(replicaModel);
                     });
                 },
@@ -57,27 +54,12 @@ define([
             });
         },
         appendToChat: function (replica) {
-            console.log(replica);
             var view = new ReplicaView({model: replica});
         },
         render: function () {
             console.log('In replicas render');
             var self = this;
-            var $messagesCounter = $('#counter');
             var secondPartId = self.collection.content.substring(13);
-            var senderId;
-            var unreadMessages;
-            APP.io.removeListener('custom_response');
-            APP.io.on('custom_response', function (message) {
-                senderId = message.sender.id;
-                if (secondPartId === senderId) {
-                    var replicaModel = new ReplicaModel(message);
-                    self.appendToChat(replicaModel);
-                } else {
-                    unreadMessages = parseInt($messagesCounter.text(), 10);
-                    $messagesCounter.text(++unreadMessages);
-                }
-            });
             $.ajax({
                 type: "POST",
                 url: '/login',
@@ -95,6 +77,7 @@ define([
                         var view = new ReplicaView({model: replica});
                     });
                     self.setMessagesRead();
+                    self.messageSystem();
                 }
             });
         },

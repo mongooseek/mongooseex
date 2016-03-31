@@ -1,8 +1,8 @@
 define([
-    'views/abstract/collections/preBase'
-], function (AllCollectionsView) {
+    'views/abstract/all'
+], function (AllView) {
 
-    var CollectionsView = AllCollectionsView.extend({
+    var CollectionsView = AllView.extend({
         
         filterByLocation: function () {
             var $distanceField;

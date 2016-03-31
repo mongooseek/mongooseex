@@ -2,18 +2,15 @@
 define([
     'Backbone',
     'jQuery',
-    'views/abstract/collections/preBase',
+    'views/abstract/all',
     'collections/post',
     'models/post',
     'views/models/post',
     'text!templates/collections/post.html'
-], function (Backbone, $, AllCollectionsView, PostsCollection, PostModel, PostView, postsTemplate) {
+], function (Backbone, $, AllView, PostsCollection, PostModel, PostView, postsTemplate) {
 
-    var PostsView = AllCollectionsView.extend({
-
+    var PostsView = AllView.extend({
         tmpl: _.template(postsTemplate),
-
-        //<--" initialize: "--> removed to BaseCollectionsView.
         events: {
             'click #make-post': 'post',
             'click .trash-button': 'deletePost'

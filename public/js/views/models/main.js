@@ -1,24 +1,32 @@
 //View to deal with 'main user' model.
 define([
-    'Backbone',
     'Underscore',
     'jQuery',
+    'views/abstract/all',
     'text!templates/models/main.html',
-], function (Backbone, _, $, template) {
+], function (_, $, AllView, template) {
     console.log("I am inside main view");
-    var MainView = Backbone.View.extend({
-        el: '#vrakashy',
+    var MainView = AllView.extend({
         tmpl: _.template(template),
-        initialize: function () {
-            console.log(this);
-            this.render();
-        },
         events: {
             'click #save-photo': 'savePhoto',
+            'click #delete-photo': 'deletePhoto',
             'click #invite-friend': 'sendInvitation',
             'click #edit-profile': 'editProfile',
             'click #cancel-edition': 'cancelEdition',
             'click #save-profile': 'saveProfile'
+        },
+        render: function () {
+            if (APP.usrId) APP.io.emit('start', APP.usrId);
+            var self = this;
+            self.model.content = 'api/users';
+            var $temporaryTemplate;
+            $temporaryTemplate = $('.temporary-template');
+            if ($temporaryTemplate.length) {
+                $temporaryTemplate.remove();
+            }
+            self.$el.append(self.tmpl(self.model.toJSON()));
+            self.messagesCounter();
         },
         saveProfile: function () {
             $('.for-render').show();
@@ -34,21 +42,23 @@ define([
             $('.for-edit').hide();
         },
         sendInvitation: function () {
-            var $emailField;
-            var email;
-            $emailField = $('#email-field');
-            email = $emailField.val();
+            var $emailField = $('#email-field');;
+            var email = $emailField.val();;
             $emailField.val('');
-            $.ajax({
-                type: "POST",
-                url: '/invite',
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({"email": email}),
-                success: function (val) {
-                    alert('Invitation was sent.');
-                }
-            });
+            if(email) {
+                $.ajax({
+                    type: "POST",
+                    url: '/invite',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({"email": email}),
+                    success: function (val) {
+                        alert('Invitation was sent.');
+                    }
+                });
+            } else {
+                alert('You haven\'t input eny e-mail yet.');
+            }
         },
         savePhoto: function () {
             console.log("Clicked save photo button.");
@@ -66,18 +76,6 @@ define([
             this.model.save();
             $('#preview').attr('src', this.model.get('photo'));
         },
-        render: function () {
-            if (APP.usrId) APP.io.emit('start', APP.usrId);
-            var self = this;
-            self.model.content = 'api/users';
-            var $temporaryTemplate;
-            $temporaryTemplate = $('.temporary-template');
-            if ($temporaryTemplate.length) {
-                $temporaryTemplate.remove();
-            }
-            this.$el.append(self.tmpl(self.model.toJSON()));
-            self.messagesCounter();
-        },
         messagesCounter: function () {
             var $messagesCounter = $('#counter');
             console.log($messagesCounter);
@@ -94,5 +92,6 @@ define([
             });
         }
     });
+
     return MainView;
 });

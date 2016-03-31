@@ -1,21 +1,14 @@
 //View to deal with 'user' model.
 define([
-    'Backbone',
+    'views/abstract/all',
     'Underscore',
     'jQuery',
-    //'models/user',
-    'text!templates/models/negotiator.html',
-    'Moment'
-], function (Backbone, _, $, negotiatorTemplate, moment) {
+    'text!templates/models/negotiator.html'
+], function (AllView, _, $, negotiatorTemplate) {
     console.log("I am inside user view");
-    var NegotiatorView = Backbone.View.extend({
+    var NegotiatorView = AllView.extend({
         el: '.negotiator-item',
         tmpl: _.template(negotiatorTemplate),
-        initialize: function () {
-            console.log('User VIEW and User MODEL initialized!!!');
-            this.render();
-        },
-        events: {},
         render: function () {
             console.log('I am in negotiator render function!!!');
             var self = this;

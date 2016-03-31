@@ -43,12 +43,6 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                     <div id="photoPreviewForm">
-                        <a id="edit-profile" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>
-                            Edit</a>
-                        <a id="cancel-edition" class="btn btn-primary"><i class="fa fa-ban"></i>
-                            Cancel</a>
-                        <a id="save-profile" class="btn btn-primary"><i class="fa fa-check-square-o"></i>
-                            Confirm</a>
                         <label class="btn btn-primary" for="my-file-selector">
                             <input id="my-file-selector" type="file" style="display:none;"
                                    onchange="loadFile(event)">
@@ -65,14 +59,31 @@
             <br>
             <br>
 
-            <div class="for-render">Name & surname: <b id="first-name"><%=firstName%> </b><b id="last-name"><%=lastName%></b></div>
-            <div class="for-edit" style="display: none;">Name & surname: <input id="first-name" value="<%=firstName%>"> <input id="last-name" value="<%=lastName%>"></div>
+            <div class="for-render">Name & surname: <b id="first-name"><%=fullName%></b></div>
+            <div class="for-edit" style="display: none;">
+                Name: <input id="firstName" placeholder="Name" type="text" value="<%=firstName%>">
+                Surname: <input id="lastName" placeholder="Surname" type="text" value="<%=lastName%>">
+            </div>
             <div class="for-render">Birth: <%=birth%></div>
-            <div class="for-edit" style="display: none;">Birth: <input id="date-of-birth" value="<%=dateOfBirth%>"></div>
+            <div class="for-edit" style="display: none;">
+                Date of birth: <input id="dateOfBirth" placeholder="mm/dd/yyyy" type="date" value="<%=dateOfBirth%>"></div>
             <div class="for-render">E-mail: <%=email%></div>
-            <div class="for-edit" style="display: none;">E-mail: <input id="email" value="<%=email%>"></div>
+            <div class="for-edit" style="display: none;">E-mail: <input id="email" placeholder="E-mail" type="email" value="<%=email%>"></div>
             <div class="for-render">Place: <%=city%></div>
-            <div class="for-edit" style="display: none;">Place: <input id="city" value="<%=city%>"></div>
+            <div class="for-edit" style="display: none;">Place: <input id="city" placeholder="City" type="text" value="<%=city%>"></div>
+            <br>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                    <div id="edit-buttons">
+                        <a id="edit-profile" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>
+                            Edit</a>
+                        <a id="cancel-edition" class="btn btn-primary"><i class="fa fa-ban"></i>
+                            Cancel</a>
+                        <a id="save-profile" class="btn btn-primary"><i class="fa fa-check-square-o"></i>
+                            Confirm</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

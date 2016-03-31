@@ -6,7 +6,6 @@ define([
     'views/models/start',
     'text!templates/models/confirm.html',
 ], function (Backbone, _, $, StartView, template) {
-    console.log("I am inside login view");
     var ConfirmView = StartView.extend({
         content: 'confirm',
         tmpl: _.template(template),
@@ -26,7 +25,6 @@ define([
             });
             currentPath = Backbone.history.getFragment();
             credentials.confirmToken = currentPath.substr(-20, 20);
-            console.log('confirmToken', credentials.confirmToken);
             if (credentials.email && credentials.pass) {
                 viewUrl = 'views/models/main';
                 modelUrl = 'models/user';
@@ -48,25 +46,6 @@ define([
                         });
                     }
                 )
-                /*$.ajax({
-                 type: "POST",
-                 url: '/logup',
-                 dataType: "json",
-                 contentType: "application/json; charset=utf-8",
-                 data: JSON.stringify(this.model),
-                 success: function (val) {
-                 viewUrl = 'views/models/main';
-                 modelUrl = 'models/user';
-                 require([viewUrl, modelUrl], function (View, Model) {
-                 self.model = new Model(val);
-                 if (self.view) {
-                 self.view.undelegateEvents();
-                 }
-                 self.view = new View({model: self.model});
-                 }
-                 )
-                 }
-                 })*/
             } else {
                 console.log('Input correct data');
             }

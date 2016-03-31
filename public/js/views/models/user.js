@@ -1,6 +1,6 @@
 //View to deal with 'user' model.
 define([
-    'Backbone',
+    'views/abstract/all',
     'Underscore',
     'jQuery',
     'text!templates/models/friendshipStatus/accepted.html',
@@ -8,22 +8,15 @@ define([
     'text!templates/models/friendshipStatus/pending.html',
     'text!templates/models/friendshipStatus/requested.html',
     'Moment'
-], function (Backbone, _, $, accepted, add, pending, requested, moment) {
+], function (AllView, _, $, accepted, add, pending, requested, moment) {
     console.log("I am inside user view");
-    var UserView = Backbone.View.extend({
+    var UserView = AllView.extend({
         el: '.user-item',
-        //tmpl: _.template(userTemplate),
-        initialize: function () {
-            console.log('User VIEW and User MODEL initialized!!!');
-            this.render();
-        },
-        events: {},
         render: function () {
             var self = this;
             var template
             var friendsArr;
             var my;
-            var myStatus;
             var iAmNotInFriends;
             var usrRole = ($('tbody').attr('role'));
             friendsArr = self.model.get('friends');

@@ -1,14 +1,8 @@
 //View is extended by login, logup, reset and newpass views.
 define([
-    'Backbone',
-    'Underscore'
-], function (Backbone) {
-    var StartView = Backbone.View.extend({
-        el: '#vrakashy',
-        initialize: function () {
-            console.log(this);
-            this.render();
-        },
+    'views/abstract/all',
+], function (AllView) {
+    var StartView = AllView.extend({
         events: {
             'click #main-button': 'mainMethod'
         },

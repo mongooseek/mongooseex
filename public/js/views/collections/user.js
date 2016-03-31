@@ -24,7 +24,8 @@ define([
             'click .cancel-proposition': 'nullify',
             'click .remove-friend': 'nullify',
             'click #message-button': 'message',
-            'click .trash-button': 'removeUser'
+            'click .trash-button': 'removeUser',
+            'click #filter-by-location': 'filterByLocation'
         },
         removeUser: function (e) {
             e.preventDefault();

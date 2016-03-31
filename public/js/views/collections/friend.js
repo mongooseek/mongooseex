@@ -16,7 +16,8 @@ define([
         // <--" initialize: "--> removed to BaseCollectionsView.
         events: {
             'click .remove-friend': 'nullify',
-            'click #message-button': 'message'
+            'click #message-button': 'message',
+            'click #filter-by-location': 'filterByLocation'
         },
         message: function () {
             console.log('You haven\'t chosen a person for conversation!');

@@ -6,10 +6,8 @@ define([
     'collections/replica',
     'models/replica',
     'views/models/replica',
-    'text!templates/collections/replica.html',
-    'Moment',
-    'socketio'
-], function (Backbone, $, AllView, ReplicasCollection, ReplicaModel, ReplicaView, template, moment, socketio) {
+    'text!templates/collections/replica.html'
+], function (Backbone, $, AllView, ReplicasCollection, ReplicaModel, ReplicaView, template) {
 
     var ReplicasView = AllView.extend({
         tmpl: _.template(template),
@@ -85,6 +83,7 @@ define([
             var secondPartId = APP.usrId;
             var firstPartId = this.collection.content.substring(13);
             var $messagesCounter = $('#counter');
+            var messagesInCounter = parseInt($messagesCounter.text());
             var quantityOfReadMessages;
             var unreadMessages;
             $.ajax({
@@ -95,7 +94,7 @@ define([
                 data: JSON.stringify({"part1": firstPartId, "part2": secondPartId}),
                 success: function (alreadyRead) {
                     quantityOfReadMessages = alreadyRead.nModified;
-                    unreadMessages = parseInt($messagesCounter.text()) - quantityOfReadMessages;
+                    unreadMessages = messagesInCounter - quantityOfReadMessages;
                     $messagesCounter.text(unreadMessages);
                 }
             });

@@ -62,5 +62,6 @@ define([
             }
         }
     });
+
     return LogupView;
 });

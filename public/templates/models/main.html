@@ -61,25 +61,25 @@
 
             <div class="for-render">Name & surname: <b id="first-name"><%=fullName%></b></div>
             <div class="for-edit" style="display: none;">
-                Name: <input id="firstName" placeholder="Name" type="text" value="<%=firstName%>">
-                Surname: <input id="lastName" placeholder="Surname" type="text" value="<%=lastName%>">
+                Name: <input id="firstName" class="form-control" placeholder="Name" type="text" value="<%=firstName%>">
+                Surname: <input id="lastName" class="form-control" placeholder="Surname" type="text" value="<%=lastName%>">
             </div>
             <div class="for-render">Birth: <%=birth%></div>
             <div class="for-edit" style="display: none;">
-                Date of birth: <input id="dateOfBirth" placeholder="mm/dd/yyyy" type="date" value="<%=dateOfBirth%>"></div>
+                Date of birth: <input id="dateOfBirth" class="form-control" placeholder="mm/dd/yyyy" type="date" value="<%=birthInSlashFormat%>"></div>
             <div class="for-render">E-mail: <%=email%></div>
-            <div class="for-edit" style="display: none;">E-mail: <input id="email" placeholder="E-mail" type="email" value="<%=email%>"></div>
+            <div class="for-edit" style="display: none;">E-mail: <input id="email" class="form-control" placeholder="E-mail" type="email" value="<%=email%>"></div>
             <div class="for-render">Place: <%=city%></div>
-            <div class="for-edit" style="display: none;">Place: <input id="city" placeholder="City" type="text" value="<%=city%>"></div>
+            <div class="for-edit" style="display: none;">Place: <input id="city" class="form-control" placeholder="City" type="text" value="<%=city%>"></div>
             <br>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                     <div id="edit-buttons">
-                        <a id="edit-profile" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i>
-                            Edit</a>
-                        <a id="cancel-edition" class="btn btn-primary"><i class="fa fa-ban"></i>
+                        <a id="edit-profile" class="btn btn-primary for-render"><i class="fa fa-pencil-square-o"></i>
+                            Edit Profile Data</a>
+                        <a id="cancel-edition" class="btn btn-primary for-edit" style="display: none;"><i class="fa fa-ban"></i>
                             Cancel</a>
-                        <a id="save-profile" class="btn btn-primary"><i class="fa fa-check-square-o"></i>
+                        <a id="main-button" class="btn btn-primary for-edit" style="display: none;"><i class="fa fa-check-square-o"></i>
                             Confirm</a>
                     </div>
                 </div>

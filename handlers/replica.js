@@ -54,7 +54,7 @@ module.exports = function () {
 
     this.countUnreadReplicas = function (req, res, next) {
         var body = req.body;
-        Replica.find({"sender.id": {$ne: req.body.part2}, parts: req.body.part2, read: false}, {__v: 0}, function (err, replicas) {
+        Replica.update({"sender.id": {$ne: req.body.part2}, parts: req.body.part2, read: false}, {$set: {read: false}}, {multi: true}, function (err, replicas) {
             if (err) {
                 return next(err);
             }

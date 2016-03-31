@@ -3,7 +3,7 @@ define([
     'Underscore',
     'jQuery',
     'views/abstract/all',
-    'text!templates/models/main.html',
+    'text!templates/models/main.html'
 ], function (_, $, AllView, template) {
     console.log("I am inside main view");
     var MainView = AllView.extend({
@@ -14,7 +14,7 @@ define([
             'click #invite-friend': 'sendInvitation',
             'click #edit-profile': 'editProfile',
             'click #cancel-edition': 'cancelEdition',
-            'click #save-profile': 'saveProfile'
+            'click #main-button': 'saveProfile'
         },
         render: function () {
             if (APP.usrId) APP.io.emit('start', APP.usrId);
@@ -30,9 +30,23 @@ define([
             self.messageSystem();
         },
         saveProfile: function () {
-            $('.for-render').show();
-            $('.for-edit').hide();
-            console.log($('.for-edit input'));
+            var newDataForUserModel = this.getFormsData();
+            this.saveUser(newDataForUserModel);
+        },
+        saveUser: function (data) {
+            var self = this;
+            this.model.set(data);
+            this.model.content = 'api/users';
+            this.model.save({patch: true},
+                {
+                    success: function (response) {
+                        self.render();
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                }
+            );
         },
         editProfile: function () {
             $('.for-render').hide();
@@ -43,10 +57,10 @@ define([
             $('.for-edit').hide();
         },
         sendInvitation: function () {
-            var $emailField = $('#email-field');;
-            var email = $emailField.val();;
+            var $emailField = $('#email-field');
+            var email = $emailField.val();
             $emailField.val('');
-            if(email) {
+            if (email) {
                 $.ajax({
                     type: "POST",
                     url: '/invite',
@@ -62,35 +76,19 @@ define([
             }
         },
         savePhoto: function () {
-            console.log("Clicked save photo button.");
             var photo = $('#preview').attr('src');
             this.savePhotoFunc(photo);
         },
         deletePhoto: function () {
-            console.log("Clicked delete photo button.");
             var photo = this.model.defaults.photo;
             this.savePhotoFunc(photo);
         },
         savePhotoFunc: function (photo) {
-            this.model.set({photo: photo/*, dateOfBirth: moment(this.model.dateOfBirth)*/});
-            this.model.urlRoot = '/api/users';
+            var $photoPreview = $('#preview');
+            this.model.set({photo: photo});
+            this.model.content = 'api/users';
             this.model.save();
-            $('#preview').attr('src', this.model.get('photo'));
-        },
-        messagesCounter: function () {
-            var $messagesCounter = $('#counter');
-            console.log($messagesCounter);
-            $.ajax({
-                type: "POST",
-                url: '/unread',
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({"part2": APP.usrId}),
-                success: function (unread) {
-                    console.log(unread.length);
-                    $messagesCounter.text(unread.length);
-                }
-            });
+            $photoPreview.attr('src', this.model.get('photo'));
         }
     });
 

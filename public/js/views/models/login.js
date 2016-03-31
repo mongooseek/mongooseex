@@ -1,27 +1,28 @@
-//View to deal with 'main user' model.
+//View to deal with 'main user' model within login.
 define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'views/models/start',
+    'views/abstract/models/start',
     'text!templates/models/login.html',
 ], function (Backbone, _, $, StartView, template) {
+
     var LoginView = StartView.extend({
+
         content: 'login',
+
         tmpl: _.template(template),
+
+        //Trigger when login button is clicked.
         mainMethod: function () {
+            var self = this;
+            var $emailField = $('#input-email');
+            var $passField = $('#input-pass');
+            var email = $emailField.val();
+            var pass = $passField.val();
             var modelUrl;
             var viewUrl;
-            var $emailField;
-            var $passField;
-            var email;
-            var pass;
             var credentials;
-            var self = this;
-            $emailField = $('#input-email');
-            $passField = $('#input-pass');
-            email = $emailField.val();
-            pass = $passField.val();
             if (email && pass) {
                 credentials =
                 {
@@ -54,5 +55,6 @@ define([
             }
         }
     });
+
     return LoginView;
 });

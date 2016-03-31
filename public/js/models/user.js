@@ -1,9 +1,12 @@
-//Constructor to create user's model.
+//Constructor represents backbone user's model representation.
 define([
     'models/base',
     'Moment'
 ], function (BaseModel, moment) {
+
     var UserModel = BaseModel.extend({
+
+        //To set default fields of user model.
         defaults: {
             firstName: '',
             lastName: '',
@@ -11,6 +14,8 @@ define([
             city: '',
             photo: 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png'
         },
+
+        //Helps to set additional fields to set in the html template.
         parse: function (response) {
             if (response.dateOfBirth) {
                 response.birth = moment(response.dateOfBirth).format("MMM Do, YYYY");
@@ -20,5 +25,6 @@ define([
             return response;
         }
     });
+
     return UserModel;
 });

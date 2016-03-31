@@ -1,4 +1,4 @@
-//View to deal with 'user' collection.
+//View to deal with 'friend' collection.
 define([
     'Backbone',
     'jQuery',
@@ -13,15 +13,20 @@ define([
 ], function (Backbone, $, _, BaseView, FriendsCollection, UserModel, FriendModel, FriendView, template, moment) {
 
     var FriendsView = BaseView.extend({
+
         tmpl: _.template(template),
+
         events: {
             'click .remove-friend': 'nullify',
             'click #message-button': 'message',
             'click #filter-by-location': 'filterByLocation'
         },
+
+        //Trigger within sending a message when concrete user isn't chosen.
         message: function () {
             console.log('You haven\'t chosen a person for conversation!');
         },
+
         render: function () {
             var self = this;
             var $temporaryTemplate = $('.temporary-template');
@@ -37,6 +42,8 @@ define([
             this.getMainUser();
             return this;
         },
+
+        //Method to remove friend.
         nullify: function (e) {
             e.preventDefault();
             console.log(this.usrModel);
@@ -66,13 +73,15 @@ define([
             friendModel.set({friends: friendFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
             usrModel.set({friends: usrFriends, dateOfBirth: moment(usrModel.get('dateOfBirth'))});
 
-            friendModel.content = 'api/users';
+            friendModel.content = 'api/friends';
             friendModel.save();
             usrModel.content = 'api/users';
             usrModel.save();
 
             $friendItem.remove();
         },
+
+        //Helper for nullify method. The method is needed because main user is absent in friends collection.
         getMainUser: function () {
             var self = this;
             var userModel;
@@ -81,7 +90,6 @@ define([
                 url: '/login',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                //data: JSON.stringify({"email": email}),
                 success: function (user) {
                     userModel = new UserModel(user);
                     self.usrModel = userModel;

@@ -1,14 +1,15 @@
-//Constructor to create user's model.
+//TODO - remove or refactor.
 define([
     'models/base',
     'Moment'
 ], function (BaseModel, moment) {
 
-    console.log("I am inside USER MODEL");
     var NegotiatorModel = BaseModel.extend({
+
         urlRoot: function () {
             return '/api/negotiators/';
         },
+
         defaults: {
             fullName: '',
             dateOfBirth: moment(),
@@ -19,9 +20,7 @@ define([
             city: {},
             photo: 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png'
         },
-        initialize: function () {
-            console.log('Negotiator model initialized');
-        },
+
         parse: function (response) {
             if (response.dateOfBirth) {
                 var year = moment().year();
@@ -36,5 +35,6 @@ define([
             return response;
         }
     });
+
     return NegotiatorModel;
 });

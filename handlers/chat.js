@@ -1,8 +1,13 @@
-//DB handler for chat.
+/**
+ * TODO - create chat or remove
+ * DB handler for chat.
+ */
+
 //Required dependency.
 var mongoose = require('mongoose');
 
 module.exports = function () {
+
     var Chat = mongoose.model('chat');
 
     //Handler to get all chat messages.

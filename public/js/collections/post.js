@@ -8,5 +8,6 @@ define([
         content: "api\/posts",
         model: PostModel
     });
+
     return PostsCollection;
 });

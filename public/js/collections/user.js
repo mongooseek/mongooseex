@@ -8,5 +8,6 @@ define([
         content: "api\/users",
         model: UserModel
     });
+
     return UsersCollection;
 });

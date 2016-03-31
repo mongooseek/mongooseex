@@ -6,9 +6,11 @@ define([
     'text!templates/models/administrative/postForAdmin.html',
     'text!templates/models/administrative/postForUser.html'
 ], function (AllView, _, $, adminTemplate, userTemplate) {
-    console.log("I am inside post view");
+
     var PostView = AllView.extend({
+
         el: ".posts-area",
+
         render: function () {
             var self = this;
             var userRole = $('tbody').attr('role');

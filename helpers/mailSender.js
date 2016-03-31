@@ -1,6 +1,10 @@
+//Module helps with sending e-mails.
+
+//Module dependency.
 var nodemailer = require("nodemailer");
 
 module.exports = function (to, subject, html) {
+
     var smtpTransport = nodemailer.createTransport('smtps://ihor.ilnytskyi%40gmail.com:ihaj2016@smtp.gmail.com');
 
     var mail = {

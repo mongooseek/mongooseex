@@ -1,4 +1,4 @@
-//Here placed data for development node environment.
+//Here are data for development node environment.
 //---- server config -----
 process.env.PORT = 8080;
 //---- db config -----

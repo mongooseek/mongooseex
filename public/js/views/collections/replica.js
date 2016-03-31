@@ -10,25 +10,23 @@ define([
 ], function (Backbone, $, AllView, ReplicasCollection, ReplicaModel, ReplicaView, template) {
 
     var ReplicasView = AllView.extend({
+
         tmpl: _.template(template),
+
         events: {
             'click .send-message': 'sendMessage',
             'click #message-button': 'message'
         },
+
+        //Method is used for message sending.
         message: function () {
             var self = this;
             var $messageField = $('#message-field');
-            var message;
-            var secondPartId;
-            var firstPartId;
-            var replicaModel;
-            var replicaData;
-            message = $messageField.val();
-            $messageField.val('');
-            secondPartId = this.collection.content.substring(13);
-            firstPartId = APP.usrId;
-            replicaModel = new ReplicaModel();
-            replicaData = {
+            var message = $messageField.val();
+            var secondPartId = this.collection.content.substring(13);
+            var firstPartId = APP.usrId;
+            var replicaModel = new ReplicaModel();
+            var replicaData = {
                 parts: [firstPartId, secondPartId],
                 date: Date.now(),
                 sender: {
@@ -38,6 +36,7 @@ define([
                 },
                 text: message
             };
+            $messageField.val('');
             replicaModel.set(replicaData);
             replicaModel.content = 'api/replicas';
             replicaModel.save(null, {
@@ -51,9 +50,12 @@ define([
                 }
             });
         },
+
+        //Helper to append sent message to own conversation.
         appendToChat: function (replica) {
             var view = new ReplicaView({model: replica});
         },
+
         render: function () {
             console.log('In replicas render');
             var self = this;
@@ -79,6 +81,8 @@ define([
                 }
             });
         },
+
+        //Helps to set counter of unread messages when concrete conversation was chosen.
         setMessagesRead: function () {
             var secondPartId = APP.usrId;
             var firstPartId = this.collection.content.substring(13);

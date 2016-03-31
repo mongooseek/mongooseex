@@ -1,4 +1,4 @@
-//View to deal with 'chat' model.
+//TODO - remove or refactor.
 define([
     'Backbone',
     'Underscore',

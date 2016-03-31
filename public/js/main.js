@@ -24,7 +24,8 @@ require.config({
         },
         'Backbone': ['Underscore', 'jQuery'],
         'app': ['Backbone']
-    }
+    },
+    waitSeconds: 8
 });
 
 require(['app'], function (app) {

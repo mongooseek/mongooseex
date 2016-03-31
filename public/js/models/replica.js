@@ -3,11 +3,13 @@ define([
     'models/base',
     'Moment'
 ], function (BaseModel, moment) {
-    console.log('I am inside REPLICA MODEL!');
+
     var ReplicaModel = BaseModel.extend({
         defaults: {
             read: false
         },
+
+        //Helps to create additional fields to set in the html template.
         parse: function (response) {
             if (response.sender) response.fullName = response.sender.firstName + ' ' + response.sender.lastName;
             if (response.date) {
@@ -16,5 +18,6 @@ define([
             return response;
         }
     });
+
     return ReplicaModel;
 });

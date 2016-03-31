@@ -1,4 +1,4 @@
-//Collection to deal with users.
+//Collection to deal with friends.
 define([
     'collections/base',
     'models/friend'
@@ -8,5 +8,6 @@ define([
         content: "api\/friends",
         model: FriendModel
     });
+
     return FriendsCollection;
 });

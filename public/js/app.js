@@ -4,6 +4,7 @@ define([
     'socketio'
 ], function (Router, socketio) {
 
+    //Method to init web application.
     function init() {
         console.log('App init!');
         var router = new Router();

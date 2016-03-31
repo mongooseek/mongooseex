@@ -4,7 +4,10 @@ define([
     'Underscore',
     'models/user',
 ], function (Backbone, _, UsrModel) {
+
     var Router = Backbone.Router.extend({
+
+        //Web-application routes.
         routes: {
             'myApp/newpass/:resetToken': 'newPass',
             'myApp/main': 'main',
@@ -15,15 +18,17 @@ define([
             'myApp/:content/:findParameter/:parameterValue': 'goToContent',
             '*any': 'default'
         },
+
+        //Method for default route.
         default: function () {
-            console.log('DEFAULT');
             Backbone.history.navigate('#myApp/main', {trigger: true});
         },
+
+        //Trigger for login, logup, invite, reset, newpass, confirm views.
         start: function (content, token) {
             console.log('I am in route:', content);
             var self = this;
             var viewUrl;
-            var modelUrl;
             viewUrl = 'views/models/' + content;
             require([viewUrl], function (View) {
                 if (self.view) {
@@ -32,6 +37,8 @@ define([
                 self.view = new View();
             });
         },
+
+        //Method for main-page route.
         main: function () {
             var modelUrl;
             var viewUrl;
@@ -78,6 +85,8 @@ define([
                 )
             }
         },
+
+        //Method for collections routes.
         goToContent: function (content, findParameter, parameterValue) {
             var content = content;
             console.log('The content is', content);
@@ -99,6 +108,8 @@ define([
                 collection.fetch({reset: true});
             });
         },
+
+        //Trigger within conversation route.
         conversation: function (content, part2) {
             console.log('conversation activated');
             var collectionContent = 'api/replicas/' + part2;
@@ -117,12 +128,30 @@ define([
                 collection.fetch({reset: true});
             });
         },
+
+        //Helper within creation collections views.
         renderView: function (View) {
             if (this.view) {
                 this.view.undelegateEvents();
             }
             this.view = new View({collection: this.collection});
+        },
+
+        //Trigger within logout route.
+        logout: function () {
+            var self = this;
+            $.ajax({
+                type: "POST",
+                url: '/logout',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (user) {
+                    delete APP.usrId;
+                    Backbone.history.navigate('#myApp/start/login', {trigger: true});
+                }
+            });
         }
     });
+
     return Router;
 });

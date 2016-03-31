@@ -1,3 +1,4 @@
+//Server is built using expressjs.
 var express = require('express');
 var http = require('http');
 var app = express();

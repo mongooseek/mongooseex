@@ -1,4 +1,4 @@
-//Collection to deal with chat's messages.
+//TODO - remove or change the collection.
 define([
     'collections/base',
     'models/chat'
@@ -8,5 +8,6 @@ define([
         content: "api\/chats",
         model: ChatModel
     });
+
     return ChatsCollection;
 });

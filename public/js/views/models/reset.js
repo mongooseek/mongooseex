@@ -1,13 +1,16 @@
-//View to deal with 'main user' model.
+//View to deal with 'main user' model to reset a password.
 define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'views/models/start',
+    'views/abstract/models/start',
     'text!templates/models/reset.html',
 ], function (Backbone, _, $, StartView, template) {
+
     var ResetView = StartView.extend({
+
         tmpl: _.template(template),
+
         mainMethod: function () {
             var $emailField = $('#reset-email');;
             var email = $emailField.val();;

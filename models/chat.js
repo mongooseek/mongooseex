@@ -1,4 +1,4 @@
-//Module to get 'chat' mongoose model.
+//TODO- remove or change module.
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;

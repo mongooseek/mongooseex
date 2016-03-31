@@ -1,4 +1,4 @@
-//Collection to deal with users.
+//TODO - remove or change.
 define([
     'collections/base',
     'models/negotiator'
@@ -8,5 +8,6 @@ define([
         content: "api\/negotiators",
         model: NegotiatorModel
     });
+
     return NegotiatorsCollection;
 });

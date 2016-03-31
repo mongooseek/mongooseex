@@ -1,3 +1,4 @@
+//TODO - remove or refactor.
 var express = require('express');
 var router = express.Router();
 var Handler = require('../handlers/chat');

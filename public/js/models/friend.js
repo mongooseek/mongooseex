@@ -4,11 +4,12 @@ define([
     'Moment'
 ], function (BaseModel, moment) {
 
-    console.log("I am inside USER MODEL");
     var FriendModel = BaseModel.extend({
         urlRoot: function () {
             return '/api/friends/';
         },
+
+        //To set default value of user model.
         defaults: {
             fullName: '',
             dateOfBirth: moment(),
@@ -19,9 +20,8 @@ define([
             city: {},
             photo: 'http://www.jordanhardware.com/styles/default/xenforo/avatars/avatar_m.png'
         },
-        initialize: function () {
-            console.log('User model initialized');
-        },
+
+        //TODO - remove or refactor.
         parse: function (response) {
             if (response.dateOfBirth) {
                 var year = moment().year();
@@ -36,5 +36,6 @@ define([
             return response;
         }
     });
+
     return FriendModel;
 });

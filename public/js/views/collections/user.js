@@ -12,7 +12,9 @@ define([
 ], function (Backbone, $, _, BaseView, UsersCollection, UserModel, UserView, template, moment) {
 
     var UsersView = BaseView.extend({
+
         tmpl: _.template(template),
+
         events: {
             'click .add-to-friends': 'addToFriends',
             'click .confirm-proposition': 'confirmProposition',
@@ -23,9 +25,13 @@ define([
             'click .trash-button': 'removeUser',
             'click #filter-by-location': 'filterByLocation'
         },
+
+        //Method will be trigger when concrete user isn't chosen for conversation.
         message: function () {
             console.log('You haven\'t chosen a person for conversation!');
         },
+
+        //Method to remove user from friends.
         removeUser: function (e) {
             e.preventDefault();
             var self = this;
@@ -45,6 +51,8 @@ define([
                 }
             });
         },
+
+        //Method to confirm friendship proposition.
         confirmProposition: function (e) {
             e.preventDefault();
             var added = moment();
@@ -91,6 +99,8 @@ define([
             $confirmProposition.hide();
             $removeFriend.show();
         },
+
+        //Method to propose friendship to another user of web-application.
         addToFriends: function (e) {
             e.preventDefault();
             var friendId;
@@ -130,6 +140,7 @@ define([
             $addToFriends.hide();
             $cancelProposition.show();
         },
+
         render: function () {
             console.log('Clicked USERS BUTTON');
             var self = this;
@@ -146,6 +157,8 @@ define([
             self.messagesCounter()
             return this;
         },
+
+        //Method to cancel, refuse a friendship proposition or remove another user from friends.
         nullify: function (e) {
             e.preventDefault();
             console.log('Clicked cancel');
@@ -154,7 +167,7 @@ define([
             var usrIndexInFriendArr;
             var friendIndexInUsrArr;
             var friendId;
-            var usrId
+            var usrId;
             var friendModel;
             var usrModel;
             var usrFriends;

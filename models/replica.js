@@ -1,7 +1,8 @@
-//Module to get 'conversation' mongoose model.
+//Module to get 'replica' mongoose model.
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
+
 var ModelSchema = new Schema({
     text: String,
     parts: [ObjectId],

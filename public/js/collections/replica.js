@@ -1,4 +1,4 @@
-//Collection to deal with chat's messages.
+//Collection to deal with replicas within conversation.
 define([
     'collections/base',
     'models/replica'
@@ -7,5 +7,6 @@ define([
     var ReplicasCollection = BaseCollection.extend({
         model: ReplicaModel
     });
+
     return ReplicasCollection;
 });

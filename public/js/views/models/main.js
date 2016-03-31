@@ -5,9 +5,11 @@ define([
     'views/abstract/all',
     'text!templates/models/main.html'
 ], function (_, $, AllView, template) {
-    console.log("I am inside main view");
+
     var MainView = AllView.extend({
+
         tmpl: _.template(template),
+
         events: {
             'click #save-photo': 'savePhoto',
             'click #delete-photo': 'deletePhoto',
@@ -16,6 +18,7 @@ define([
             'click #cancel-edition': 'cancelEdition',
             'click #main-button': 'saveProfile'
         },
+
         render: function () {
             if (APP.usrId) APP.io.emit('start', APP.usrId);
             var self = this;
@@ -29,10 +32,14 @@ define([
             self.messagesCounter();
             self.messageSystem();
         },
+
+        //Method to save main user personal data after edition.
         saveProfile: function () {
             var newDataForUserModel = this.getFormsData();
             this.saveUser(newDataForUserModel);
         },
+
+        //Helper fo "saveProfile" method.
         saveUser: function (data) {
             var self = this;
             this.model.set(data);
@@ -48,14 +55,20 @@ define([
                 }
             );
         },
+
+        //Trigger when "Edit" button of main page is clicked.
         editProfile: function () {
             $('.for-render').hide();
             $('.for-edit').show();
         },
+
+        //Trigger when "Cancel" button of main page is clicked.
         cancelEdition: function () {
             $('.for-render').show();
             $('.for-edit').hide();
         },
+
+        //Method to send invitation to friend's e-mail address.
         sendInvitation: function () {
             var $emailField = $('#email-field');
             var email = $emailField.val();
@@ -75,14 +88,20 @@ define([
                 alert('You haven\'t input eny e-mail yet.');
             }
         },
+
+        //Trigger when "Save Photo" button of main page is clicked.
         savePhoto: function () {
             var photo = $('#preview').attr('src');
             this.savePhotoFunc(photo);
         },
+
+        //Trigger when "Delete Photo" button of main page is clicked.
         deletePhoto: function () {
             var photo = this.model.defaults.photo;
             this.savePhotoFunc(photo);
         },
+
+        //Helper for "savePhoto" and "deletePhoto" methods.
         savePhotoFunc: function (photo) {
             var $photoPreview = $('#preview');
             this.model.set({photo: photo});

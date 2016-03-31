@@ -1,14 +1,18 @@
-//View to deal with 'main user' model.
+//View represents a form of e-mail confirmation.
 define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'views/models/start',
+    'views/abstract/models/start',
     'text!templates/models/confirm.html',
 ], function (Backbone, _, $, StartView, template) {
+
     var ConfirmView = StartView.extend({
+
         content: 'confirm',
+
         tmpl: _.template(template),
+
         mainMethod: function () {
             var self = this;
             var viewUrl;
@@ -51,5 +55,6 @@ define([
             }
         }
     });
+
     return ConfirmView;
 });

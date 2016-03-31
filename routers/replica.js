@@ -1,3 +1,4 @@
+//Router for Rest API for posts.
 var express = require('express');
 var router = express.Router();
 var Handler = require('../handlers/replica');

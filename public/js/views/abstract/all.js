@@ -5,10 +5,15 @@ define([
 ], function (Backbone, ReplicaModel) {
 
     var AllView = Backbone.View.extend({
+
+        //Could be overridden in concrete views.
         el: "#vrakashy",
+
         initialize: function () {
             this.render();
         },
+
+        //Method appends new message to conversation or increases quantity of unread messages.
         messageSystem: function () {
             var self = this;
             var $messagesCounter = $('#counter');
@@ -30,6 +35,8 @@ define([
                 }
             });
         },
+
+        //Method to set counter of unread messages.
         messagesCounter: function () {
             var $messagesCounter = $('#counter');
             console.log($messagesCounter);
@@ -45,17 +52,18 @@ define([
                 }
             });
         },
+
+        //Method helps to create an object with data from forms.
         getFormsData: function () {
-            var formsData;
-            var $formsFields;
+            var formsData = {};
+            var $formsFields = $('.form-control');
             var field;
-            formsData = {};
-            $formsFields = $('.form-control');
             $formsFields.each(function () {
                 field = $(this).attr('id');
                 if ($(this).val()) formsData[field] = $(this).val();
                 $(this).val('');
             });
+
             return formsData;
         }
     });

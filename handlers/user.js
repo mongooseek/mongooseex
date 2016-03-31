@@ -1,11 +1,15 @@
-//DB handler for user.
+//DB handler for users collection.
+
 //Required dependency.
 var mongoose = require('mongoose');
 var sendMail = require("../helpers/mailSender");
+
 module.exports = function () {
+
     var User = mongoose.model('user');
     var crypto = require('crypto');
 
+    //Handler is used to generate and send invitation link to given e-mail address.
     this.inviteFriend = function (req, res, next) {
         console.log('I am inviting!');
         var body;
@@ -26,16 +30,20 @@ module.exports = function () {
                 return next(err);
             }
             sendMail(email, 'Invitation', html);
+
             res.status(201).send(user);
         });
     };
+
     //Handler is used within logout from site. It changes session.loggedIn to false.
     this.logout = function (req, res, next) {
         var message = {};
         req.session.loggedIn = false;
-        res.json(message);
 
+        res.json(message);
     };
+
+    //Handler to create(register) invited user(friend).
     this.createInvitedUser = function (req, res, next) {
         console.log('I am creating invited user again!');
         var body;
@@ -98,6 +106,8 @@ module.exports = function () {
             });
         });
     };
+
+    //Handler is used to confirm and login within registration.
     this.confirmEmail = function (req, res, next) {
         var body;
         var shaSum = crypto.createHash('sha256');
@@ -139,6 +149,8 @@ module.exports = function () {
                 res.status(200).send(user);
             });
     };
+
+    //Handler to create and send reset password link to given e-mail address.
     this.generateAndSendResetLink = function (req, res, next) {
         var email;
         var baseLink;
@@ -184,6 +196,7 @@ module.exports = function () {
             }
         )
     };
+
     //Handler to get all users from DB.
     this.getAll = function (req, res, next) {
         var query;
@@ -223,6 +236,7 @@ module.exports = function () {
             });
     };
 
+    //Handler to get all friends of given user.
     this.getAllFriends = function (req, res, next) {
         var query;
         var distance;
@@ -266,6 +280,7 @@ module.exports = function () {
             })
     };
 
+    //TODO - remove or change handler.
     this.findNegotiators = function (req, res, next) {
         var query;
         var distance;
@@ -301,6 +316,10 @@ module.exports = function () {
         })
     };
 
+    /**
+     * TODO - Create another handler to exclude 2 requests for friendship operations.
+     * (Handler is used within adding friends).
+     */
     this.addToFriends = function (req, res, next) {
         var id = req.params.id;
         var friends = req.body.friends;
@@ -312,7 +331,7 @@ module.exports = function () {
         })
     };
 
-    //Handler to update users.
+    //Handler to update concrete user.
     this.update = function (req, res, next) {
         var id = req.params.id;
         var body = req.body;
@@ -342,7 +361,7 @@ module.exports = function () {
     //Handler to remove user from db.
     this.remove = function (req, res, next) {
         var id = req.params.id;
-        if(req.session.isAdministrator) {
+        if (req.session.isAdministrator) {
             User.findByIdAndRemove(id, function (err, user) {
                 if (err) {
                     return next(err);
@@ -353,7 +372,7 @@ module.exports = function () {
         }
     };
 
-    //Handler to get user within nn.
+    //Handler to get concrete user within login operation.
     this.login = function (req, res, next) {
         console.log(req.body);
         if (req.session.uId && req.session.loggedIn) {
@@ -362,6 +381,7 @@ module.exports = function () {
                 __v: 0
             }, function (err, doc) {
                 console.log("Received a GET request for loginned _id: " + doc._id);
+
                 res.send(doc);
             })
         } else {
@@ -393,7 +413,7 @@ module.exports = function () {
                     req.session.uId = user._id;
                     req.session.loggedIn = true;
                     req.session.location = user.location;
-                    if(user.role === 'admin') req.session.isAdministrator = true;
+                    if (user.role === 'admin') req.session.isAdministrator = true;
                     delete user.pass;
 
                     res.status(200).send(user);

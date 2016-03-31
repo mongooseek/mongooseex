@@ -1,14 +1,16 @@
-//View to deal with 'main user' model.
+//View to deal with 'main user' model within inputting new pass after reset.
 define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'views/models/start',
+    'views/abstract/models/start',
     'text!templates/models/newpass.html',
 ], function (Backbone, _, $, StartView, template) {
-    console.log("I am inside main view");
+
     var NewPassView = StartView.extend({
+
         tmpl: _.template(template),
+
         mainMethod: function () {
             var self = this;
             var viewUrl;

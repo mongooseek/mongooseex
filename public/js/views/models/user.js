@@ -9,9 +9,11 @@ define([
     'text!templates/models/friendshipStatus/requested.html',
     'Moment'
 ], function (AllView, _, $, accepted, add, pending, requested, moment) {
-    console.log("I am inside user view");
+
     var UserView = AllView.extend({
+
         el: '.user-item',
+
         render: function () {
             var self = this;
             var template
@@ -37,5 +39,6 @@ define([
             return this;
         }
     });
+
     return UserView;
 });

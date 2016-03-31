@@ -1,24 +1,25 @@
-//View to deal with 'main user' model.
+//View to deal with 'main user' model within logup.
 define([
     'Backbone',
     'Underscore',
     'jQuery',
-    'views/models/start',
+    'views/abstract/models/start',
     'text!templates/models/logup.html',
 ], function (Backbone, _, $, StartView, template) {
-    console.log("I am inside logup view");
+
     var LogupView = StartView.extend({
+
         tmpl: _.template(template),
+
+        //Method trigger when logup is clicked.
         mainMethod: function () {
-            console.log('Main method is working');
+            var registrationData = {};
             var city = {};
             var self = this;
+            var $formsFields = $('.form-control');
             var viewUrl;
             var modelUrl;
-            var $formsFields;
             var field;
-            var registrationData = {};
-            $formsFields = $('.form-control');
             $formsFields.each(function () {
                 field = $(this).attr('id');
                 if ($(this).val()) registrationData[field] = $(this).val();

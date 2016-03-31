@@ -1,11 +1,13 @@
-//DB handler for replica.
+//DB handler for replicas.
+
 //Required dependency.
 var mongoose = require('mongoose');
 
 module.exports = function () {
+
     var Replica = mongoose.model('replica');
 
-    //Handler to get all chat messages.
+    //Handler to get all messages with one user.
     this.getAllWithOne = function (req, res, next) {
         var part1 = req.session.uId;
         var part2 = req.params.part2;
@@ -40,26 +42,50 @@ module.exports = function () {
         });
     };
 
+    //Handler to set messages read, returns quantity of read messages.
     this.setReplicasRead = function (req, res, next) {
         var body = req.body;
         var part1 = body.part1;
         var part2 = body.part2;
-        Replica.update({parts: [part1, part2]}, {$set: {read: true}}, {multi: true}, function (err, result) {
-            if (err) {
-                return next(err);
-            }
-            res.status(200).send(result);
-        });
+        Replica.update(
+            {
+                parts: [part1, part2]
+            }, {
+                $set: {read: true}
+            },
+            {
+                multi: true
+            },
+            function (err, result) {
+                if (err) {
+                    return next(err);
+                }
+
+                res.status(200).send(result);
+            });
     };
 
+    //Handler to count unread messages, returns quantity of unread messages.
     this.countUnreadReplicas = function (req, res, next) {
         var body = req.body;
-        Replica.update({"sender.id": {$ne: req.body.part2}, parts: req.body.part2, read: false}, {$set: {read: false}}, {multi: true}, function (err, replicas) {
-            if (err) {
-                return next(err);
-            }
-            console.log(replicas);
-            res.status(200).send(replicas);
-        });
+        Replica.update(
+            {
+                "sender.id": {$ne: req.body.part2},
+                parts: req.body.part2,
+                read: false
+            },
+            {
+                $set: {read: false}
+            },
+            {
+                multi: true
+            },
+            function (err, replicas) {
+                if (err) {
+                    return next(err);
+                }
+
+                res.status(200).send(replicas);
+            });
     };
 }

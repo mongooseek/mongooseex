@@ -1,4 +1,4 @@
-//View to deal with 'user' collection.
+//TODO - remove or change.
 define([
     'Backbone',
     'jQuery',

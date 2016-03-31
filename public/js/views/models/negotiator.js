@@ -1,4 +1,4 @@
-//View to deal with 'user' model.
+//TODO - remove or refactor.
 define([
     'views/abstract/all',
     'Underscore',

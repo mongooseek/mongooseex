@@ -10,17 +10,19 @@ define([
 ], function (Backbone, $, AllView, PostsCollection, PostModel, PostView, postsTemplate) {
 
     var PostsView = AllView.extend({
+
         tmpl: _.template(postsTemplate),
+
         events: {
             'click #make-post': 'post',
             'click .trash-button': 'deletePost'
         },
+
+        //Method to delete a message by administrator or message owner.
         deletePost: function (e) {
             e.preventDefault();
             var self = this;
-            var postId;
-            postId = e.target.id;
-            console.log(postId);
+            var postId = e.target.id;
             var postModel = this.collection.get(postId);
             var blockToRemove = 'tr[id="' + postId + '"]';
             var $blockToRemove = $(blockToRemove);
@@ -34,8 +36,8 @@ define([
                 }
             });
         },
+
         render: function () {
-            console.log('Clicked POSTS BUTTON');
             var self = this;
             $.ajax({
                 type: "POST",
@@ -59,6 +61,8 @@ define([
                 }
             });
         },
+
+        //Method to write a post.
         post: function () {
             var self = this;
             var postData;
